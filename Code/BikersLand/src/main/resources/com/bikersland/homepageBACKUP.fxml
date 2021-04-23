@@ -2,19 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import org.controlsfx.control.SearchableComboBox?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HomepageController">
    <children>
@@ -47,41 +46,38 @@
                <image>
                   <Image url="@img/background.jpg" />
                </image>
-               <effect>
-                  <ColorAdjust brightness="-0.6" />
-               </effect>
             </ImageView>
-            <StackPane fx:id="pnlMain" alignment="TOP_CENTER" prefHeight="450.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <StackPane fx:id="spMain" alignment="TOP_CENTER" prefHeight="450.0" prefWidth="800.0" styleClass="opacity-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_CENTER">
                      <children>
                         <AnchorPane layoutY="10.0" prefHeight="82.0" prefWidth="433.0" styleClass="bordered-pane">
                            <children>
-                              <RadioButton fx:id="radioPartenzaCitta" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDepartureCitta" selected="true" text="Città">
+                              <RadioButton fx:id="partenzaCittaRadio" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDepartureCitta" selected="true" text="Città">
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="tgPartenza" />
+                                    <ToggleGroup fx:id="toggleGroupPartenza" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="radioPartenzaDistanza" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDepartureDistance" text="Distanza" toggleGroup="$tgPartenza" />
-                              <Slider fx:id="sliderPartenzaDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
-                              <Label fx:id="lblPartenzaDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="217.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
-                              <SearchableComboBox fx:id="comboPartenzaCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" visibleRowCount="5" />
-                              <SearchableComboBox fx:id="comboPartenzaDistanza" disable="true" layoutX="283.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+                              <RadioButton fx:id="partenzaDistanzaRadio" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDepartureDistance" text="Distanza" toggleGroup="$toggleGroupPartenza" />
+                              <ComboBox fx:id="partenzaCittaCombo" editable="true" layoutX="110.0" layoutY="11.0" prefWidth="150.0" promptText="All" />
+                              <Slider fx:id="partenzaDistanzaSlider" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
+                              <Label fx:id="partenzaDistanzaLabel" alignment="CENTER_RIGHT" disable="true" layoutX="217.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
+                              <ComboBox fx:id="partenzaDistanzaCombo" disable="true" editable="true" layoutX="283.0" layoutY="41.0" prefWidth="150.0" promptText="All" />
                            </children>
                         </AnchorPane>
                         <Label layoutX="12.0" styleClass="bordered-pane-title" text="Partenza" />
                         <AnchorPane layoutY="113.0" prefHeight="82.0" prefWidth="433.0" styleClass="bordered-pane">
                            <children>
-                              <RadioButton fx:id="radioArrivoCitta" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDestinationCitta" selected="true" text="Città">
+                              <RadioButton fx:id="arrivoCittaRadio" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" selected="true" text="Città">
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="tgArrivo" />
+                                    <ToggleGroup fx:id="toggleGroupArrivo" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="radioArrivoDistanza" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDestinationDistance" text="Distanza" toggleGroup="$tgArrivo" />
-                              <Slider fx:id="sliderArrivoDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
-                              <Label fx:id="lblArrivoDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="216.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
-                              <SearchableComboBox fx:id="comboArrivoCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" />
-                              <SearchableComboBox fx:id="comboArrivoDistanza" layoutX="282.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+                              <RadioButton fx:id="arrivoDistanzaRadio" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" text="Distanza" toggleGroup="$toggleGroupArrivo" />
+                              <ComboBox editable="true" layoutX="110.0" layoutY="11.0" prefWidth="150.0" promptText="All" />
+                              <Slider fx:id="arrivoDistanzaSlider" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
+                              <Label fx:id="arrivoDistanzaLabel" alignment="CENTER_RIGHT" disable="true" layoutX="216.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
+                              <ComboBox disable="true" editable="true" layoutX="282.0" layoutY="41.0" prefWidth="150.0" promptText="All" />
                            </children>
                         </AnchorPane>
                         <Label layoutX="12.0" layoutY="103.0" styleClass="bordered-pane-title" text="Arrivo" />
