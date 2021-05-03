@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.RegisterController">
+   <top>
+      <fx:include fx:id="header" source="Header.fxml" />
+   </top>
+   <center>
+      <VBox alignment="CENTER" maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" spacing="20.0" styleClass="registerBox" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 20;" text="Crea un nuovo account" />
+            <HBox spacing="20.0">
+               <children>
+                  <TextField fx:id="tfName" promptText="Nome" />
+                  <TextField fx:id="tfSurname" promptText="Cognome" />
+               </children>
+            </HBox>
+            <TextField fx:id="email1" promptText="Email" />
+            <TextField fx:id="email2" promptText="Conferma Email" />
+            <PasswordField promptText="Password" />
+            <PasswordField promptText="Conferma Password" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

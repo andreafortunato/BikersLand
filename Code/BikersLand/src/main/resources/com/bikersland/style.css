@@ -1,3 +1,46 @@
+.root {
+	-color-primary: #0CF;
+	-color-primary-dark: derive(-color-primary, -30%);
+}
+
+.cardViaggio .label .text {
+	-fx-fill: black;
+}
+
+.registerBox .text-field {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent transparent -color-primary-dark transparent;
+	-fx-border-width: 1;
+	-fx-border-insets: -1;
+	-fx-text-fill: white;
+	-fx-font-size: 16;
+}
+
+.registerBox .text-field:focused {
+	-fx-border-color: transparent transparent -color-primary transparent;
+	-fx-border-width: 2;
+}
+
+.registerBox .text-field-error,
+.registerBox .text-field-error:focused {
+	-fx-background-image: url('img/error.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 12;
+	-fx-background-position: right top;
+	-fx-border-color: transparent transparent red transparent;
+	-fx-border-width: 2;
+}
+
+.registerBox .text-field-valid,
+.registerBox .text-field-valid:focused {
+	-fx-background-image: url('img/green_tick.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 12;
+	-fx-background-position: right top;
+	-fx-border-color: transparent transparent #7AC043 transparent;
+	-fx-border-width: 2;
+}
+
 .alert {
 	-fx-font-size: 14px;
 }
@@ -44,19 +87,19 @@
 	-fx-background-radius: 4;
 	-fx-border-color: #FFF;
 	-fx-border-radius: 4;
-	-fx-text-fill: #0CF;
+	-fx-text-fill: -color-primary;
 	-fx-font-size: 15;
 	-fx-font-weight: bolder;
 }
 
 .button:hover {
 	-fx-focus-traversable: false;
-	-fx-background-color: #0CF;
+	-fx-background-color: -color-primary;
 	-fx-text-fill: #FFF;
 }
 
 .button:pressed {
-	-fx-background-color: derive(#0CF, -20%);
+	-fx-background-color: derive(-color-primary, -20%);
 }
 
 .cmd.button {
@@ -67,7 +110,7 @@
 }
 
 .radio-button:selected .radio .dot {
-	-fx-background-color: #0CF;
+	-fx-background-color: -color-primary;
 }
 
 .radio-button .radio {
@@ -91,7 +134,7 @@
 }
 
 .slider .thumb {
-	-fx-color: #0CF;
+	-fx-color: -color-primary;
 }
 
 /* .slider:focused .thumb {
@@ -103,7 +146,7 @@
 } */
 
 .combo-box .arrow {
-	-fx-background-color: #0CF;
+	-fx-background-color: -color-primary;
 	-fx-background-insets: -2;
 }
 
@@ -114,7 +157,7 @@
 }
 
 .combo-box-base .arrow-button {
-	-fx-border-color: #0CF #0CF #0CF transparent;
+	-fx-border-color: -color-primary -color-primary -color-primary transparent;
 	-fx-border-radius: 0 2 2 0;
 }
 
@@ -129,7 +172,7 @@
 .bordered-pane-title {
 	-fx-background-color: transparent;
 	-fx-padding: 0 3 0 3;
-	-fx-text-fill: #0CF;
+	-fx-text-fill: -color-primary;
 	-fx-font-weight: bold;
 	-fx-font-size: 15;
 	-fx-font-style: italic;
