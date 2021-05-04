@@ -3,8 +3,10 @@ package com.bikersland;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -28,29 +30,23 @@ public class App extends Application {
         
         stage.show();
         
-//        stage.setMinWidth(stage.getWidth());
-//        stage.setMinHeight(stage.getHeight());
-                
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
-        VBox viaggioBox = fxmlLoader.load();
-        
-        viaggioBoxWidth = (int)viaggioBox.getPrefWidth();
+        stage.setMinWidth(stage.getWidth());
+        stage.setMinHeight(stage.getHeight());
+                        
+        viaggioBoxWidth = 420;
         
         Platform.runLater(() -> {
             try {
-				homepageController.populateGrid(3);
+				homepageController.populateGrid(2);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
             
             stage.widthProperty().addListener((obs, oldVal, newVal) -> {
             	
-            	int o = oldVal.intValue()-16-(homepageController.getNumViaggi())*10;
-            	int n = newVal.intValue()-16-(homepageController.getNumViaggi())*10;
-            	
-            	System.out.println(n);
-            	
+            	int o = oldVal.intValue()-16-(homepageController.getNumViaggi())*20;
+            	int n = newVal.intValue()-16-(homepageController.getNumViaggi())*20;
+            	            	
             	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
 					try {
 						homepageController.populateGrid(n/viaggioBoxWidth);

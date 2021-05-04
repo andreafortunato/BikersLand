@@ -91,11 +91,7 @@
                               </AnchorPane>
                               <Label layoutX="12.0" layoutY="103.0" styleClass="bordered-pane-title" text="Arrivo" />
                               <Button fx:id="btnSearch" layoutY="213.0" mnemonicParsing="false" onAction="#search" prefHeight="55.0" prefWidth="646.0" text="Cerca" />
-                              <ListView layoutX="446.0" layoutY="11.0" prefHeight="185.0" prefWidth="200.0" />
-                              <Label layoutX="452.0" layoutY="20.0" text="Label" />
-                              <Label layoutX="452.0" layoutY="37.0" text="Label" />
-                              <Label layoutX="452.0" layoutY="54.0" text="Label" />
-                              <Label layoutX="452.0" layoutY="71.0" text="Label" />
+                              <ListView fx:id="lvTags" layoutX="446.0" layoutY="11.0" prefHeight="184.0" prefWidth="200.0" style="-fx-background-radius: 3;" />
                            </children>
                            <StackPane.margin>
                               <Insets top="80.0" />
@@ -103,17 +99,16 @@
                         </AnchorPane>
                      </children>
                   </StackPane>
-                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="1200.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="1200.0" style="-fx-background-color: #121212;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                      <content>
-                        <GridPane fx:id="gridViaggi" alignment="CENTER" gridLinesVisible="true" hgap="10.0" vgap="10.0">
-                        </GridPane>
+                        <GridPane fx:id="gridViaggi" alignment="CENTER" gridLinesVisible="true" hgap="20.0" vgap="30.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding></GridPane>
                      </content>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </ScrollPane>
                </children>
             </VBox>

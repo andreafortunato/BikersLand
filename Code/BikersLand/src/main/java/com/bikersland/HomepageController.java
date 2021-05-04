@@ -7,20 +7,24 @@ import org.controlsfx.control.SearchableComboBox;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 public class HomepageController {
 	
@@ -84,6 +88,9 @@ public class HomepageController {
     @FXML
     private GridPane gridViaggi;
     
+    @FXML
+    private ListView<String> lvTags;
+        
     
     public void initialize() {
     	System.out.println("Init");
@@ -118,6 +125,44 @@ public class HomepageController {
         FXCollections.sort(items);
         
         comboPartenzaCitta.setItems(items);
+        
+        ObservableList<String> tagsList = FXCollections.observableArrayList("Tag1", "Tag2", "Tag3");
+        lvTags.setItems(tagsList);
+        lvTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        lvTags.getSelectionModel().getSelectedItems().addListener((Change<? extends String> selectedTags) -> {
+            for(String s:selectedTags.getList())
+            	System.out.println(s);
+            System.out.println();
+        });
+        lvTags.setCellFactory(lv -> {
+            ListCell<String> cell = new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? null : item);
+                }
+            };
+
+            cell.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+                if (cell.isEmpty()) {
+                    return;
+                }
+
+                int index = cell.getIndex();
+                if (lvTags.getSelectionModel().getSelectedIndices().contains(index))
+                	lvTags.getSelectionModel().clearSelection(index);
+                else
+                	lvTags.getSelectionModel().select(index);
+
+                lvTags.requestFocus();
+
+                e.consume();
+                
+                tagsList.add("Nuovo");
+            });
+
+            return cell ;
+        });
     }
     
     public void populateGrid(int totalCols) throws IOException {
@@ -135,7 +180,7 @@ public class HomepageController {
     		fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
             
-            VBox viaggioBox = fxmlLoader.load();
+            StackPane viaggioBox = fxmlLoader.load();
             ViaggioController vc = fxmlLoader.getController();
             vc.setTxt(count++);
             

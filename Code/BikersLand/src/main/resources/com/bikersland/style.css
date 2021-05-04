@@ -3,8 +3,8 @@
 	-color-primary-dark: derive(-color-primary, -30%);
 }
 
-.cardViaggio .label .text {
-	-fx-fill: black;
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
 }
 
 .registerBox .text-field {
@@ -19,6 +19,19 @@
 .registerBox .text-field:focused {
 	-fx-border-color: transparent transparent -color-primary transparent;
 	-fx-border-width: 2;
+}
+
+.list-cell:focused {
+    -fx-background-color: -fx-background;
+}
+
+.list-cell:filled:selected {
+	-fx-background-color: -color-primary;
+}
+
+.list-cell:filled:hover { 
+    -fx-background-color: -color-primary-dark;
+    -fx-text-fill: white;
 }
 
 .registerBox .text-field-error,
