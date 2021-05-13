@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -92,7 +93,7 @@ public class HomepageController {
     private ListView<String> lvTags;
         
     
-    public void initialize() {
+    public void initialize() throws IOException {
     	System.out.println("Init");
     	    	
     	imgBackground.fitWidthProperty().bind(pnlMain.widthProperty());
@@ -163,36 +164,73 @@ public class HomepageController {
 
             return cell ;
         });
+        
+        Platform.runLater(() -> {
+        	int initCols = (((Double)pnlMain.getParent().getScene().getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
+        	
+        	FXMLLoader fxmlLoader;
+        	
+        	ObservableList<StackPane> obsViaggiList = FXCollections.observableArrayList();
+        	
+        	for (int i=0; i<40; i++) {
+        		
+        		fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
+                
+                StackPane viaggioBox = null;
+				try {
+					viaggioBox = fxmlLoader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                ViaggioController vc = fxmlLoader.getController();
+                vc.setTxt(i);
+                
+                if(viaggioBox != null)
+                	obsViaggiList.add(viaggioBox);
+			}
+        	
+        	NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, initCols);
+        	
+//        	try {
+//				populateGrid(initCols);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+        });
+        
     }
     
-    public void populateGrid(int totalCols) throws IOException {
-    	gridViaggi.getChildren().clear();
-    	System.out.println("Colonne: " + totalCols);
-    	FXMLLoader fxmlLoader;
-    	
-    	int totalElements = 15;
-    	int count = 0;
-    	
-    	int row = 0;
-    	int col = 0;
-    	
-    	while(totalElements > 0) {
-    		fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
-            
-            StackPane viaggioBox = fxmlLoader.load();
-            ViaggioController vc = fxmlLoader.getController();
-            vc.setTxt(count++);
-            
-            gridViaggi.add(viaggioBox, col, row);
-            
-            if(++col == totalCols) {
-            	col = 0;
-            	row++;
-            }
-            totalElements--;            
-    	}
-	}
+//    public void populateGrid(int totalCols) throws IOException {
+//    	gridViaggi.getChildren().clear();
+//    	System.out.println("Colonne: " + totalCols);
+//    	FXMLLoader fxmlLoader;
+//    	
+//    	int totalElements = 40;
+//    	int count = 0;
+//    	
+//    	int row = 0;
+//    	int col = 0;
+//    	
+//    	while(totalElements > 0) {
+//    		fxmlLoader = new FXMLLoader();
+//            fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
+//            
+//            StackPane viaggioBox = fxmlLoader.load();
+//            ViaggioController vc = fxmlLoader.getController();
+//            vc.setTxt(count++);
+//            
+//            gridViaggi.add(viaggioBox, col, row);
+//            
+//            if(++col == totalCols) {
+//            	col = 0;
+//            	row++;
+//            }
+//            totalElements--;            
+//    	}
+//	}
     
     public int getNumViaggi() {
     	return gridViaggi.getColumnCount();

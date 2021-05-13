@@ -3,6 +3,75 @@
 	-color-primary-dark: derive(-color-primary, -30%);
 }
 
+/*.date-cell {
+	-fx-background-color: red;
+}
+.date-picker .text {
+	-fx-fill: white;
+}*/
+
+.new-event > .list-view .list-cell > * > .button {
+	-fx-background-insets: 1;
+}
+
+.new-event > .label {
+	-fx-font-size: 18;
+}
+
+.new-event .list-view .combo-box > .list-cell {
+	-fx-border-color: black transparent black black;
+	-fx-border-radius: 2 0 0 2;
+	-fx-background-radius: 2 0 0 2;
+	
+}
+
+.new-event > .list-view .list-cell .combo-box-base .arrow-button {
+	-fx-background-color: #121212;
+	-fx-border-color: #121212 #121212 #121212 transparent;
+}
+
+.new-event .list-view,
+.new-event .list-view .list-cell,
+.new-event .list-view .list-cell:focused {
+	-fx-background-radius: 2;
+}
+
+.new-event .list-view .list-cell .list-cell,
+.new-event .list-view .list-cell .list-cell:focused {
+    -fx-background-radius: 0;
+}
+
+.date-picker-popup > .month-year-pane {
+	-fx-background-color: #303030;
+}
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.date-picker-popup > * > .spinner > .button > .left-arrow,
+.date-picker-popup > * > .spinner > .button > .right-arrow {
+    -fx-background-color: -color-primary;
+}
+
+.date-picker .arrow {
+	-fx-background-color: -color-primary;
+	-fx-background-insets: -2;
+}
+
+.date-picker {
+	-fx-background-color: white;
+	-fx-background-radius: 2 0 0 2;
+	-fx-background-insets: 0 27 0 0;
+}
+
+.date-picker .arrow-button {
+	-fx-border-color: -color-primary -color-primary -color-primary transparent;
+	-fx-border-radius: 0 2 2 0;
+	-fx-background-color: transparent;
+}
+
 .scroll-pane > .viewport {
    -fx-background-color: transparent;
 }
@@ -149,14 +218,6 @@
 .slider .thumb {
 	-fx-color: -color-primary;
 }
-
-/* .slider:focused .thumb {
-    -fx-background-color:
-        linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
-        -fx-inner-border,
-        -fx-body-color;
-    -fx-background-insets: 0, 1, 2;
-} */
 
 .combo-box .arrow {
 	-fx-background-color: -color-primary;

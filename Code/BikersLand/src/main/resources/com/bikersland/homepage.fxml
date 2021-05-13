@@ -99,7 +99,7 @@
                         </AnchorPane>
                      </children>
                   </StackPane>
-                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="1200.0" style="-fx-background-color: #121212;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="1200.0" style="-fx-background-color: #202020;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -107,7 +107,8 @@
                         <GridPane fx:id="gridViaggi" alignment="CENTER" gridLinesVisible="true" hgap="20.0" vgap="30.0">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding></GridPane>
+                           </padding>
+                        </GridPane>
                      </content>
                   </ScrollPane>
                </children>

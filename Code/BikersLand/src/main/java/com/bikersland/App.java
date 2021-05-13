@@ -22,10 +22,15 @@ public class App extends Application {
     private int viaggioBoxWidth;
     
     private static HomepageController homepageController;
-
+     /*
+      * 
+      * https://www.google.com/maps/dir/tappa1/tappa2/.../tappaN/ 
+      *
+      *
+      */
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Homepage"), 1253, 910);
+        scene = new Scene(loadFXML("Profile"), 1253, 910);
         stage.setScene(scene);
         
         stage.show();
@@ -35,28 +40,22 @@ public class App extends Application {
                         
         viaggioBoxWidth = 420;
         
-        Platform.runLater(() -> {
-            try {
-				homepageController.populateGrid(2);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-            
-            stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            	
-            	int o = oldVal.intValue()-16-(homepageController.getNumViaggi())*20;
-            	int n = newVal.intValue()-16-(homepageController.getNumViaggi())*20;
-            	            	
-            	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
-					try {
-						homepageController.populateGrid(n/viaggioBoxWidth);
-						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-            	
-            });
-        });        
+//        Platform.runLater(() -> {            
+//            stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+//            	
+//            	int o = oldVal.intValue()-16-(homepageController.getNumViaggi())*20;
+//            	int n = newVal.intValue()-16-(homepageController.getNumViaggi())*20;
+//            	            	
+//            	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
+//					try {
+//						homepageController.populateGrid(n/viaggioBoxWidth);
+//						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//            	
+//            });
+//        });        
     }
 
     static void setRoot(String fxml) throws IOException {
