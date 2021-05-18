@@ -11,6 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
+import com.bikersland.db.DB_Connection;
+import com.bikersland.db.UserDAO;
 
 /**
  * JavaFX App
@@ -18,10 +22,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-    
-    private int viaggioBoxWidth;
-    
-    private static HomepageController homepageController;
+        
      /*
       * 
       * https://www.google.com/maps/dir/tappa1/tappa2/.../tappaN/ 
@@ -30,7 +31,7 @@ public class App extends Application {
       */
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Profile"), 1253, 910);
+        scene = new Scene(loadFXML("Register"), 1253, 910);
         stage.setScene(scene);
         
         stage.show();
@@ -38,24 +39,27 @@ public class App extends Application {
         stage.setMinWidth(stage.getWidth());
         stage.setMinHeight(stage.getHeight());
                         
-        viaggioBoxWidth = 420;
         
-//        Platform.runLater(() -> {            
-//            stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-//            	
-//            	int o = oldVal.intValue()-16-(homepageController.getNumViaggi())*20;
-//            	int n = newVal.intValue()-16-(homepageController.getNumViaggi())*20;
-//            	            	
-//            	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
-//					try {
-//						homepageController.populateGrid(n/viaggioBoxWidth);
-//						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//            	
-//            });
-//        });        
+//        try {
+//			DB_Connection.getConnection();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.out.println("ERRORE CRITICO");
+//			System.exit(-1);
+//		}
+//        
+//        try {
+//        	User user = new User("Nome3", "Cognome3", "Username3", "Email3", "Password3");
+//        	UserDAO.setUser(user);
+//			System.out.println(UserDAO.getUserByUsername("Username3"));
+//		} catch (SQLException ex) {
+//			// TODO Auto-generated catch block
+////			ex.printStackTrace();
+////			System.out.println("S'È ROTTO TUTTO");
+//			DB_Connection.printSQLException(ex);
+//			System.exit(-1);
+//		}   
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -64,10 +68,7 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        Parent p = fxmlLoader.load();
-        if(fxml.equals("Homepage"))
-        	homepageController = fxmlLoader.getController();
-        return p;
+        return fxmlLoader.load();
     }
 
     public static void main(String[] args) {

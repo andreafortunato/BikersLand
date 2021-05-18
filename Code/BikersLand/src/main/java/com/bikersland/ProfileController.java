@@ -11,6 +11,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -34,6 +35,8 @@ public class ProfileController {
 
     @FXML
     private GridPane gridViaggi;
+    
+    private int viaggioBoxWidth = 420;
 	
 	public void initialize() {
 		Platform.runLater(() -> {
@@ -73,5 +76,26 @@ public class ProfileController {
 		}
 		
 		NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, 2);
+		
+		Platform.runLater(() -> {
+			vbViaggi.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
+	        	
+	        	int o = oldVal.intValue()-16-getNumViaggi()*20;
+	        	int n = newVal.intValue()-16-getNumViaggi()*20;
+	        	            	
+	        	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
+					try {
+						NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, n/viaggioBoxWidth);
+						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+	        	
+	        });
+		});
 	}
+	
+	public int getNumViaggi() {
+    	return gridViaggi.getColumnCount();
+    }
 }

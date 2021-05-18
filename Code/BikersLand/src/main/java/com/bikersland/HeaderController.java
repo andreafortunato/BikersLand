@@ -45,7 +45,7 @@ public class HeaderController {
     }
     
     @FXML
-    void goToHomepage() throws IOException {
+    private void goToHomepage() throws IOException {
     	App.setRoot("Homepage");
     }
     

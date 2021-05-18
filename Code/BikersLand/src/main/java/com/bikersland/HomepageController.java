@@ -91,6 +91,8 @@ public class HomepageController {
     
     @FXML
     private ListView<String> lvTags;
+    
+    private int viaggioBoxWidth = 420;
         
     
     public void initialize() throws IOException {
@@ -192,6 +194,21 @@ public class HomepageController {
 			}
         	
         	NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, initCols);
+        	
+        	pnlMain.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
+            	
+            	int o = oldVal.intValue()-16-getNumViaggi()*20;
+            	int n = newVal.intValue()-16-getNumViaggi()*20;
+            	            	
+            	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
+					try {
+						NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, n/viaggioBoxWidth);
+						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+            	
+            });
         	
 //        	try {
 //				populateGrid(initCols);
