@@ -26,6 +26,8 @@ public class User {
 		this.create_time = create_time;
 	}
 	
+	
+	
 	public User(String name, String surname, String username, String email, String password) {
 		this.name = name;
 		this.surname = surname;

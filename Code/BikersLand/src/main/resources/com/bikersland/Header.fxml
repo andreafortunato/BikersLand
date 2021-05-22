@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="150.0" prefWidth="1200.0" styleClass="header" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HeaderController">
+<AnchorPane prefHeight="150.0" prefWidth="1200.0" styleClass="header" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HeaderController">
    <children>
       <HBox layoutX="410.0" layoutY="55.0" spacing="10.0" AnchorPane.rightAnchor="40.0">
          <children>
@@ -20,7 +20,7 @@
                </HBox.margin>
             </ImageView>
             <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" prefHeight="40.0" prefWidth="140.0" text="ISCRIVITI" />
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#btnClick" prefHeight="40.0" prefWidth="140.0" text="ACCEDI" />
+            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="140.0" text="ACCEDI" />
          </children>
       </HBox>
       <ImageView fx:id="imgLogo" fitHeight="113.0" fitWidth="150.0" layoutX="40.0" layoutY="19.0" onMouseClicked="#goToHomepage" pickOnBounds="true" preserveRatio="true">

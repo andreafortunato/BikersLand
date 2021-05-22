@@ -24,13 +24,20 @@ public class HeaderController {
     public void initialize() {
     	System.out.println("Header inizializzato");
     	System.out.println(btnRegister.getText());
+    	
+    	if(LoginSingleton.getLoginInstance().getUser() != null) {
+    		btnLogin.setDisable(true);
+    		
+    	}
+    	
+    	
     }
     
     @FXML
-    private void login() {
-    	System.out.println("Hai cliccato ACCEDI");    
-    	System.out.println(getClass());
-    	System.out.println();
+    private void login() throws IOException {
+    	
+    	App.setRoot("Login");
+    	
     }
     
     @FXML
@@ -52,5 +59,7 @@ public class HeaderController {
     public void setRegTxt() {
     	btnLogin.setText("ciao");
     }
+    
+    
 
 }

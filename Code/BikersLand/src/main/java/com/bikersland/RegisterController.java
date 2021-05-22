@@ -45,7 +45,7 @@ public class RegisterController {
     
     private boolean validEmail = false;
     
-    ChangeListener<String> checkEnableBtnRegister = new ChangeListener<String>() {
+    private ChangeListener<String> checkEnableBtnRegister = new ChangeListener<String>() {
 		@Override
 		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 			List<TextField> textFields = Arrays.asList(txtName, txtSurname, txtUsername, txtEmail1, txtEmail2, txtPassword1, txtPassword2);

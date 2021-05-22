@@ -28,7 +28,7 @@ public class UserDAO {
 	public static void setUser(User user) throws SQLException, UsernameException, EmailException {
 		String query = "INSERT INTO user(name, surname, username, email, password) VALUES('" +
 				user.getName() + "', '" + user.getSurname() + "', '" + user.getUsername() + "', '" +
-				user.getEmail() + "', '" + user.getPassword() + "');";
+				user.getEmail() + "', MD5('" + user.getPassword() + "'));";
 		
 		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 
@@ -52,6 +52,41 @@ public class UserDAO {
         if (stmt != null)
         	stmt.close();
 	}
+	
+	public static User askLogin (String userem, String password) throws SQLException, UsernameException, EmailException{
+		
+		
+		String query = "SELECT id, name, surname, username, email, create_time FROM user WHERE (username='" + userem + "' OR email='" + userem + "') AND password=MD5('" + password + "');";
+		
+		
+		ResultSet rs;
+		User user1;
+		
+		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+          
+		 rs = stmt.executeQuery(query);
+		
+		
+		 if(rs.first()) {
+	        	user1 = new User(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getString("username"),
+	        			rs.getString("email"),null, rs.getDate("create_time"));
+	        } else {
+	        	user1 = null;
+	        	
+	        	// TODO: Generare eccezione "Utente non trovato"
+	        }
+		 
+		 //ora ho l'utente ed in base a quello apro la sua area personale
+	        
+	        rs.close();
+		
+       
+        if (stmt != null)
+        	stmt.close();
+        
+        return user1;
+	}
+	
 	
 	public static User getUserByUsername(String username) throws SQLException {
 		User user;
