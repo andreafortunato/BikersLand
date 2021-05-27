@@ -1,5 +1,6 @@
 package com.bikersland;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,7 +117,7 @@ public class RegisterController {
 	}
 	
 	@FXML
-	private void register() throws SQLException {
+	private void register() throws SQLException, IOException {
 		if(!txtPassword1.getText().equals(txtPassword2.getText())) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Registration Error", "Passwords do not match", "The two passwords you entered do not match.\n\n Please try again...", null);
 			txtPassword1.setText("");
@@ -136,6 +137,7 @@ public class RegisterController {
 		try {
 			UserDAO.setUser(newUser);
 			NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!" , "Registration succesfully completed!" , "Hi " + username + "!\nWelcome to BikersLand!", null);
+			App.setRoot("Homepage");
 		} catch (UsernameException e) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Registration Error" , "Username already exists!" , "A user already exists with username ", username);
 			txtUsername.setText("");

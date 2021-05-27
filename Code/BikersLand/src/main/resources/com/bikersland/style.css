@@ -10,11 +10,16 @@
 	-fx-fill: white;
 }*/
 
+.new-event > .combo-box .combo-box .list-cell:filled:selected {
+	-fx-background-color: transparent;
+}
+
 .new-event > .list-view .list-cell > * > .button {
 	-fx-background-insets: 1;
 }
 
-.new-event > .label {
+.new-event > .label,
+.event-details > .label {
 	-fx-font-size: 18;
 }
 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="150.0" prefWidth="1200.0" styleClass="header" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HeaderController">
+<AnchorPane prefHeight="150.0" prefWidth="1200.0" styleClass="header" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HeaderController">
    <children>
       <HBox layoutX="410.0" layoutY="55.0" spacing="10.0" AnchorPane.rightAnchor="40.0">
          <children>
@@ -18,15 +19,35 @@
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
-            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" prefHeight="40.0" prefWidth="140.0" text="ISCRIVITI" />
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="140.0" text="ACCEDI" />
+            <AnchorPane>
+               <children>
+                  <HBox fx:id="hbNotLoggedIn" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" prefHeight="40.0" prefWidth="140.0" text="ISCRIVITI" />
+                        <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="140.0" text="ACCEDI" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="hbLoggedIn" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button fx:id="btnProfile" mnemonicParsing="false" onAction="#goToProfile" prefHeight="40.0" prefWidth="140.0" text="IL TUO PROFILO" />
+                        <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="140.0" text="LOGOUT" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
          </children>
       </HBox>
       <ImageView fx:id="imgLogo" fitHeight="113.0" fitWidth="150.0" layoutX="40.0" layoutY="19.0" onMouseClicked="#goToHomepage" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/Logo%20White.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
    </children>
 </AnchorPane>

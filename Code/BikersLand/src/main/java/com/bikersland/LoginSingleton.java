@@ -5,9 +5,7 @@ public class LoginSingleton {
 	
 	private User user = null;
 	
-	private LoginSingleton() {
-		
-	}
+	private LoginSingleton() {}
 	
 	public static LoginSingleton getLoginInstance() {
 		if(LoginSingleton.loginInstance == null)
@@ -16,15 +14,15 @@ public class LoginSingleton {
 		return loginInstance;
 	}
 	
-	
-	
 	public User getUser() {
-		return loginInstance.user;
+		return getLoginInstance().user;
 	}
 	
-	public void setUser(User user2) {
-		loginInstance.user = user2;
+	public void setUser(User logged_user) {
+		getLoginInstance().user = logged_user;
+	}
+	
+	public static void logout() {
+		getLoginInstance().user = null;
 	}
 }
-
-

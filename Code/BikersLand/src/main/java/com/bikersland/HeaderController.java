@@ -1,16 +1,21 @@
 package com.bikersland;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 public class HeaderController {
 	
 	@FXML
     private ImageView btnLanguage;
+
+    @FXML
+    private HBox hbNotLoggedIn;
 
     @FXML
     private Button btnRegister;
@@ -19,18 +24,25 @@ public class HeaderController {
     private Button btnLogin;
 
     @FXML
-    public ImageView imgLogo;
+    private HBox hbLoggedIn;
+
+    @FXML
+    private Button btnProfile;
+
+    @FXML
+    private Button btnLogout;
+
+    @FXML
+    private ImageView imgLogo;
     
     public void initialize() {
-    	System.out.println("Header inizializzato");
-    	System.out.println(btnRegister.getText());
-    	
     	if(LoginSingleton.getLoginInstance().getUser() != null) {
-    		btnLogin.setDisable(true);
-    		
+    		hbNotLoggedIn.setVisible(false);
+    		hbLoggedIn.setVisible(true);
+    	} else {
+    		hbNotLoggedIn.setVisible(true);
+    		hbLoggedIn.setVisible(false);
     	}
-    	
-    	
     }
     
     @FXML
@@ -42,8 +54,9 @@ public class HeaderController {
     
     @FXML
     private void register() throws IOException {
-    	System.out.println("Hai cliccato REGISTRATI");
-    	App.setRoot("Register");
+//    	App.setRoot("Register");
+    	Event event = new Event(10, "Titolo eventino", "", "", "", "", new Date(), new Date());
+    	App.setRoot("EventDetails", event);
     }
     
     @FXML
@@ -56,10 +69,14 @@ public class HeaderController {
     	App.setRoot("Homepage");
     }
     
-    public void setRegTxt() {
-    	btnLogin.setText("ciao");
+    @FXML
+    private void goToProfile() throws IOException {
+    	App.setRoot("Profile");
     }
     
-    
-
+    @FXML
+    private void logout() throws IOException {
+    	LoginSingleton.logout();
+    	App.setRoot("Homepage");
+    }
 }

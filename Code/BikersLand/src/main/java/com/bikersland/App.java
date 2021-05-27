@@ -12,14 +12,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.bikersland.db.DB_Connection;
+import com.bikersland.db.TagDAO;
 import com.bikersland.db.UserDAO;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
+	
+	public static List<String> cities = null;
 
     private static Scene scene;
         
@@ -30,15 +34,16 @@ public class App extends Application {
       *
       */
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Homepage"), 1253, 910);
+    public void start(Stage stage) throws IOException, SQLException {
+    	App.cities = CityDAO.getCities();
+    	
+        scene = new Scene(loadFXML("NewEvent"), 1253, 910);
         stage.setScene(scene);
         
         stage.show();
         
         stage.setMinWidth(stage.getWidth());
-        stage.setMinHeight(stage.getHeight());
-                        
+        stage.setMinHeight(stage.getHeight());        
         
 //        try {
 //			DB_Connection.getConnection();
@@ -65,9 +70,19 @@ public class App extends Application {
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
+    
+    static void setRoot(String fxml, Event event) throws IOException {
+        scene.setRoot(loadFXML(fxml, event));
+    }
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+    
+    private static Parent loadFXML(String fxml, Event event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        fxmlLoader.setController(new EventDetailsController(event));
         return fxmlLoader.load();
     }
 

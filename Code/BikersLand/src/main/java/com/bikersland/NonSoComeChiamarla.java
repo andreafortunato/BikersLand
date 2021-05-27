@@ -1,6 +1,7 @@
 package com.bikersland;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,12 +10,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
@@ -29,8 +28,6 @@ public class NonSoComeChiamarla {
 	public static void populateGrid(GridPane gp, ObservableList<StackPane> obsViaggiList, int totalCols){
 		gp.getChildren().clear();
 		
-    	System.out.println("Colonne: " + totalCols);
-    	    	
     	int totalElements = obsViaggiList.size();
     	
     	int row = 0;
@@ -115,4 +112,8 @@ public class NonSoComeChiamarla {
 		}
 	}
 	
+	public static String dateToString(Date date) {
+		SimpleDateFormat dateOnly = new SimpleDateFormat("dd-MM-yyyy");
+		return dateOnly.format(date);
+	}
 }

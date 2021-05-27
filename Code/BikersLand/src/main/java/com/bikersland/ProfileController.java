@@ -39,19 +39,23 @@ public class ProfileController {
     private int viaggioBoxWidth = 420;
 	
 	public void initialize() {
+		User user = LoginSingleton.getLoginInstance().getUser();
+		
+		lblName.setText(user.getName());
+		lblSurname.setText(user.getSurname());
+		lblEmail.setText(user.getEmail());
+		
 		Platform.runLater(() -> {
 			vbViaggi.prefWidthProperty().bind(vbViaggi.getParent().getScene().getWindow().widthProperty());
 		});
 		
 		
 		final ContextMenu contextMenu = new ContextMenu();
-	    final MenuItem item1 = new MenuItem("open a file");
-	    final MenuItem item2 = new MenuItem("quit");
+	    final MenuItem item1 = new MenuItem("Change Image...");
 
-	    contextMenu.getItems().addAll(item1, item2);
+	    contextMenu.getItems().add(item1);
 		
-		imgProfileImage.setOnContextMenuRequested(e -> 
-		contextMenu.show(imgProfileImage, e.getScreenX(), e.getScreenY()));
+		imgProfileImage.setOnContextMenuRequested(e -> contextMenu.show(imgProfileImage, e.getScreenX(), e.getScreenY()));
 		
 		ObservableList<StackPane> obsViaggiList = FXCollections.observableArrayList();
 		

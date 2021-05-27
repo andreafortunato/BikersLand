@@ -11,9 +11,7 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -93,13 +91,10 @@ public class HomepageController {
     private ListView<String> lvTags;
     
     private int viaggioBoxWidth = 420;
-        
     
-    public void initialize() throws IOException {
-    	System.out.println("Init");
-    	    	
+    public void initialize() {
     	imgBackground.fitWidthProperty().bind(pnlMain.widthProperty());
-//    	imgBackground.fitHeightProperty().bind(spMain.heightProperty());
+//    	imgBackground.fitHeightProperty().bind(pnlMain.heightProperty());
     	imgBackground.setFitHeight(0.0);
 //    	imgBackground.setFitWidth(0.0);
     	imgBackground.setPreserveRatio(true);
@@ -115,7 +110,7 @@ public class HomepageController {
             lblPartenzaDistanza.setText(Integer.toString(newValue.intValue()) + " Km da");
         });
     	
-    	sliderPartenzaDistanza.setOnMousePressed(event -> headerController.imgLogo.requestFocus());
+    	sliderPartenzaDistanza.setOnMousePressed(event -> imgBackground.requestFocus());
     	
     	ObservableList<String> items = FXCollections.observableArrayList();
         
@@ -195,19 +190,18 @@ public class HomepageController {
         	
         	NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, initCols);
         	
-        	pnlMain.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
-            	
-            	int o = oldVal.intValue()-16-getNumViaggi()*20;
-            	int n = newVal.intValue()-16-getNumViaggi()*20;
-            	            	
-            	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
-					try {
+        	pnlMain.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
+		    	int o = oldVal.intValue()-16-getNumViaggi()*20;
+		    	int n = newVal.intValue()-16-getNumViaggi()*20;
+		    	            	
+		    	if(o/viaggioBoxWidth != n/viaggioBoxWidth) {
+		    		try {
 						NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, n/viaggioBoxWidth);
 						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-            	
+		    	}            	
             });
         	
 //        	try {
@@ -265,7 +259,6 @@ public class HomepageController {
     
     @FXML
     private void enableDepartureDistance() {
-    	headerController.setRegTxt();
     	if(radioPartenzaDistanza.isSelected()) {
         	sliderPartenzaDistanza.setDisable(false);
         	lblPartenzaDistanza.setDisable(false);

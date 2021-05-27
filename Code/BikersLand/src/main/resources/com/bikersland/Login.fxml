@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.LoginController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.LoginController">
    <top>
       <fx:include fx:id="header" source="Header.fxml" />
    </top>
@@ -18,7 +18,7 @@
             <Label alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 20;" text="Login" />
             <TextField fx:id="txtUser" promptText=" Email or Username" />
             <PasswordField fx:id="txtPassword" promptText="Password" />
-            <Button fx:id="btnLogin" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#login" text="Login">
+            <Button fx:id="btnLogin" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#login" text="Login">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

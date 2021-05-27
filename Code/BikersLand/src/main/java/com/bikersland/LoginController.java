@@ -25,76 +25,53 @@ public class LoginController {
 	@FXML
     private PasswordField txtPassword;
 	
-	 @FXML
-	 private Button btnLogin;
-	 
-	 private ChangeListener<String> checkEnableBtnLogin = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				
-				
-				if(txtUser.getText().strip().length() == 0 || txtPassword.getText().strip().length() == 0) {
-					btnLogin.setDisable(true);
-					return;
-				}
-				
-				btnLogin.setDisable(false);
+	@FXML
+	private Button btnLogin;
+	
+	private ChangeListener<String> checkEnableBtnLogin = new ChangeListener<String>() {
+		@Override
+		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			if(txtUser.getText().strip().length() == 0 || txtPassword.getText().strip().length() == 0) {
+				btnLogin.setDisable(true);
+				return;
 			}
-		};
+			
+			btnLogin.setDisable(false);
+		}
+	};
 	 
-	 public void initialize() {
-		 
+	public void initialize() {
 		txtUser.textProperty().addListener(checkEnableBtnLogin);
 		txtPassword.textProperty().addListener(checkEnableBtnLogin);
-		 
-		 try {
-				NonSoComeChiamarla.addTextLimiter(txtUser, 32);
-				NonSoComeChiamarla.addTextLimiter(txtPassword, 64);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-	 }
-	 
-	 @FXML
-	 private void login() throws IOException {
-		 
-		 int flag;
-		 User user2 = null;
-		 
-		 String user = txtUser.getText().strip();
-		 String password = txtPassword.getText().strip();
-		 
-		 try {
-				user2 = UserDAO.askLogin(user, password);
-			} catch (SQLException | UsernameException | EmailException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		 
-		 if(user2 == null) {
-			 NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Login Error", "Username/email or password not found", "No user found.\n\n Please try again...", null);
-			 txtUser.setText("");
-			 txtPassword.setText("");
-			 txtUser.requestFocus();
-			 
-			 
-		 }else {
-			 LoginSingleton Login = LoginSingleton.getLoginInstance();
-			 
-			 Login.setUser(user2);
-			 
-			 App.setRoot("Homepage");
-		 }
-		 
 		
-		 
-		  //TODO impostare la view pagina personale per l'utente e lasciare la connessione aperta
-		 
-		 
-		 
-		 
-	 }
-		 
-		 
-
+		try {
+			NonSoComeChiamarla.addTextLimiter(txtUser, 32);
+			NonSoComeChiamarla.addTextLimiter(txtPassword, 64);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	private void login() throws SQLException, IOException {
+		User logged_user = null;
+		
+		String username_email = txtUser.getText().strip();
+		String password = txtPassword.getText().strip();
+		
+		logged_user = UserDAO.askLogin(username_email, password);
+		
+		if(logged_user == null) {
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Login Error", "Username/email or password not found", "No user found.\n\n Please try again...", null);
+			txtUser.setText("");
+			txtPassword.setText("");
+			txtUser.requestFocus();
+		} else {
+			LoginSingleton Login = LoginSingleton.getLoginInstance();
+			Login.setUser(logged_user);
+			App.setRoot("Homepage");
+		}
+		
+		//TODO impostare la view pagina personale per l'utente e lasciare la connessione aperta
+	}
 }

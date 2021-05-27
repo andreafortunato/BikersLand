@@ -1,7 +1,6 @@
 package com.bikersland;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class User {
 	private Integer id = null;
@@ -12,9 +11,7 @@ public class User {
 	private String password = null;
 	private Date create_time = null;
 	
-	public User() {
-		System.out.println("Eccomi");
-	}
+	public User() {}
 	
 	public User(Integer id, String name, String surname, String username, String email, String password, Date create_time) {
 		this.id = id;
@@ -25,8 +22,6 @@ public class User {
 		this.password = password;
 		this.create_time = create_time;
 	}
-	
-	
 	
 	public User(String name, String surname, String username, String email, String password) {
 		this.name = name;
@@ -93,8 +88,6 @@ public class User {
 	}
 
 	public String toString() {
-		SimpleDateFormat dateOnly = new SimpleDateFormat("dd-MM-yyyy");
-		
 		String userString = "ID: " + id + "\nName: " + this.name + 
         		"\nSurname: " + this.surname + "\nUsername: " + this.username +
         		"\nEmail: " + this.email + "\nPassword: " + this.password +
@@ -103,7 +96,7 @@ public class User {
 		if(this.create_time == null)
 			userString += this.create_time;
 		else
-			userString += dateOnly.format(this.create_time);
+			userString += NonSoComeChiamarla.dateToString(this.create_time);
 		
 		return userString;
 	}
