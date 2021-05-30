@@ -1,6 +1,7 @@
 package com.bikersland;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -14,12 +15,14 @@ import com.bikersland.db.TagDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 
 public class NewEventController {
@@ -50,6 +53,8 @@ public class NewEventController {
     
     @FXML
     private TextField txtTitle;
+    
+    private File imageFile = null;
     
     private int maxDescriptionCharacters = 250;
     
@@ -111,23 +116,28 @@ public class NewEventController {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
             );
-    	File file = fileChooser.showOpenDialog(lblCharacters.getParent().getScene().getWindow());
+    	this.imageFile = fileChooser.showOpenDialog(lblCharacters.getParent().getScene().getWindow());
     	
-    	System.out.println(file != null ? file.getAbsolutePath() : "Nessun file selezionato");
+    	
+    	System.out.println(this.imageFile != null ? this.imageFile.getAbsolutePath() : "Nessun file selezionato");
     	
     }
     
     @FXML
-    private void createEvent() throws SQLException {
-    	Event event = new Event(null, txtTitle.getText().strip(), txtDescription.getText().strip(), "Galaxy",
+    private void createEvent() throws SQLException, IOException {
+    	
+    	
+    	
+    	Event event = new Event(null, txtTitle.getText().strip(), txtDescription.getText().strip(), LoginSingleton.getLoginInstance().getUser().getUsername(),
     			comboDepartureCity.getValue(), comboDestinationCity.getValue(), Date.valueOf(dateDeparture.getValue()),
-    			Date.valueOf(dateReturn.getValue()));
+    			Date.valueOf(dateReturn.getValue()), new Image(this.imageFile.toURI().toString()));
     	
     	EventDAO.setEvent(event);
     	
-    	Event newEvent = EventDAO.getEventByID(1);
+    	NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!", "Creation Complete!", "You will be redirected on Event Details of your ", event.getTitle());
     	
-    	System.out.println(newEvent.getDescription());
+    	App.setRoot("EventDetails",event);
+    	
     }
 
 }

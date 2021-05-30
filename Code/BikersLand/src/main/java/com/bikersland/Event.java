@@ -1,6 +1,8 @@
 package com.bikersland;
 
-import java.util.Date;
+import java.sql.Date;
+
+import javafx.scene.image.Image;
 
 public class Event {
 	private Integer id = null;
@@ -11,10 +13,11 @@ public class Event {
 	private String destination_city = null;
 	private Date departure_date = null;
 	private Date return_date = null;
+	private Image image = null;
 	
 	public Event() {}
 	
-	public Event(Integer id, String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date) {
+	public Event(Integer id, String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date,Image image) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -23,6 +26,7 @@ public class Event {
 		this.destination_city = destination_city;
 		this.departure_date = departure_date;
 		this.return_date = return_date;
+		this.image = image;
 	}
 
 	public Integer getId() {
@@ -87,6 +91,14 @@ public class Event {
 
 	public void setReturn_date(Date return_date) {
 		this.return_date = return_date;
+	}
+	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}
 	
 	

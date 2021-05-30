@@ -37,7 +37,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException, SQLException {
     	App.cities = CityDAO.getCities();
     	
-        scene = new Scene(loadFXML("NewEvent"), 1253, 910);
+        scene = new Scene(loadFXML("Homepage"), 1253, 910);
         stage.setScene(scene);
         
         stage.show();

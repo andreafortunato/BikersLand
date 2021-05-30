@@ -1,7 +1,10 @@
 package com.bikersland;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
+
+import com.bikersland.db.EventDAO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +16,9 @@ public class HeaderController {
 	
 	@FXML
     private ImageView btnLanguage;
+	
+	@FXML
+	private Button btnNewEvent;
 
     @FXML
     private HBox hbNotLoggedIn;
@@ -39,9 +45,11 @@ public class HeaderController {
     	if(LoginSingleton.getLoginInstance().getUser() != null) {
     		hbNotLoggedIn.setVisible(false);
     		hbLoggedIn.setVisible(true);
+    		btnNewEvent.setVisible(true);
     	} else {
     		hbNotLoggedIn.setVisible(true);
     		hbLoggedIn.setVisible(false);
+    		btnNewEvent.setVisible(false);
     	}
     }
     
@@ -53,9 +61,9 @@ public class HeaderController {
     }
     
     @FXML
-    private void register() throws IOException {
+    private void register() throws IOException, SQLException {
 //    	App.setRoot("Register");
-    	Event event = new Event(10, "Titolo eventino", "", "", "", "", new Date(), new Date());
+    	Event event = EventDAO.getEventByID(1);
     	App.setRoot("EventDetails", event);
     }
     
@@ -78,5 +86,11 @@ public class HeaderController {
     private void logout() throws IOException {
     	LoginSingleton.logout();
     	App.setRoot("Homepage");
+    }
+    
+    @FXML
+    private void newEvent() throws IOException {
+    	App.setRoot("NewEvent");
+    	
     }
 }

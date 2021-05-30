@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pnlMain" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<BorderPane fx:id="pnlMain" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <fx:include fx:id="header" source="Header.fxml" />
    </top>
@@ -55,7 +55,7 @@
                         <Label fx:id="lblDepartureDate" text="DepartureDate" GridPane.columnIndex="1" />
                         <Label fx:id="lblReturnDate" text="ReturnDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="lblDepartureCity" text="DepartureCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="lblDestinationCity" text="DestinataionCity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lblDestinationCity" text="DestinationCity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="lblPartecipants" text="Partecipants" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label fx:id="lblOwnerUsername" text="Owner_Username" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label text="Departure date:" />
@@ -66,7 +66,7 @@
                         <Label text="Description:" GridPane.rowIndex="5" />
                         <Label text="Tags:" GridPane.rowIndex="6" />
                         <Label text="Created by:" GridPane.rowIndex="7" />
-                        <Label text="Description" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="lblDescription" text="Description" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <ListView maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                      </children>
                      <BorderPane.margin>

@@ -5,6 +5,8 @@ module com.bikersland {
 	requires org.controlsfx.controls;
 	requires javafx.base;
 	requires java.sql;
+	requires javafx.swing;
+	requires java.desktop;
 
     opens com.bikersland to javafx.fxml;
     exports com.bikersland;
