@@ -55,16 +55,14 @@ public class HeaderController {
     
     @FXML
     private void login() throws IOException {
-    	
     	App.setRoot("Login");
-    	
     }
     
     @FXML
     private void register() throws IOException, SQLException {
-//    	App.setRoot("Register");
-    	Event event = EventDAO.getEventByID(1);
-    	App.setRoot("EventDetails", event);
+    	App.setRoot("Register");
+//    	Event event = EventDAO.getEventByID(1);
+//    	App.setRoot("EventDetails", event);
     }
     
     @FXML
@@ -91,6 +89,5 @@ public class HeaderController {
     @FXML
     private void newEvent() throws IOException {
     	App.setRoot("NewEvent");
-    	
     }
 }

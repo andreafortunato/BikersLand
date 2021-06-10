@@ -1,6 +1,8 @@
 package com.bikersland;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class User {
 	private Integer id = null;
@@ -100,6 +102,4 @@ public class User {
 		
 		return userString;
 	}
-	
-	
 }

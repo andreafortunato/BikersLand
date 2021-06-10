@@ -1,9 +1,13 @@
 package com.bikersland;
 
 import java.io.IOException;
-import java.util.Locale;
+import java.sql.SQLException;
+import java.util.List;
 
 import org.controlsfx.control.SearchableComboBox;
+
+import com.bikersland.db.EventDAO;
+import com.bikersland.db.FavoriteEventDAO;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -11,6 +15,7 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -18,12 +23,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class HomepageController {
 	
@@ -92,7 +100,34 @@ public class HomepageController {
     
     private int viaggioBoxWidth = 420;
     
+    private List<Event> eventList;
+    private List<Node> eventNodeList;
+    
+    private Integer gridPaneColumns = 2;
+    
+    
+    /* ##### DA RIMUOVERE ##### */
+    @FXML
+    private TextField ff;
+    
+    @FXML
+    private Label ll;
+    /* ##### DA RIMUOVERE ##### */
+    
     public void initialize() {
+    	
+    	ff.textProperty().addListener((obs, oldV, newV) -> {
+    		ll.setText(newV);
+    	      if (NonSoComeChiamarla.needsTooltip(ll)){
+    	    	  Tooltip tp = new Tooltip(newV);
+    	    	  tp.setShowDelay(Duration.ZERO);
+    	    	  tp.setHideDelay(Duration.ZERO);
+    	    	  ll.setTooltip(tp);
+    	      } else {
+    	    	  ll.setTooltip(null);
+    	      }
+    	});
+    	
     	imgBackground.fitWidthProperty().bind(pnlMain.widthProperty());
 //    	imgBackground.fitHeightProperty().bind(pnlMain.heightProperty());
     	imgBackground.setFitHeight(0.0);
@@ -112,20 +147,19 @@ public class HomepageController {
     	
     	sliderPartenzaDistanza.setOnMousePressed(event -> imgBackground.requestFocus());
     	
-    	ObservableList<String> items = FXCollections.observableArrayList();
+    	ObservableList<String> cities = FXCollections.observableArrayList(App.cities);
+    	cities.add(0, "All");
+    	
+        comboPartenzaCitta.setItems(cities);
+        comboPartenzaDistanza.setItems(FXCollections.observableArrayList(App.cities));
+        comboArrivoCitta.setItems(cities);
+        comboArrivoDistanza.setItems(FXCollections.observableArrayList(App.cities));
         
-        String[] locales1 = Locale.getISOCountries();
-        for (String countrylist : locales1) {        	
-            Locale obj = new Locale("", countrylist);
-            items.add(obj.getDisplayCountry());
-        }
+        comboPartenzaCitta.getSelectionModel().select(0);
+        comboArrivoCitta.getSelectionModel().select(0);
         
-        FXCollections.sort(items);
-        
-        comboPartenzaCitta.setItems(items);
-        
-        ObservableList<String> tagsList = FXCollections.observableArrayList("Tag1", "Tag2", "Tag3");
-        lvTags.setItems(tagsList);
+        ObservableList<String> tags = FXCollections.observableArrayList(App.tags);
+        lvTags.setItems(tags);
         lvTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lvTags.getSelectionModel().getSelectedItems().addListener((Change<? extends String> selectedTags) -> {
             for(String s:selectedTags.getList())
@@ -156,99 +190,77 @@ public class HomepageController {
 
                 e.consume();
                 
-                tagsList.add("Nuovo");
+                tags.add("Nuovo");
             });
-
             return cell ;
         });
         
         Platform.runLater(() -> {
-        	int initCols = (((Double)pnlMain.getParent().getScene().getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
+        	gridPaneColumns = (((Double)pnlMain.getParent().getScene().getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;			
         	
-        	FXMLLoader fxmlLoader;
+//        	FXMLLoader fxmlLoader;
+//        	
+//        	ObservableList<Node> obsViaggiList = FXCollections.observableArrayList();
+//        	
+//        	for(Event event: this.eventList) {
+//        		fxmlLoader = new FXMLLoader();
+//                fxmlLoader.setLocation(getClass().getResource("CardViaggio.fxml"));
+//                fxmlLoader.setController(new ViaggioController(event));
+//                
+//                StackPane viaggioBox = null;
+//				try {
+//					viaggioBox = fxmlLoader.load();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				
+//				// Questa riga sotto non serve. E' utile per utilizzare il controller qualora servisse
+////                ViaggioController vc = fxmlLoader.getController();
+//                
+//                if(viaggioBox != null)
+//                	obsViaggiList.add(viaggioBox);
+//			}
         	
-        	ObservableList<StackPane> obsViaggiList = FXCollections.observableArrayList();
-        	
-        	for (int i=0; i<40; i++) {
-        		
-        		fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
-                
-                StackPane viaggioBox = null;
-				try {
-					viaggioBox = fxmlLoader.load();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+        	if(LoginSingleton.getLoginInstance().getUser() != null) {
+        		try {
+					this.eventList = EventDAO.getEventByCities("All", "All", LoginSingleton.getLoginInstance().getUser());
+				} catch (SQLException | IOException e) {
 					e.printStackTrace();
 				}
-                ViaggioController vc = fxmlLoader.getController();
-                vc.setTxt(i);
-                
-                if(viaggioBox != null)
-                	obsViaggiList.add(viaggioBox);
-			}
+        	} else {
+        		try {
+					this.eventList = EventDAO.getEventByCities("All", "All");
+				} catch (SQLException | IOException e) {
+					e.printStackTrace();
+				}
+        	}
         	
-        	NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, initCols);
+        	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventList);
+        	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
         	
         	pnlMain.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
 		    	int o = oldVal.intValue()-16-getNumViaggi()*20;
 		    	int n = newVal.intValue()-16-getNumViaggi()*20;
 		    	            	
 		    	if(o/viaggioBoxWidth != n/viaggioBoxWidth) {
+		    		gridPaneColumns = n/viaggioBoxWidth;
 		    		try {
-						NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, n/viaggioBoxWidth);
+						NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
 						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-		    	}            	
+		    	}
             });
-        	
-//        	try {
-//				populateGrid(initCols);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
         });
-        
     }
-    
-//    public void populateGrid(int totalCols) throws IOException {
-//    	gridViaggi.getChildren().clear();
-//    	System.out.println("Colonne: " + totalCols);
-//    	FXMLLoader fxmlLoader;
-//    	
-//    	int totalElements = 40;
-//    	int count = 0;
-//    	
-//    	int row = 0;
-//    	int col = 0;
-//    	
-//    	while(totalElements > 0) {
-//    		fxmlLoader = new FXMLLoader();
-//            fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
-//            
-//            StackPane viaggioBox = fxmlLoader.load();
-//            ViaggioController vc = fxmlLoader.getController();
-//            vc.setTxt(count++);
-//            
-//            gridViaggi.add(viaggioBox, col, row);
-//            
-//            if(++col == totalCols) {
-//            	col = 0;
-//            	row++;
-//            }
-//            totalElements--;            
-//    	}
-//	}
     
     public int getNumViaggi() {
     	return gridViaggi.getColumnCount();
     }
     
     @FXML
-    private void enableDepartureCitta() {    	
+    private void enableDepartureCitta() {   	
     	if(radioPartenzaCitta.isSelected()) {
 	    	sliderPartenzaDistanza.setDisable(true);
 	    	lblPartenzaDistanza.setDisable(true);
@@ -288,9 +300,13 @@ public class HomepageController {
     }
     
     @FXML
-    private void search() throws IOException {
-    	System.out.println("ss");
-    	App.setRoot("primary");
+    private void search() throws IOException, SQLException {
+    	List<Event> eventList;
+    	
+    	eventList = EventDAO.getEventByTags(lvTags.getSelectionModel().getSelectedItems());
+    	
+    	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventList);
+    	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
     }
 
 }

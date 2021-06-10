@@ -1,6 +1,8 @@
 package com.bikersland;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.scene.image.Image;
 
@@ -14,10 +16,12 @@ public class Event {
 	private Date departure_date = null;
 	private Date return_date = null;
 	private Image image = null;
+	private Date create_time = null;
+	private List<String> tags = new ArrayList<String>();
 	
 	public Event() {}
 	
-	public Event(Integer id, String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date,Image image) {
+	public Event(Integer id, String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date, Image image, Date create_time, List<String> tags) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -27,6 +31,34 @@ public class Event {
 		this.departure_date = departure_date;
 		this.return_date = return_date;
 		this.image = image;
+		this.create_time = create_time;
+		this.tags = tags;
+	}
+	
+	public Event(String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date, Image image, List<String> tags) {
+		this.title = title;
+		this.description = description;
+		this.owner_username = owner_username;
+		this.departure_city = departure_city;
+		this.destination_city = destination_city;
+		this.departure_date = departure_date;
+		this.return_date = return_date;
+		this.image = image;
+		this.tags = tags;
+	}
+	
+	public String toString() {
+		return String.format("ID: %s\n"
+				+ "Title: %s\n"
+				+ "Description: %s\n"
+				+ "Owner Username: %s\n"
+				+ "Departure City: %s\n"
+				+ "Destination City: %s\n"
+				+ "Departure Date: %s\n"
+				+ "Return Date: %s\n"
+				+ "Tag List: %s\n"
+				+ "Create time: %s",
+				id, title, description, owner_username, departure_city, destination_city, NonSoComeChiamarla.dateToString(departure_date), NonSoComeChiamarla.dateToString(return_date), tags.toString(), NonSoComeChiamarla.dateToString(create_time));
 	}
 
 	public Integer getId() {
@@ -101,5 +133,19 @@ public class Event {
 		this.image = image;
 	}
 	
-	
+	public Date getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(Date create_time) {
+		this.create_time = create_time;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}	
 }

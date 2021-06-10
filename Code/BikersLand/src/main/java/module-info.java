@@ -4,7 +4,7 @@ module com.bikersland {
 	requires javafx.graphics;
 	requires org.controlsfx.controls;
 	requires javafx.base;
-	requires java.sql;
+	requires transitive java.sql;
 	requires javafx.swing;
 	requires java.desktop;
 

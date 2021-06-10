@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
 import com.bikersland.db.EventDAO;
+import com.bikersland.db.EventTagDAO;
 import com.bikersland.db.TagDAO;
 
 import javafx.collections.FXCollections;
@@ -22,8 +25,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 public class NewEventController {
 	
@@ -54,6 +61,14 @@ public class NewEventController {
     @FXML
     private TextField txtTitle;
     
+    @FXML
+    private Label lblImageName;
+    
+    @FXML
+    private HBox hbImageSelected;
+    
+    private Tooltip imageTooltip = new Tooltip();
+    
     private File imageFile = null;
     
     private int maxDescriptionCharacters = 250;
@@ -69,10 +84,23 @@ public class NewEventController {
 		}
     }
     
-    public void initialize() throws SQLException {    	
+    public void initialize() throws SQLException {
     	comboDepartureCity.getItems().addAll(App.cities);
     	comboDestinationCity.getItems().addAll(App.cities);
-    	comboTags.getItems().addAll(TagDAO.getTags());
+    	comboTags.getItems().addAll(App.tags);
+    	
+    	dateDeparture.setDayCellFactory(picker -> new DateCell() {
+    		@Override
+    		public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                setDisable(empty || date.compareTo(LocalDateTime.now().toLocalDate()) < 0 );
+            }
+        });
+    	
+    	imageTooltip.setShowDelay(Duration.ZERO);
+    	imageTooltip.setHideDelay(Duration.ZERO);
+    	lblImageName.setTooltip(imageTooltip);
     	
     	txtDescription.textProperty().addListener((obs, oldVal, newVal) -> {
     		if(newVal.length() > maxDescriptionCharacters) {
@@ -116,28 +144,45 @@ public class NewEventController {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
             );
-    	this.imageFile = fileChooser.showOpenDialog(lblCharacters.getParent().getScene().getWindow());
     	
+    	File choosedFile = fileChooser.showOpenDialog(lblCharacters.getParent().getScene().getWindow());
     	
-    	System.out.println(this.imageFile != null ? this.imageFile.getAbsolutePath() : "Nessun file selezionato");
-    	
+    	if(choosedFile != null) {
+    		if(choosedFile.length() < 4194304) {
+    			this.imageFile = choosedFile;
+    			
+    			imageTooltip.setGraphic(new ImageView(new Image(this.imageFile.toURI().toString(), 300, 300, true, true)));
+    			lblImageName.setText(this.imageFile.getName());
+    			hbImageSelected.setVisible(true);
+    		} else {
+    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Image error", "Maximum size exceeded", "The selected image exceeds the maximum size of 4 MB!", null);
+    		}
+    	}    	
+    }
+    
+    @FXML
+    private void removeImage() {
+    	this.imageFile = null;
+    	hbImageSelected.setVisible(false);
     }
     
     @FXML
     private void createEvent() throws SQLException, IOException {
-    	
-    	
-    	
-    	Event event = new Event(null, txtTitle.getText().strip(), txtDescription.getText().strip(), LoginSingleton.getLoginInstance().getUser().getUsername(),
+    	Event event = new Event(txtTitle.getText().strip(), txtDescription.getText().strip(), LoginSingleton.getLoginInstance().getUser().getUsername(),
     			comboDepartureCity.getValue(), comboDestinationCity.getValue(), Date.valueOf(dateDeparture.getValue()),
-    			Date.valueOf(dateReturn.getValue()), new Image(this.imageFile.toURI().toString()));
+    			Date.valueOf(dateReturn.getValue()), new Image(this.imageFile.toURI().toString()), comboTags.getItems()); //TODO: controllare this.imageFile se NULL (in caso affermativo, metterne una di default direttamente da EventDetails)
     	
-    	EventDAO.setEvent(event);
+    	event = EventDAO.setEvent(event);
     	
-    	NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!", "Creation Complete!", "You will be redirected on Event Details of your ", event.getTitle());
-    	
-    	App.setRoot("EventDetails",event);
-    	
+    	if(event != null) {
+    		if(!comboTags.getCheckModel().getCheckedItems().isEmpty())
+    			EventTagDAO.addEventTags(event.getId(), comboTags.getCheckModel().getCheckedItems());
+	    	
+    		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!", "Creation Complete!", "You will be redirected on Event Details of your ", event.getTitle());
+	    	App.setRoot("EventDetails", event);
+    	} else {
+	    	NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Error!", "Create Event Error!", "There was an error while trying to create your event.\n\nPlease try again... ", null);
+    	}
     }
 
 }

@@ -1,23 +1,34 @@
 package com.bikersland;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -25,18 +36,46 @@ import javafx.util.Duration;
 
 public class NonSoComeChiamarla {
 	
-	public static void populateGrid(GridPane gp, ObservableList<StackPane> obsViaggiList, int totalCols){
+	public static List<Node> eventsToNodeList(List<Event> eventList) {
+		FXMLLoader fxmlLoader;
+    	
+    	List<Node> nodeList = FXCollections.observableArrayList();
+    	
+    	for(Event event: eventList) {
+    		fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(App.class.getResource("CardViaggio.fxml"));
+            fxmlLoader.setController(new ViaggioController(event));
+            
+            StackPane viaggioBox = null;
+			try {
+				viaggioBox = fxmlLoader.load();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			// Questa riga sotto non serve. E' utile per utilizzare il controller qualora servisse
+//            ViaggioController vc = fxmlLoader.getController();
+            
+            if(viaggioBox != null)
+            	nodeList.add(viaggioBox);
+		}
+    	
+    	return nodeList;
+	}
+	
+	// TODO: Meglio "ObservableList<Node> obsViaggiList" oppure "ObservableList<StackPane> obsViaggiList"???
+	public static void populateGrid(GridPane gp, List<Node> nodeList, int columns){
 		gp.getChildren().clear();
 		
-    	int totalElements = obsViaggiList.size();
+    	int totalElements = nodeList.size();
     	
     	int row = 0;
     	int col = 0;
     	
     	while(totalElements > 0) {
-            gp.add(obsViaggiList.get(obsViaggiList.size()-totalElements), col, row);
+            gp.add(nodeList.get(nodeList.size()-totalElements), col, row);
             
-            if(++col == totalCols) {
+            if(++col == columns) {
             	col = 0;
             	row++;
             }
@@ -116,4 +155,12 @@ public class NonSoComeChiamarla {
 		SimpleDateFormat dateOnly = new SimpleDateFormat("dd-MM-yyyy");
 		return dateOnly.format(date);
 	}
+	
+	public static boolean needsTooltip(Label label){
+	    Text text = new Text(label.getText());
+	    text.setFont(label.getFont());
+	    Bounds tb = text.getBoundsInLocal();
+	    
+	    return tb.getWidth() > label.getWidth();
+	  }
 }

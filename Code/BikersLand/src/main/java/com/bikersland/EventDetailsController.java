@@ -1,13 +1,22 @@
 package com.bikersland;
 
-import javafx.application.Platform;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import com.bikersland.db.EventTagDAO;
+import com.bikersland.db.PartecipationDAO;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class EventDetailsController {
 	
@@ -37,32 +46,52 @@ public class EventDetailsController {
 
     @FXML
     private Label lblPartecipants;
+    
+    @FXML
+    private Label lblCreateTime;
 
     @FXML
     private Label lblOwnerUsername;
     
+    @FXML
+    private ListView<String> lvTags;
+    
+    @FXML
+    private ListView<String> lvPartecipants;
+    
+    @FXML
+    private Button btnJoin;
+    
     private Event event;
+    
+    private Boolean isJoined;
+    
+    private User user;
     
     public EventDetailsController(Event event) {
 		this.event = event;
 	}
 	
-	public void initialize() {
+	public void initialize() throws SQLException {
+		user = LoginSingleton.getLoginInstance().getUser();
 		
 		lblTitle.setText(event.getTitle());
 		lblDepartureDate.setText(NonSoComeChiamarla.dateToString(event.getDeparture_date()));
 		lblReturnDate.setText(NonSoComeChiamarla.dateToString(event.getReturn_date()));
 		lblDepartureCity.setText(event.getDeparture_city());
 		lblDestinationCity.setText(event.getDestination_city());
+		lblPartecipants.setText("<-- ANCORA DA CALCOLARE -->");
 		lblDescription.setText(event.getDescription());
+		lvTags.setItems(FXCollections.observableArrayList(EventTagDAO.getEventTags(event.getId())));
+		lvTags.setOnMousePressed(e -> lvTags.getSelectionModel().clearSelection());
+		lblCreateTime.setText(NonSoComeChiamarla.dateToString(event.getCreate_time()));
 		lblOwnerUsername.setText(event.getOwner_username());
 		
-		
-		
-		
+		lvPartecipants.setItems(FXCollections.observableArrayList(PartecipationDAO.getJoinedUsersByEvent(event)));
+
+		System.out.println(event.getId());
 		
 		Image image = event.getImage();
-		//new Image("file:resources/images/1282257.jpg");
 		imgBackground.setImage(image);		
 		
 		if(image.getWidth() > image.getHeight()) {
@@ -73,6 +102,47 @@ public class EventDetailsController {
 	    	imgBackground.setFitHeight(0.0);
 		}
     	imgBackground.setPreserveRatio(true);
-
+    	
+    	if(LoginSingleton.getLoginInstance().getUser() == null) {
+    		btnJoin.setVisible(false);
+    	} else {
+    		try {
+				setIsJoined(PartecipationDAO.isJoinedEvent(user, event));
+			} catch (SQLException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+	}
+	
+	@FXML
+    private void joinEvent() throws SQLException, IOException {
+    	if(isJoined) {
+    		PartecipationDAO.removeJoinedEvent(user, event);
+    		
+    		setIsJoined(false);
+    	} else {
+    		PartecipationDAO.addJoinedEvent(user, event);
+    		
+    		setIsJoined(true);
+    	}
+    }
+	
+	private void setIsJoined(Boolean isJoined) {
+		this.isJoined = isJoined;
+		if(isJoined) {
+			btnJoin.setText("Rimuovi partecipazione");
+			
+			if(!lvPartecipants.getItems().contains(user.getUsername())) {
+				ObservableList<String> partecipants = lvPartecipants.getItems();
+				partecipants.add(user.getUsername());
+				FXCollections.sort(partecipants);
+				lvPartecipants.setItems(partecipants);
+			}
+		}
+		else {
+			btnJoin.setText("Partecipa");
+			lvPartecipants.getItems().remove(user.getUsername());
+		}
 	}
 }

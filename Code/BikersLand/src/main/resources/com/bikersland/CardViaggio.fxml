@@ -2,8 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,17 +13,21 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane style="-fx-background-color: #353535; -fx-background-radius: 10;" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.bikersland.ViaggioController">
+<StackPane fx:id="spMain" style="-fx-background-color: #353535; -fx-background-radius: 10;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="400.0" styleClass="cardViaggio">
          <children>
             <AnchorPane>
                <children>
-                  <ImageView fx:id="imgViaggio" fitHeight="170.0" fitWidth="400.0" pickOnBounds="true">
+                  <ImageView fx:id="imgViaggio" fitHeight="170.0" fitWidth="400.0" onMouseClicked="#goToEventDetails" pickOnBounds="true">
                      <image>
                         <Image url="@img/background.jpg" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                   <ImageView fx:id="imgStar" fitHeight="50.0" fitWidth="50.0" layoutX="345.0" layoutY="5.0" onMouseClicked="#selectStar" onMouseEntered="#focusStar" onMouseExited="#unfocusStar" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -31,14 +37,22 @@
                         <Rectangle2D height="128.0" width="128.0" />
                      </viewport>
                   </ImageView>
-                  <Button mnemonicParsing="false" text="2" />
+                  <Button fx:id="btnPartecipants" mnemonicParsing="false" text="2">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor></Button>
+                  <Label fx:id="lblTitle" layoutX="28.0" layoutY="146.0" maxWidth="380.0" styleClass="event-card-title" text="Titolo evento della gita in montagna addio l'italiano" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="hbEventData" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="lblPartenza" text="CittaPartenza">
+                        <Label fx:id="lblDepartureCity" text="CittaPartenza">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -47,7 +61,7 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label text="CittaArrivo">
+                        <Label fx:id="lblDestinationCity" text="CittaArrivo">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -56,7 +70,7 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label graphicTextGap="6.0" text="Tag1, Tag2, Tag3,&#10;Tag4, Tag5, Tag6,&#10;Tag7, Tag8, Tag9">
+                        <Label fx:id="lblTags" graphicTextGap="6.0" text="Tag1, Tag2, Tag3, Tag4, Tag5, Tag6, Tag7, Tag8, Tag9" wrapText="true">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -70,9 +84,14 @@
                         <Insets left="10.0" right="5.0" top="10.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                  <Separator orientation="VERTICAL">
+                     <HBox.margin>
+                        <Insets right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </Separator>
+                  <VBox prefHeight="100.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="01-01-2000">
+                        <Label fx:id="lblDepartureDate" text="01-01-2000">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -81,7 +100,7 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label text="02-01-2000">
+                        <Label fx:id="lblReturnDate" text="02-01-2000">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -90,11 +109,35 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label text="Creato da NOME" />
+                        <Label fx:id="lblOwnerUsername" text="Creato da NOME" />
+                        <HBox alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="btnJoin" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="20.0" text="Partecipa" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets top="-3.0" />
+                                 </padding>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <DropShadow color="#00ccff" />
+                                 </effect>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets top="10.0" />
                      </padding>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </VBox>
                </children>
             </HBox>

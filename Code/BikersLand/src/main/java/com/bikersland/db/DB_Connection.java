@@ -9,6 +9,10 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
+import com.bikersland.NonSoComeChiamarla;
+
+import javafx.scene.control.Alert.AlertType;
+
 public class DB_Connection {
 	private static String USER = "bikersland";
     private static String PASS = "bikersland";
@@ -17,45 +21,16 @@ public class DB_Connection {
     
 	public static Connection connection = null;
 	
-	public static Connection getConnection() throws SQLException {
+	public static Connection getConnection() {
 		if(connection == null) {
 //            Class.forName(DRIVER_CLASS_NAME);
-			connection = DriverManager.getConnection(DB_URL, USER, PASS);			
+			try {
+				connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			} catch (SQLException e) {
+				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "DataBase Error", "Connection refused", "A connection with the database could not be established.\n\nPlease try again...", null);
+				System.exit(-1);
+			}
 		}
-		
-//		Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-//                ResultSet.CONCUR_READ_ONLY);
-//        
-//		String sql = "SELECT * FROM user;";
-//        
-//        ResultSet rs = stmt.executeQuery(sql);
-//        
-//        while(rs.next()) {
-//        	Integer id = rs.getInt("id");
-//        	String nome = rs.getString("name");
-//            String cognome = rs.getString("surname");
-//            String username = rs.getString("username");
-//            String email = rs.getString("email");
-//            String password = rs.getString("password");
-//            Date create_time = rs.getDate("create_time");
-//            
-//            SimpleDateFormat sdf = new SimpleDateFormat(
-//            	    "dd-MM-yyyy");
-//                        
-//            System.out.println("ID: " + id + "\nNome: " + nome + 
-//            		"\nCognome: " + cognome + "\nUsername: " + username +
-//            		"\nEmail: " + email + "\nPassword: " + password +
-//            		"\nCreate_time: " + sdf.format(create_time));
-//            System.out.println();
-//        }
-//        
-//        rs.close();
-//        
-//        if (stmt != null)
-//        	stmt.close();
-//        
-//        if (connection != null)
-//        	connection.close();
 		
 		return connection;		
 	}

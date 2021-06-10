@@ -1,12 +1,20 @@
 package com.bikersland;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bikersland.db.EventDAO;
+import com.bikersland.db.FavoriteEventDAO;
+import com.bikersland.db.PartecipationDAO;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -34,12 +42,23 @@ public class ProfileController {
     private VBox vbViaggi;
 
     @FXML
-    private GridPane gridViaggi;
+    private GridPane gpJoinedEvents;
+
+    @FXML
+    private GridPane gpFavoriteEvents;
+    
+    private List<Event> joinedEventList;
+    private List<Node> joinedEventNodeList;
+    
+    private List<Event> favoriteEventList;
+    private List<Node> favoriteEventNodeList;
+    
+    private User user;
     
     private int viaggioBoxWidth = 420;
 	
 	public void initialize() {
-		User user = LoginSingleton.getLoginInstance().getUser();
+		user = LoginSingleton.getLoginInstance().getUser();
 		
 		lblName.setText(user.getName());
 		lblSurname.setText(user.getSurname());
@@ -57,29 +76,29 @@ public class ProfileController {
 		
 		imgProfileImage.setOnContextMenuRequested(e -> contextMenu.show(imgProfileImage, e.getScreenX(), e.getScreenY()));
 		
-		ObservableList<StackPane> obsViaggiList = FXCollections.observableArrayList();
-		
-		FXMLLoader fxmlLoader;
-    	for (int i=0; i<40; i++) {
-    		
-    		fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("cardViaggio.fxml"));
-            
-            StackPane viaggioBox = null;
-			try {
-				viaggioBox = fxmlLoader.load();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            ViaggioController vc = fxmlLoader.getController();
-            vc.setTxt(i);
-            
-            if(viaggioBox != null)
-            	obsViaggiList.add(viaggioBox);
+		try {
+			joinedEventList = PartecipationDAO.getJoinedEventsByUser(user);
+			favoriteEventList = FavoriteEventDAO.getFavoriteEventsByUser(user);
+		} catch (SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
-		NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, 2);
+//		List<Event> eventsToRemove = new ArrayList<Event>();
+//		
+//		for(Event event: favoriteEventList)
+//			if(!(event instanceof FavoriteEvent))
+//				eventsToRemove.add(event);
+//		
+//		for(Event event: eventsToRemove)
+//			favoriteEventList.remove(event);
+//		eventsToRemove.clear();
+		
+		this.joinedEventNodeList = NonSoComeChiamarla.eventsToNodeList(joinedEventList);
+    	NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, 2);
+		
+		this.favoriteEventNodeList = NonSoComeChiamarla.eventsToNodeList(favoriteEventList);
+    	NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, 2);
 		
 		Platform.runLater(() -> {
 			vbViaggi.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -89,7 +108,7 @@ public class ProfileController {
 	        	            	
 	        	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
 					try {
-						NonSoComeChiamarla.populateGrid(gridViaggi, obsViaggiList, n/viaggioBoxWidth);
+						NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, n/viaggioBoxWidth);
 						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -100,6 +119,6 @@ public class ProfileController {
 	}
 	
 	public int getNumViaggi() {
-    	return gridViaggi.getColumnCount();
+    	return gpJoinedEvents.getColumnCount();
     }
 }
