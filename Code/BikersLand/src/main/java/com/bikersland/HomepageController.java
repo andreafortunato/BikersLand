@@ -106,27 +106,8 @@ public class HomepageController {
     private Integer gridPaneColumns = 2;
     
     
-    /* ##### DA RIMUOVERE ##### */
-    @FXML
-    private TextField ff;
-    
-    @FXML
-    private Label ll;
-    /* ##### DA RIMUOVERE ##### */
-    
     public void initialize() {
     	
-    	ff.textProperty().addListener((obs, oldV, newV) -> {
-    		ll.setText(newV);
-    	      if (NonSoComeChiamarla.needsTooltip(ll)){
-    	    	  Tooltip tp = new Tooltip(newV);
-    	    	  tp.setShowDelay(Duration.ZERO);
-    	    	  tp.setHideDelay(Duration.ZERO);
-    	    	  ll.setTooltip(tp);
-    	      } else {
-    	    	  ll.setTooltip(null);
-    	      }
-    	});
     	
     	imgBackground.fitWidthProperty().bind(pnlMain.widthProperty());
 //    	imgBackground.fitHeightProperty().bind(pnlMain.heightProperty());

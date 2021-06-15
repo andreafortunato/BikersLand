@@ -122,7 +122,16 @@ public class ViaggioController {
     	lblDepartureCity.setText(event.getDeparture_city());
     	lblDestinationCity.setText(event.getDestination_city());
 //    	System.out.println(String.join(", ", event.getTags()));
-    	lblTags.setText(String.join(", ", event.getTags()));
+    	if(event.getTags().size() == 0)
+    		lblTags.setText("No tags!");
+    	else {
+    	    lblTags.setText(String.join(", ", event.getTags()));
+    	    Tooltip tp = new Tooltip(lblTags.getText());
+    		tp.setShowDelay(Duration.ZERO);
+    		tp.setHideDelay(Duration.ZERO);
+    		tp.setFont(Font.font(tp.getFont().getFamily(), FontWeight.BOLD, 13));
+    		lblTags.setTooltip(tp);
+    	}
     	lblDepartureDate.setText(NonSoComeChiamarla.dateToString(event.getDeparture_date()));
     	lblReturnDate.setText(NonSoComeChiamarla.dateToString(event.getReturn_date()));
     	lblOwnerUsername.setText("Creato da: " + event.getOwner_username());
@@ -133,12 +142,8 @@ public class ViaggioController {
         	
 //        	btnJoin.setPrefWidth(btnJoin.getWidth()+8);
     	});
-    	    	
-		Tooltip tp = new Tooltip(lblTags.getText());
-		tp.setShowDelay(Duration.ZERO);
-		tp.setHideDelay(Duration.ZERO);
-		tp.setFont(Font.font(tp.getFont().getFamily(), FontWeight.BOLD, 13));
-		lblTags.setTooltip(tp);
+    	  
+    	
 		
 		List<String> partecipants;
 		try {
@@ -155,8 +160,7 @@ public class ViaggioController {
 				partecipantsTooltip = new Tooltip("Partecipants:\n\n" + partecipantList);
 			partecipantsTooltip.setShowDelay(Duration.ZERO);
 			partecipantsTooltip.setHideDelay(Duration.ZERO);
-			partecipantsTooltip.setFont(Font.font(tp.getFont().getFamily(), FontWeight.BOLD, 13));
-			lblTags.setTooltip(partecipantsTooltip);
+			partecipantsTooltip.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 13));
 			btnPartecipants.setTooltip(partecipantsTooltip);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

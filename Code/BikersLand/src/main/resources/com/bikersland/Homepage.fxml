@@ -7,7 +7,6 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -19,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HomepageController">
+<AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HomepageController">
    <children>
       <!-- <AnchorPane fx:id="pnlHeader" prefHeight="150.0" prefWidth="800.0" styleClass="header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -45,79 +44,81 @@
          </children>
       </AnchorPane> -->
       <fx:include fx:id="header" source="Header.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutY="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
-         <children>
-            <ImageView fx:id="imgBackground" fitHeight="672.0" fitWidth="1200.0">
-               <image>
-                  <Image url="@img/background.jpg" />
-               </image>
-               <effect>
-                  <ColorAdjust brightness="-0.6" />
-               </effect>
-            </ImageView>
-            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
+         <content>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
-                  <StackPane fx:id="pnlMain" alignment="TOP_CENTER" prefHeight="450.0" prefWidth="800.0">
+                  <ImageView fx:id="imgBackground" fitHeight="672.0" fitWidth="1200.0">
+                     <image>
+                        <Image url="@img/background.jpg" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="-0.6" />
+                     </effect>
+                  </ImageView>
+                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_CENTER">
+                        <StackPane fx:id="pnlMain" alignment="TOP_CENTER" prefHeight="450.0" prefWidth="800.0">
                            <children>
-                              <AnchorPane layoutY="10.0" prefHeight="82.0" prefWidth="433.0" styleClass="bordered-pane">
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_CENTER">
                                  <children>
-                                    <RadioButton fx:id="radioPartenzaCitta" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDepartureCitta" selected="true" text="Città">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="tgPartenza" />
-                                       </toggleGroup>
-                                    </RadioButton>
-                                    <RadioButton fx:id="radioPartenzaDistanza" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDepartureDistance" text="Distanza" toggleGroup="$tgPartenza" />
-                                    <Slider fx:id="sliderPartenzaDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
-                                    <Label fx:id="lblPartenzaDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="217.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
-                                    <SearchableComboBox fx:id="comboPartenzaCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" visibleRowCount="5" />
-                                    <SearchableComboBox fx:id="comboPartenzaDistanza" disable="true" layoutX="283.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+                                    <AnchorPane layoutY="10.0" prefHeight="82.0" prefWidth="433.0" styleClass="bordered-pane">
+                                       <children>
+                                          <RadioButton fx:id="radioPartenzaCitta" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDepartureCitta" selected="true" text="Città">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="tgPartenza" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="radioPartenzaDistanza" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDepartureDistance" text="Distanza" toggleGroup="$tgPartenza" />
+                                          <Slider fx:id="sliderPartenzaDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
+                                          <Label fx:id="lblPartenzaDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="217.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
+                                          <SearchableComboBox fx:id="comboPartenzaCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" visibleRowCount="5" />
+                                          <SearchableComboBox fx:id="comboPartenzaDistanza" disable="true" layoutX="283.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Label layoutX="12.0" styleClass="bordered-pane-title" text="Partenza" />
+                                    <AnchorPane layoutY="113.0" prefHeight="82.0" prefWidth="433.0" styleClass="bordered-pane">
+                                       <children>
+                                          <RadioButton fx:id="radioArrivoCitta" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDestinationCitta" selected="true" text="Città">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="tgArrivo" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="radioArrivoDistanza" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDestinationDistance" text="Distanza" toggleGroup="$tgArrivo" />
+                                          <Slider fx:id="sliderArrivoDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
+                                          <Label fx:id="lblArrivoDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="216.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
+                                          <SearchableComboBox fx:id="comboArrivoCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" />
+                                          <SearchableComboBox fx:id="comboArrivoDistanza" layoutX="282.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Label layoutX="12.0" layoutY="103.0" styleClass="bordered-pane-title" text="Arrivo" />
+                                    <Button fx:id="btnSearch" layoutY="213.0" mnemonicParsing="false" onAction="#search" prefHeight="55.0" prefWidth="646.0" text="Cerca" />
+                                    <ListView fx:id="lvTags" layoutX="446.0" layoutY="11.0" prefHeight="184.0" prefWidth="200.0" style="-fx-background-radius: 3;" />
                                  </children>
+                                 <StackPane.margin>
+                                    <Insets top="80.0" />
+                                 </StackPane.margin>
                               </AnchorPane>
-                              <Label layoutX="12.0" styleClass="bordered-pane-title" text="Partenza" />
-                              <AnchorPane layoutY="113.0" prefHeight="82.0" prefWidth="433.0" styleClass="bordered-pane">
-                                 <children>
-                                    <RadioButton fx:id="radioArrivoCitta" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#enableDestinationCitta" selected="true" text="Città">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="tgArrivo" />
-                                       </toggleGroup>
-                                    </RadioButton>
-                                    <RadioButton fx:id="radioArrivoDistanza" layoutX="20.0" layoutY="47.0" mnemonicParsing="false" onAction="#enableDestinationDistance" text="Distanza" toggleGroup="$tgArrivo" />
-                                    <Slider fx:id="sliderArrivoDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
-                                    <Label fx:id="lblArrivoDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="216.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
-                                    <SearchableComboBox fx:id="comboArrivoCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" />
-                                    <SearchableComboBox fx:id="comboArrivoDistanza" layoutX="282.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
-                                 </children>
-                              </AnchorPane>
-                              <Label layoutX="12.0" layoutY="103.0" styleClass="bordered-pane-title" text="Arrivo" />
-                              <Button fx:id="btnSearch" layoutY="213.0" mnemonicParsing="false" onAction="#search" prefHeight="55.0" prefWidth="646.0" text="Cerca" />
-                              <ListView fx:id="lvTags" layoutX="446.0" layoutY="11.0" prefHeight="184.0" prefWidth="200.0" style="-fx-background-radius: 3;" />
                            </children>
-                           <StackPane.margin>
-                              <Insets top="80.0" />
-                           </StackPane.margin>
-                        </AnchorPane>
+                        </StackPane>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" prefWidth="1200.0" style="-fx-background-color: rgba(0,0,0,0.8);" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                           <content>
+                              <GridPane fx:id="gridViaggi" alignment="CENTER" gridLinesVisible="true" hgap="20.0" vgap="30.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
                      </children>
-                  </StackPane>
-                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="1200.0" style="-fx-background-color: #202020;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <content>
-                        <GridPane fx:id="gridViaggi" alignment="CENTER" gridLinesVisible="true" hgap="20.0" vgap="30.0">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
-                  <TextField fx:id="ff" />
-                  <Label fx:id="ll" maxWidth="150.0" style="-fx-text-fill: red;" text="Label" />
+                  </VBox>
                </children>
-            </VBox>
-         </children>
-      </AnchorPane>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
       <Pane layoutY="150.0" prefHeight="50.0" prefWidth="800.0" styleClass="sub-header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0" />
    </children>
 </AnchorPane>
