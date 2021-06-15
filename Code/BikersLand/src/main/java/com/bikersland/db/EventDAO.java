@@ -182,4 +182,53 @@ public class EventDAO {
        		
 		return eventList;
 	}
+	
+	public static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList) throws SQLException, IOException {
+		
+		if(tagList.size() == 0) 
+			return getEventByCities(departureCity, destinationCity);
+		
+		
+		List<Event> eventList = new ArrayList<Event>();
+		
+		String queryCities = "SELECT * FROM event WHERE 1=1";
+		if(departureCity.equals("All") && destinationCity.equals("All")) {
+			;
+		} else if(departureCity.equals("All")) {
+			queryCities += " AND destination_city='" + destinationCity + "'";
+		} else if(destinationCity.equals("All")){
+			queryCities += " AND departure_city='" + departureCity + "'";
+		} else {
+			queryCities += " AND departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
+		}
+		
+		
+		String queryTags = " AND id IN (SELECT DISTINCT ET.event_id FROM event_tag ET WHERE ET.tag_name IN (";
+		for(String tag: tagList)
+        	queryTags += "'" + tag + "', ";
+        queryTags = queryTags.substring(0, queryTags.length()-2) + ") ";
+        queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ");";
+		
+		
+		String query = queryCities + queryTags;
+		
+        System.out.println(query);
+		
+		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while(rs.next()) {
+			BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+        	Image image = SwingFXUtils.toFXImage(img, null);
+			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
+        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
+        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
+		}
+       
+        if (stmt != null)
+        	stmt.close();
+       		
+		return eventList;
+	}
 }

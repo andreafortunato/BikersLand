@@ -190,7 +190,7 @@ public class HomepageController {
 
                 e.consume();
                 
-                tags.add("Nuovo");
+                //tags.add("Nuovo");
             });
             return cell ;
         });
@@ -303,7 +303,7 @@ public class HomepageController {
     private void search() throws IOException, SQLException {
     	List<Event> eventList;
     	
-    	eventList = EventDAO.getEventByTags(lvTags.getSelectionModel().getSelectedItems());
+    	eventList = EventDAO.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
     	
     	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventList);
     	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);

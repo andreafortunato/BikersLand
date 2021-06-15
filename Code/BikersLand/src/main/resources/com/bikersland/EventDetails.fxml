@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,95 +16,99 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pnlMain" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="pnlMain" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <fx:include fx:id="header" source="Header.fxml" />
    </top>
    <center>
-      <StackPane minWidth="1200.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fx:id="imgBackground" fitHeight="150.0" fitWidth="200.0">
-               <effect>
-                  <ColorAdjust brightness="-0.85" />
-               </effect>
-            </ImageView>
-            <BorderPane maxHeight="900.0" maxWidth="1200.0" StackPane.alignment="TOP_CENTER">
-               <top>
-                  <Label fx:id="lblTitle" text="Title" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="72.0" />
-                     </font>
-                  </Label>
-               </top>
-               <padding>
-                  <Insets top="20.0" />
-               </padding>
-               <center>
-                  <VBox alignment="TOP_CENTER" BorderPane.alignment="TOP_CENTER">
-                     <BorderPane.margin>
-                        <Insets top="50.0" />
-                     </BorderPane.margin>
-                     <children>
-                        <HBox alignment="CENTER" styleClass="event-details">
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #202020;" BorderPane.alignment="CENTER">
+         <content>
+            <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="1200.0">
+               <children>
+                  <ImageView fx:id="imgBackground" fitHeight="150.0" fitWidth="200.0">
+                     <effect>
+                        <ColorAdjust brightness="-0.85" />
+                     </effect>
+                  </ImageView>
+                  <BorderPane maxHeight="900.0" maxWidth="1200.0" StackPane.alignment="TOP_CENTER">
+                     <top>
+                        <Label fx:id="lblTitle" text="Title" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="72.0" />
+                           </font>
+                        </Label>
+                     </top>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                     <center>
+                        <VBox alignment="TOP_CENTER" BorderPane.alignment="TOP_CENTER">
+                           <BorderPane.margin>
+                              <Insets top="50.0" />
+                           </BorderPane.margin>
                            <children>
-                              <GridPane alignment="TOP_CENTER" hgap="15.0" maxHeight="-Infinity" maxWidth="-Infinity" vgap="10.0">
-                                <columnConstraints>
-                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                              <HBox alignment="CENTER" styleClass="event-details">
                                  <children>
-                                    <Label fx:id="lblDepartureDate" text="DepartureDate" GridPane.columnIndex="1" />
-                                    <Label fx:id="lblReturnDate" text="ReturnDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblDepartureCity" text="DepartureCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblDestinationCity" text="DestinationCity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label fx:id="lblPartecipants" text="Partecipants" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label fx:id="lblDescription" text="Description" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <ListView fx:id="lvTags" focusTraversable="false" maxHeight="100.0" maxWidth="200.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                    <Label fx:id="lblCreateTime" text="Create_Time" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                    <Label fx:id="lblOwnerUsername" text="Owner_Username" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                    <Label text="Departure date:" />
-                                    <Label text="Return date:" GridPane.rowIndex="1" />
-                                    <Label text="From:" GridPane.rowIndex="2" />
-                                    <Label text="To:" GridPane.rowIndex="3" />
-                                    <Label text="Number of partecipants:" GridPane.rowIndex="4" />
-                                    <Label text="Description:" GridPane.rowIndex="5" />
-                                    <Label text="Tags:" GridPane.rowIndex="6" />
-                                    <Label text="Created on:" GridPane.rowIndex="7" />
-                                    <Label text="Created by:" GridPane.rowIndex="8" />
+                                    <GridPane alignment="TOP_CENTER" hgap="15.0" maxHeight="-Infinity" maxWidth="-Infinity" vgap="10.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label fx:id="lblDepartureDate" text="DepartureDate" GridPane.columnIndex="1" />
+                                          <Label fx:id="lblReturnDate" text="ReturnDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblDepartureCity" text="DepartureCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblDestinationCity" text="DestinationCity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label fx:id="lblPartecipants" text="Partecipants" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblDescription" text="Description" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <ListView fx:id="lvTags" focusTraversable="false" maxHeight="100.0" maxWidth="200.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label fx:id="lblCreateTime" text="Create_Time" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                          <Label fx:id="lblOwnerUsername" text="Owner_Username" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                          <Label text="Departure date:" />
+                                          <Label text="Return date:" GridPane.rowIndex="1" />
+                                          <Label text="From:" GridPane.rowIndex="2" />
+                                          <Label text="To:" GridPane.rowIndex="3" />
+                                          <Label text="Number of partecipants:" GridPane.rowIndex="4" />
+                                          <Label text="Description:" GridPane.rowIndex="5" />
+                                          <Label text="Tags:" GridPane.rowIndex="6" />
+                                          <Label text="Created on:" GridPane.rowIndex="7" />
+                                          <Label text="Created by:" GridPane.rowIndex="8" />
+                                       </children>
+                                    </GridPane>
+                                    <VBox alignment="CENTER">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                       <children>
+                                          <Label alignment="CENTER" text="Partecipants" />
+                                          <ListView fx:id="lvPartecipants" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" />
+                                       </children>
+                                    </VBox>
                                  </children>
-                              </GridPane>
-                              <VBox alignment="CENTER">
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                                 <children>
-                                    <Label alignment="CENTER" text="Partecipants" />
-                                    <ListView fx:id="lvPartecipants" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" />
-                                 </children>
-                              </VBox>
+                              </HBox>
+                              <Button fx:id="btnJoin" mnemonicParsing="false" onAction="#joinEvent" prefHeight="55.0" prefWidth="683.0" text="Partecipa">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Button>
                            </children>
-                        </HBox>
-                        <Button fx:id="btnJoin" mnemonicParsing="false" onAction="#joinEvent" prefHeight="55.0" prefWidth="683.0" text="Partecipa">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Button>
-                     </children>
-                  </VBox>
-               </center>
-            </BorderPane>
-         </children>
-      </StackPane>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </children>
+            </StackPane>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>
