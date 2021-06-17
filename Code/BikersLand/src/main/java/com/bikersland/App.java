@@ -24,7 +24,7 @@ public class App extends Application {
 	public static List<String> cities = null;
 	public static List<String> tags = null;
 
-    private static Scene scene;
+    public static Scene scene;
         
      /*
       * 
@@ -53,7 +53,7 @@ public class App extends Application {
 //    	System.exit(-1);
         
 //        scene = new Scene(loadFXML("EventDetails", EventDAO.getEventByID(1)), 1253, 910);
-        scene = new Scene(loadFXML("Homepage"), 1253, 910);
+        scene = new Scene(loadFXML("Homepage"), 1253, 810);
         stage.setScene(scene);
         
         stage.show();

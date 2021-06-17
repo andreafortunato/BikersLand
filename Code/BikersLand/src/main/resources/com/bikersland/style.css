@@ -10,6 +10,25 @@
 	-fx-fill: white;
 }*/
 
+.tab-pane:top .tab-header-area .tab-header-background {
+	-fx-opacity: 0;
+}
+
+.tab-pane .scroll-pane {
+	-fx-background-color: #505050;
+}
+
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top {
+	-fx-background-color: #505050;
+	-fx-text-base-color: white;
+	-fx-background-insets: 0 1 -1 1;
+}
+
+.tab-pane:top .tab-header-area .headers-region .tab:top {
+	-fx-background-color: #303030;
+	-fx-text-base-color: white;
+}
+
 .separator:vertical .line {
 	-fx-border-color: transparent transparent transparent -color-primary;
     -fx-border-width: 1.5;

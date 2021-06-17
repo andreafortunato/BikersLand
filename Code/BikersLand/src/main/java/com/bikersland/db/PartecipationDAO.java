@@ -68,8 +68,13 @@ public class PartecipationDAO {
 		ResultSet rs = stmt.executeQuery(query);
 		
 		while(rs.next()) {
-			BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
+			Image image;
+			if(rs.getBinaryStream("image") != null) {
+	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+	        	image = SwingFXUtils.toFXImage(img, null);
+			} else {
+				image = null;
+			}
 			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
         			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
         			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));

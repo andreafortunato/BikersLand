@@ -53,6 +53,8 @@ public class ProfileController {
     private List<Event> favoriteEventList;
     private List<Node> favoriteEventNodeList;
     
+    private Integer gridPaneColumns = 2;
+    
     private User user;
     
     private int viaggioBoxWidth = 420;
@@ -79,6 +81,8 @@ public class ProfileController {
 		try {
 			joinedEventList = PartecipationDAO.getJoinedEventsByUser(user);
 			favoriteEventList = FavoriteEventDAO.getFavoriteEventsByUser(user);
+			for(Event event: favoriteEventList)
+				System.out.println(event + "\n");
 		} catch (SQLException | IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -94,11 +98,13 @@ public class ProfileController {
 //			favoriteEventList.remove(event);
 //		eventsToRemove.clear();
 		
+		gridPaneColumns = (((Double)App.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
+		
 		this.joinedEventNodeList = NonSoComeChiamarla.eventsToNodeList(joinedEventList);
-    	NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, 2);
+    	NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, gridPaneColumns);
 		
 		this.favoriteEventNodeList = NonSoComeChiamarla.eventsToNodeList(favoriteEventList);
-    	NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, 2);
+    	NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, gridPaneColumns);
 		
 		Platform.runLater(() -> {
 			vbViaggi.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -107,8 +113,11 @@ public class ProfileController {
 	        	int n = newVal.intValue()-16-getNumViaggi()*20;
 	        	            	
 	        	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
+	        		gridPaneColumns = n/viaggioBoxWidth;
+	        	
 					try {
-						NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, n/viaggioBoxWidth);
+						NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, gridPaneColumns);
+						NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, gridPaneColumns);
 						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
 					} catch (Exception e) {
 						e.printStackTrace();

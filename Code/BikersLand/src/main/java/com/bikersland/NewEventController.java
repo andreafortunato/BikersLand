@@ -168,15 +168,47 @@ public class NewEventController {
     
     @FXML
     private void createEvent() throws SQLException, IOException {
+    	String emptyField = "";
+    	Boolean isEmpty = false;
+    	if(txtTitle.getText().strip().length() == 0) {
+    		emptyField = "title";
+    		isEmpty = true;
+    	}
+    	else if(comboDepartureCity.getValue() == null){
+    		emptyField = "departure city";
+    		isEmpty = true;
+    	}
+    	else if(comboDestinationCity.getValue() == null){
+    		emptyField = "destination city";
+    		isEmpty = true;
+    	}
+    	else if(dateDeparture.getValue() == null){
+    		emptyField = "departure date";
+    		isEmpty = true;
+    	}
+    	else if(dateReturn.getValue() == null){
+    		emptyField = "return date";
+    		isEmpty = true;
+    	}
+    	
+    	if(isEmpty) {
+    		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Empty fields", "You must fill all fields!", "There is an unfilled field: ", emptyField);
+    		return;
+    	}
+    	
+    	Image eventImage = this.imageFile == null ? null : new Image(this.imageFile.toURI().toString());
+    	
     	Event event = new Event(txtTitle.getText().strip(), txtDescription.getText().strip(), LoginSingleton.getLoginInstance().getUser().getUsername(),
     			comboDepartureCity.getValue(), comboDestinationCity.getValue(), Date.valueOf(dateDeparture.getValue()),
-    			Date.valueOf(dateReturn.getValue()), new Image(this.imageFile.toURI().toString()), comboTags.getItems()); //TODO: controllare this.imageFile se NULL (in caso affermativo, metterne una di default direttamente da EventDetails)
+    			Date.valueOf(dateReturn.getValue()), eventImage, comboTags.getItems()); //TODO: controllare this.imageFile se NULL (in caso affermativo, metterne una di default direttamente da EventDetails)
     	
     	event = EventDAO.setEvent(event);
     	
     	if(event != null) {
-    		if(!comboTags.getCheckModel().getCheckedItems().isEmpty())
+    		if(!comboTags.getCheckModel().getCheckedItems().isEmpty()) {
     			EventTagDAO.addEventTags(event.getId(), comboTags.getCheckModel().getCheckedItems());
+    			event.setTags(comboTags.getCheckModel().getCheckedItems());
+    		}
 	    	
     		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!", "Creation Complete!", "You will be redirected on Event Details of your ", event.getTitle());
 	    	App.setRoot("EventDetails", event);

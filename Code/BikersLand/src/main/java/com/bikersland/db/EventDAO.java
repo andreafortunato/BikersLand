@@ -3,15 +3,13 @@ package com.bikersland.db;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,18 +33,34 @@ public class EventDAO {
 		stmCreateEvent.setDate(6, event.getDeparture_date());
 		stmCreateEvent.setDate(7, event.getReturn_date());
 		
-		BufferedImage buffImg = SwingFXUtils.fromFXImage(event.getImage(),null);
-		ByteArrayOutputStream bts = new ByteArrayOutputStream();
-		ImageIO.write(buffImg,"png" , bts);
-		InputStream blobImage = new ByteArrayInputStream(bts.toByteArray());
+		if(event.getImage() != null) {
+			BufferedImage buffImg = SwingFXUtils.fromFXImage(event.getImage(),null);
+			ByteArrayOutputStream bts = new ByteArrayOutputStream();
+			ImageIO.write(buffImg,"png" , bts);
+			InputStream blobImage = new ByteArrayInputStream(bts.toByteArray());
+			
+			stmCreateEvent.setBlob(8, blobImage);
+		} else {
+			stmCreateEvent.setNull(8, Types.BLOB);
+		}
 		
-		stmCreateEvent.setBlob(8, blobImage);
+		ResultSet newEvent = null;
+		try {
+			newEvent = stmCreateEvent.executeQuery();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
 		
-		ResultSet newEvent = stmCreateEvent.executeQuery();
 		
 		if(newEvent.next()) {
+			Image image;
+			if(newEvent.getBinaryStream("image") != null) {
 			BufferedImage img = ImageIO.read(newEvent.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
+        	image = SwingFXUtils.toFXImage(img, null);
+			} else {
+				image = null;
+			}
 			
 			return new Event(newEvent.getInt("id"), newEvent.getString("title"), newEvent.getString("description"),
 					newEvent.getString("owner_username"), newEvent.getString("departure_city"),
@@ -66,9 +80,13 @@ public class EventDAO {
         ResultSet rs = stmt.executeQuery(query);
         
         if(rs.first()) {
-        	
-        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
+        	Image image;
+			if(rs.getBinaryStream("image") != null) {
+	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+	        	image = SwingFXUtils.toFXImage(img, null);
+			} else {
+				image = null;
+			}
         	event = new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
         			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
         			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id")));
@@ -107,8 +125,13 @@ public class EventDAO {
 		ResultSet rs = stmt.executeQuery(query);
 		
 		while(rs.next()) {
-			BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
+			Image image;
+			if(rs.getBinaryStream("image") != null) {
+	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+	        	image = SwingFXUtils.toFXImage(img, null);
+			} else {
+				image = null;
+			}
 			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
         			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
         			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
@@ -120,39 +143,47 @@ public class EventDAO {
 		return eventList;
 	}
 	
-	public static List<Event> getEventByCities(String departureCity, String destinationCity, User user) throws SQLException, IOException {
-		if(user == null)
-			return getEventByCities(departureCity, destinationCity);
-		
-		List<Event> eventList = new ArrayList<Event>();
-		String query = "SELECT * FROM event";
-		if(departureCity.equals("All") && destinationCity.equals("All")) {
-			query += ";";
-		} else if(departureCity.equals("All")) {
-			query += " WHERE destination_city='" + destinationCity + "';";
-		} else if(destinationCity.equals("All")){
-			query += " WHERE departure_city='" + departureCity + "';";
-		} else {
-			query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "';";
-		}
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while(rs.next()) {
-			BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
-        	eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
-        	}
-       
-        if (stmt != null)
-        	stmt.close();
-       		
-		return eventList;
-	}
+//	public static List<Event> getEventByCities(String departureCity, String destinationCity, User user) throws SQLException, IOException {
+//		if(user == null)
+//			return getEventByCities(departureCity, destinationCity);
+//		
+//		List<Event> eventList = new ArrayList<Event>();
+//		String query = "SELECT * FROM event";
+//		if(departureCity.equals("All") && destinationCity.equals("All")) {
+//			query += " ORDER BY id DESC;";
+//		} else {
+//			if(departureCity.equals("All")) {
+//				query += " WHERE destination_city='" + destinationCity + "'";
+//			} else if(destinationCity.equals("All")){
+//				query += " WHERE departure_city='" + departureCity + "'";
+//			} else {
+//				query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
+//			}
+//			query += " ORDER BY id DESC;";
+//		}
+//		
+//		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//        
+//		ResultSet rs = stmt.executeQuery(query);
+//		
+//		while(rs.next()) {
+//			Image image;
+//			if(rs.getBinaryStream("image") != null) {
+//	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+//	        	image = SwingFXUtils.toFXImage(img, null);
+//			} else {
+//				image = null;
+//			}
+//        	eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
+//        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
+//        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
+//        	}
+//       
+//        if (stmt != null)
+//        	stmt.close();
+//       		
+//		return eventList;
+//	}
 	
 	public static List<Event> getEventByTags(List<String> tagList) throws SQLException, IOException {
 		List<Event> eventList = new ArrayList<Event>();
@@ -161,7 +192,7 @@ public class EventDAO {
 		for(String tag: tagList)
         	query += "'" + tag + "', ";
         query = query.substring(0, query.length()-2) + ") ";
-        query += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ");";
+        query += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ") ORDER BY id DESC;";
         
         System.out.println(query);
 		
@@ -170,8 +201,13 @@ public class EventDAO {
 		ResultSet rs = stmt.executeQuery(query);
 		
 		while(rs.next()) {
-			BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
+			Image image;
+			if(rs.getBinaryStream("image") != null) {
+	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+	        	image = SwingFXUtils.toFXImage(img, null);
+			} else {
+				image = null;
+			}
 			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
         			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
         			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
@@ -207,7 +243,7 @@ public class EventDAO {
 		for(String tag: tagList)
         	queryTags += "'" + tag + "', ";
         queryTags = queryTags.substring(0, queryTags.length()-2) + ") ";
-        queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ");";
+        queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ") ORDER BY id DESC;";
 		
 		
 		String query = queryCities + queryTags;
@@ -219,8 +255,13 @@ public class EventDAO {
 		ResultSet rs = stmt.executeQuery(query);
 		
 		while(rs.next()) {
-			BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-        	Image image = SwingFXUtils.toFXImage(img, null);
+			Image image;
+			if(rs.getBinaryStream("image") != null) {
+	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+	        	image = SwingFXUtils.toFXImage(img, null);
+			} else {
+				image = null;
+			}
 			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
         			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
         			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));

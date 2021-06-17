@@ -100,6 +100,9 @@ public class ViaggioController {
     	imgViaggio.setClip(imgRound);
     	
     	Image image = event.getImage();
+    	if(image == null)
+    		image = new Image(getClass().getResourceAsStream("img/background.jpg"));
+    	
     	imgViaggio.setImage(image);
     	Double ratio = image.getWidth()/image.getHeight();
     	if(image.getWidth() > image.getHeight()) {

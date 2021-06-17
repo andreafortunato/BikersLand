@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="150.0" prefWidth="1200.0" styleClass="header" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.bikersland.HeaderController">
+<AnchorPane prefHeight="150.0" prefWidth="1200.0" styleClass="header" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HeaderController">
    <children>
       <HBox layoutX="410.0" layoutY="55.0" spacing="10.0" AnchorPane.rightAnchor="40.0">
          <children>
@@ -49,6 +49,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Button fx:id="btnNewEvent" layoutX="261.0" layoutY="59.0" mnemonicParsing="false" onAction="#newEvent" text="Crea Evento" visible="false" AnchorPane.leftAnchor="260.0" />
+      <Button fx:id="btnNewEvent" layoutX="261.0" layoutY="55.0" mnemonicParsing="false" onAction="#newEvent" prefHeight="40.0" prefWidth="140.0" text="Crea Evento" AnchorPane.leftAnchor="260.0" />
    </children>
 </AnchorPane>

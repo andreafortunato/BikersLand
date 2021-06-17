@@ -92,9 +92,12 @@ public class EventDetailsController {
 		System.out.println(event.getId());
 		
 		Image image = event.getImage();
-		imgBackground.setImage(image);		
+		if(image == null)
+			image = new Image(getClass().getResourceAsStream("img/background.jpg"));
 		
-		if(image.getWidth() > image.getHeight()) {
+		imgBackground.setImage(image);
+		
+		if(image.getWidth() < image.getHeight()) {
 	    	imgBackground.fitHeightProperty().bind(pnlMain.heightProperty());
 	    	imgBackground.setFitWidth(0.0);
 		} else {

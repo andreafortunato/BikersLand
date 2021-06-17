@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HomepageController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.HomepageController">
    <children>
       <!-- <AnchorPane fx:id="pnlHeader" prefHeight="150.0" prefWidth="800.0" styleClass="header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -44,11 +44,11 @@
          </children>
       </AnchorPane> -->
       <fx:include fx:id="header" source="Header.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="150.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
          <content>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #202020;">
                <children>
-                  <ImageView fx:id="imgBackground" fitHeight="672.0" fitWidth="1200.0">
+                  <ImageView fx:id="imgBackground" fitHeight="650.0" fitWidth="1200.0">
                      <image>
                         <Image url="@img/background.jpg" />
                      </image>
@@ -56,9 +56,9 @@
                         <ColorAdjust brightness="-0.6" />
                      </effect>
                   </ImageView>
-                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox maxHeight="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <StackPane fx:id="pnlMain" alignment="TOP_CENTER" prefHeight="450.0" prefWidth="800.0">
+                        <StackPane fx:id="pnlMain" alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0" prefWidth="800.0">
                            <children>
                               <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_CENTER">
                                  <children>
@@ -88,7 +88,7 @@
                                           <Slider fx:id="sliderArrivoDistanza" disable="true" layoutX="110.0" layoutY="47.0" prefHeight="14.0" prefWidth="102.0" showTickMarks="true" />
                                           <Label fx:id="lblArrivoDistanza" alignment="CENTER_RIGHT" disable="true" layoutX="216.0" layoutY="45.0" prefWidth="60.0" text="0 Km da" />
                                           <SearchableComboBox fx:id="comboArrivoCitta" layoutX="110.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" />
-                                          <SearchableComboBox fx:id="comboArrivoDistanza" layoutX="282.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+                                          <SearchableComboBox fx:id="comboArrivoDistanza" disable="true" layoutX="282.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
                                        </children>
                                     </AnchorPane>
                                     <Label layoutX="12.0" layoutY="103.0" styleClass="bordered-pane-title" text="Arrivo" />
@@ -101,9 +101,9 @@
                               </AnchorPane>
                            </children>
                         </StackPane>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" prefWidth="1200.0" style="-fx-background-color: rgba(0,0,0,0.8);" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                        <ScrollPane fx:id="spEventList" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: rgba(0,0,0,0.8);" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets top="50.0" />
+                              <Insets right="30.0" />
                            </VBox.margin>
                            <content>
                               <GridPane fx:id="gridViaggi" alignment="CENTER" gridLinesVisible="true" hgap="20.0" vgap="30.0">
