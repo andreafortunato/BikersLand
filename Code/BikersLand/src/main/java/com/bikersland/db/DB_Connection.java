@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
+import com.bikersland.App;
 import com.bikersland.NonSoComeChiamarla;
 
 import javafx.scene.control.Alert.AlertType;
@@ -27,7 +28,10 @@ public class DB_Connection {
 			try {
 				connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			} catch (SQLException e) {
-				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "DataBase Error", "Connection refused", "A connection with the database could not be established.\n\nPlease try again...", null);
+				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+						App.bundle.getString("timedalert_db_conn_error_title"),
+						App.bundle.getString("timedalert_db_conn_error_header"),
+						App.bundle.getString("timedalert_db_conn_error_content"), null);
 				System.exit(-1);
 			}
 		}

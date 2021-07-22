@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="spMain" style="-fx-background-color: #353535; -fx-background-radius: 10;" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<StackPane fx:id="spMain" style="-fx-background-color: #353535; -fx-background-radius: 10;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="400.0" styleClass="cardViaggio">
          <children>
@@ -37,7 +37,7 @@
                         <Rectangle2D height="128.0" width="128.0" />
                      </viewport>
                   </ImageView>
-                  <Button fx:id="btnPartecipants" mnemonicParsing="false" text="2">
+                  <Button fx:id="btnParticipants" mnemonicParsing="false" text="2">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor></Button>
@@ -109,10 +109,15 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label fx:id="lblOwnerUsername" text="Creato da NOME" />
+                        <HBox spacing="5.0">
+                           <children>
+                              <Label text="%created_by" />
+                              <Label fx:id="lblOwnerUsername" text="NOME" />
+                           </children>
+                        </HBox>
                         <HBox alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
                            <children>
-                              <Button fx:id="btnJoin" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="20.0" text="Partecipa" HBox.hgrow="ALWAYS">
+                              <Button fx:id="btnJoin" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="20.0" text="%join" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>

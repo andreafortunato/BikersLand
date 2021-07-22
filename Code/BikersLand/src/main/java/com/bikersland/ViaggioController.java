@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.bikersland.db.FavoriteEventDAO;
-import com.bikersland.db.PartecipationDAO;
+import com.bikersland.db.ParticipationDAO;
 
 import javafx.animation.Animation;
 import javafx.application.Platform;
@@ -65,7 +65,7 @@ public class ViaggioController {
     private Button btnJoin;
     
     @FXML
-    private Button btnPartecipants;
+    private Button btnParticipants;
 	
 	private static final int COLUMNS  = 7;
 	private static final int COUNT    = 7;
@@ -78,6 +78,8 @@ public class ViaggioController {
     private Event event;
     private Boolean isFavorite = false;
     private Boolean isJoined = false;
+    
+    private Tooltip favoriteTooltip = new Tooltip("");
     
     private User user = null;
     
@@ -92,6 +94,11 @@ public class ViaggioController {
     
     public void initialize() {
     	user = LoginSingleton.getLoginInstance().getUser();
+    	
+    	favoriteTooltip.setShowDelay(Duration.ZERO);
+    	favoriteTooltip.setHideDelay(Duration.ZERO);
+    	favoriteTooltip.setFont(Font.font(favoriteTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
+    	Tooltip.install(imgStar, favoriteTooltip);
     	
     	Rectangle imgRound = new Rectangle(400, 170);
     	imgRound.setArcHeight(10);
@@ -115,7 +122,7 @@ public class ViaggioController {
 		}
     	imgViaggio.setPreserveRatio(true);
     	
-    	Tooltip imgTooltip = new Tooltip("Click to see Event Details");
+    	Tooltip imgTooltip = new Tooltip(App.bundle.getString("see_event_details"));
     	imgTooltip.setShowDelay(Duration.ZERO);
     	imgTooltip.setHideDelay(Duration.ZERO);
     	imgTooltip.setFont(Font.font(imgTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
@@ -137,7 +144,7 @@ public class ViaggioController {
     	}
     	lblDepartureDate.setText(NonSoComeChiamarla.dateToString(event.getDeparture_date()));
     	lblReturnDate.setText(NonSoComeChiamarla.dateToString(event.getReturn_date()));
-    	lblOwnerUsername.setText("Creato da: " + event.getOwner_username());
+    	lblOwnerUsername.setText(event.getOwner_username());
     	
     	Platform.runLater(() -> {
     		AnchorPane.setLeftAnchor(lblTitle, (400-lblTitle.getWidth())/2);
@@ -148,23 +155,24 @@ public class ViaggioController {
     	  
     	
 		
-		List<String> partecipants;
+		List<String> participants;
 		try {
-			partecipants = PartecipationDAO.getJoinedUsersByEvent(event);
-			btnPartecipants.setText(String.valueOf(partecipants.size()));
-			String partecipantList = "";
-			for(String partecipant: partecipants)
-				partecipantList += partecipant + "\n";
+			participants = ParticipationDAO.getJoinedUsersByEvent(event);
+			btnParticipants.setText(String.valueOf(participants.size()));
+			String participantList = "";
+			for(String participant: participants)
+				participantList += participant + "\n";
 			
-			Tooltip partecipantsTooltip;
-			if(partecipants.size() == 0)			
-				partecipantsTooltip = new Tooltip("Nobody joined this event!");
+			Tooltip participantsTooltip;
+			if(participants.size() == 0)			
+//				participantsTooltip = new Tooltip("Nobody joined this event!");
+				participantsTooltip = new Tooltip(App.bundle.getString("no_participants"));
 			else
-				partecipantsTooltip = new Tooltip("Partecipants:\n\n" + partecipantList);
-			partecipantsTooltip.setShowDelay(Duration.ZERO);
-			partecipantsTooltip.setHideDelay(Duration.ZERO);
-			partecipantsTooltip.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 13));
-			btnPartecipants.setTooltip(partecipantsTooltip);
+				participantsTooltip = new Tooltip(App.bundle.getString("participants") + ":\n\n" + participantList);
+			participantsTooltip.setShowDelay(Duration.ZERO);
+			participantsTooltip.setHideDelay(Duration.ZERO);
+			participantsTooltip.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 13));
+			btnParticipants.setTooltip(participantsTooltip);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -178,7 +186,7 @@ public class ViaggioController {
 		else {
 			try {
 				setIsFavorite(FavoriteEventDAO.isFavoriteEvent(user, event));
-				setIsJoined(PartecipationDAO.isJoinedEvent(user, event));
+				setIsJoined(ParticipationDAO.isJoinedEvent(user, event));
 			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -221,11 +229,11 @@ public class ViaggioController {
     @FXML
     private void joinEvent() throws SQLException, IOException {
     	if(isJoined) {
-    		PartecipationDAO.removeJoinedEvent(user, event);
+    		ParticipationDAO.removeJoinedEvent(user, event);
     		
     		setIsJoined(false);
     	} else {
-    		PartecipationDAO.addJoinedEvent(user, event);
+    		ParticipationDAO.addJoinedEvent(user, event);
     		
     		setIsJoined(true);
     	}
@@ -244,21 +252,25 @@ public class ViaggioController {
 
             animation.setCycleCount(1);
             animation.play();
+            
+            favoriteTooltip.setText(App.bundle.getString("remove_from_favourites"));
 		}
 		else {
 			if(animation != null)
     			animation.stop();
 			imgStar.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
+			
+			favoriteTooltip.setText(App.bundle.getString("add_to_favourites"));
 		}
 	}
 	
 	private void setIsJoined(Boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
-			btnJoin.setText("Rimuovi partecipazione");
+			btnJoin.setText(App.bundle.getString("remove_participation"));
 		}
 		else {
-			btnJoin.setText("Partecipa");
+			btnJoin.setText(App.bundle.getString("join"));
 		}
 	}
 }

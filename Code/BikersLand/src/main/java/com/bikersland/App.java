@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.FavoriteEventDAO;
@@ -25,34 +27,17 @@ public class App extends Application {
 	public static List<String> tags = null;
 
     public static Scene scene;
-        
-     /*
-      * 
-      * https://www.google.com/maps/dir/tappa1/tappa2/.../tappaN/ 
-      *
-      *
-      */
+    
+    public static Locale locale = Locale.ITALIAN;
+    public static ResourceBundle bundle;
+    
     @Override
     public void start(Stage stage) throws IOException, SQLException, InterruptedException {
+    	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
+    	
     	App.cities = CityDAO.getCities();
     	App.tags = TagDAO.getTags();
-    	    	
-//    	List<Event> eventList;
-//    	
-//    	eventList = EventDAO.getEventByTags(FXCollections.observableArrayList("Avventura"));
-//    	for(Event event: eventList)
-//    		System.out.println(event);
-//    	eventList = EventDAO.getEventByTags(FXCollections.observableArrayList("Avventura", "Stradale"));
-//    	for(Event event: eventList)
-//    		System.out.println(event);
-//    	eventList = EventDAO.getEventByTags(FXCollections.observableArrayList("Mare", "Paesaggi"));
-//    	for(Event event: eventList)
-//    		System.out.println(event);
-//    	eventList = EventDAO.getEventByTags(FXCollections.observableArrayList("Trucido"));
-//    	
-//    	System.exit(-1);
-        
-//        scene = new Scene(loadFXML("EventDetails", EventDAO.getEventByID(1)), 1253, 910);
+    	
         scene = new Scene(loadFXML("Homepage"), 1253, 810);
         stage.setScene(scene);
         
@@ -71,12 +56,14 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+    	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"), bundle);
         return fxmlLoader.load();
     }
     
     private static Parent loadFXML(String fxml, Event event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+    	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"), bundle);
         fxmlLoader.setController(new EventDetailsController(event));
         return fxmlLoader.load();
     }

@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.bikersland.db.EmailException;
 import com.bikersland.db.UserDAO;
-import com.bikersland.db.UsernameException;
+import com.bikersland.exceptions.EmailException;
+import com.bikersland.exceptions.UsernameException;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -62,7 +62,10 @@ public class LoginController {
 		logged_user = UserDAO.askLogin(username_email, password);
 		
 		if(logged_user == null) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Login Error", "Username/email or password not found", "No user found.\n\n Please try again...", null);
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					App.bundle.getString("timedalert_login_error_title"),
+					App.bundle.getString("timedalert_login_error_header"),
+					App.bundle.getString("timedalert_login_error_content"), null);
 			txtUser.setText("");
 			txtPassword.setText("");
 			txtUser.requestFocus();

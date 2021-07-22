@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.FavoriteEventDAO;
-import com.bikersland.db.PartecipationDAO;
+import com.bikersland.db.ParticipationDAO;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -18,11 +18,13 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 
 public class ProfileController {
 	
@@ -70,16 +72,38 @@ public class ProfileController {
 			vbViaggi.prefWidthProperty().bind(vbViaggi.getParent().getScene().getWindow().widthProperty());
 		});
 		
-		
-		final ContextMenu contextMenu = new ContextMenu();
-	    final MenuItem item1 = new MenuItem("Change Image...");
+		Image image = user.getImage();
+		Circle imgCircle = new Circle(50);
+		if(image == null) {
+			image = new Image(getClass().getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
+		} else {
+			double w = 0;
+            double h = 0;
 
-	    contextMenu.getItems().add(item1);
+            double ratioX = imgProfileImage.getFitWidth() / image.getWidth();
+            double ratioY = imgProfileImage.getFitHeight() / image.getHeight();
+
+            double reducCoeff = 0;
+            if(ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = image.getWidth() * reducCoeff;
+            h = image.getHeight() * reducCoeff;
+
+            imgProfileImage.setX((imgProfileImage.getFitWidth() - w) / 2);
+            imgProfileImage.setY((imgProfileImage.getFitHeight() - h) / 2);
+		}
 		
-		imgProfileImage.setOnContextMenuRequested(e -> contextMenu.show(imgProfileImage, e.getScreenX(), e.getScreenY()));
+		imgCircle.setCenterX(50);
+	    imgCircle.setCenterY(50);
+	    imgProfileImage.setImage(image);
+		imgProfileImage.setClip(imgCircle);
 		
 		try {
-			joinedEventList = PartecipationDAO.getJoinedEventsByUser(user);
+			joinedEventList = ParticipationDAO.getJoinedEventsByUser(user);
 			favoriteEventList = FavoriteEventDAO.getFavoriteEventsByUser(user);
 			for(Event event: favoriteEventList)
 				System.out.println(event + "\n");
@@ -87,16 +111,6 @@ public class ProfileController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-//		List<Event> eventsToRemove = new ArrayList<Event>();
-//		
-//		for(Event event: favoriteEventList)
-//			if(!(event instanceof FavoriteEvent))
-//				eventsToRemove.add(event);
-//		
-//		for(Event event: eventsToRemove)
-//			favoriteEventList.remove(event);
-//		eventsToRemove.clear();
 		
 		gridPaneColumns = (((Double)App.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
 		

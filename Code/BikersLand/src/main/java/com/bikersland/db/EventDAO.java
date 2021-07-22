@@ -12,9 +12,11 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
+import com.bikersland.App;
 import com.bikersland.Event;
 import com.bikersland.User;
 
@@ -71,6 +73,7 @@ public class EventDAO {
 		return null;
 	}
 	
+	// TODO: Da rimuovere?
 	public static Event getEventByID(Integer id) throws SQLException, IOException {
 		Event event;
 		String query = "SELECT * FROM event WHERE id='" + id + "';";
@@ -107,12 +110,12 @@ public class EventDAO {
 	public static List<Event> getEventByCities(String departureCity, String destinationCity) throws IOException, SQLException {
 		List<Event> eventList = new ArrayList<Event>();
 		String query = "SELECT * FROM event";
-		if(departureCity.equals("All") && destinationCity.equals("All")) {
+		if(departureCity.equals(App.bundle.getString("all_female")) && destinationCity.equals(App.bundle.getString("all_female"))) {
 			query += " ORDER BY id DESC;";
 		} else {
-			if(departureCity.equals("All")) {
+			if(departureCity.equals(App.bundle.getString("all_female"))) {
 				query += " WHERE destination_city='" + destinationCity + "'";
-			} else if(destinationCity.equals("All")){
+			} else if(destinationCity.equals(App.bundle.getString("all_female"))){
 				query += " WHERE departure_city='" + departureCity + "'";
 			} else {
 				query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
@@ -143,56 +146,15 @@ public class EventDAO {
 		return eventList;
 	}
 	
-//	public static List<Event> getEventByCities(String departureCity, String destinationCity, User user) throws SQLException, IOException {
-//		if(user == null)
-//			return getEventByCities(departureCity, destinationCity);
-//		
-//		List<Event> eventList = new ArrayList<Event>();
-//		String query = "SELECT * FROM event";
-//		if(departureCity.equals("All") && destinationCity.equals("All")) {
-//			query += " ORDER BY id DESC;";
-//		} else {
-//			if(departureCity.equals("All")) {
-//				query += " WHERE destination_city='" + destinationCity + "'";
-//			} else if(destinationCity.equals("All")){
-//				query += " WHERE departure_city='" + departureCity + "'";
-//			} else {
-//				query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
-//			}
-//			query += " ORDER BY id DESC;";
-//		}
-//		
-//		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-//        
-//		ResultSet rs = stmt.executeQuery(query);
-//		
-//		while(rs.next()) {
-//			Image image;
-//			if(rs.getBinaryStream("image") != null) {
-//	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-//	        	image = SwingFXUtils.toFXImage(img, null);
-//			} else {
-//				image = null;
-//			}
-//        	eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-//        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-//        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
-//        	}
-//       
-//        if (stmt != null)
-//        	stmt.close();
-//       		
-//		return eventList;
-//	}
-	
-	public static List<Event> getEventByTags(List<String> tagList) throws SQLException, IOException {
+	// TODO: Da rimuovere?
+	public static List<Event> getEventByTags(List<Integer> tagList) throws SQLException, IOException {
 		List<Event> eventList = new ArrayList<Event>();
 		
-		String query = "SELECT * FROM event WHERE id IN (SELECT DISTINCT ET.event_id FROM event_tag ET WHERE ET.tag_name IN (";
-		for(String tag: tagList)
+		String query = "SELECT * FROM event WHERE id IN (SELECT DISTINCT ET.event_id FROM event_tag ET WHERE ET.tag_id IN (";
+		for(Integer tag: tagList)
         	query += "'" + tag + "', ";
         query = query.substring(0, query.length()-2) + ") ";
-        query += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ") ORDER BY id DESC;";
+        query += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_id) = " + tagList.size() + ") ORDER BY id DESC;";
         
         System.out.println(query);
 		
@@ -220,6 +182,13 @@ public class EventDAO {
 	}
 	
 	public static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList) throws SQLException, IOException {
+		if(App.locale == Locale.ITALIAN)
+			return getEventByCitiesAndTags(departureCity, destinationCity, tagList, "it");
+		else
+			return getEventByCitiesAndTags(departureCity, destinationCity, tagList, "en");
+	}
+	
+	private static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList, String language) throws SQLException, IOException {
 		
 		if(tagList.size() == 0) 
 			return getEventByCities(departureCity, destinationCity);
@@ -228,23 +197,22 @@ public class EventDAO {
 		List<Event> eventList = new ArrayList<Event>();
 		
 		String queryCities = "SELECT * FROM event WHERE 1=1";
-		if(departureCity.equals("All") && destinationCity.equals("All")) {
+		if(departureCity.equals(App.bundle.getString("all_female")) && destinationCity.equals(App.bundle.getString("all_female"))) {
 			;
-		} else if(departureCity.equals("All")) {
+		} else if(departureCity.equals(App.bundle.getString("all_female"))) {
 			queryCities += " AND destination_city='" + destinationCity + "'";
-		} else if(destinationCity.equals("All")){
+		} else if(destinationCity.equals(App.bundle.getString("all_female"))){
 			queryCities += " AND departure_city='" + departureCity + "'";
 		} else {
 			queryCities += " AND departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
 		}
 		
 		
-		String queryTags = " AND id IN (SELECT DISTINCT ET.event_id FROM event_tag ET WHERE ET.tag_name IN (";
+		String queryTags = " AND id IN (SELECT DISTINCT ET.event_id FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE T." + language + " IN (";
 		for(String tag: tagList)
         	queryTags += "'" + tag + "', ";
         queryTags = queryTags.substring(0, queryTags.length()-2) + ") ";
-        queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_name) = " + tagList.size() + ") ORDER BY id DESC;";
-		
+        queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT T." + language + ") = " + tagList.size() + ") ORDER BY id DESC;";
 		
 		String query = queryCities + queryTags;
 		

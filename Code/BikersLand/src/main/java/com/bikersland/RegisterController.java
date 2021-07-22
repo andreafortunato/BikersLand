@@ -1,33 +1,52 @@
 package com.bikersland;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.bikersland.db.EmailException;
 import com.bikersland.db.UserDAO;
-import com.bikersland.db.UsernameException;
+import com.bikersland.exceptions.EmailException;
+import com.bikersland.exceptions.UsernameException;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class RegisterController {
+
 	@FXML
     private TextField txtName;
 
     @FXML
     private TextField txtSurname;
-    
+
     @FXML
     private TextField txtUsername;
+
+    @FXML
+    private Button btnImage;
+
+    @FXML
+    private HBox hbImageSelected;
+
+    @FXML
+    private Label lblImageName;
 
     @FXML
     private TextField txtEmail1;
@@ -45,6 +64,9 @@ public class RegisterController {
     private Button btnRegister;
     
     private boolean validEmail = false;
+    
+    private Tooltip imageTooltip = new Tooltip();
+    private File imageFile = null;
     
     private ChangeListener<String> checkEnableBtnRegister = new ChangeListener<String>() {
 		@Override
@@ -114,6 +136,10 @@ public class RegisterController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		imageTooltip.setShowDelay(Duration.ZERO);
+    	imageTooltip.setHideDelay(Duration.ZERO);
+    	lblImageName.setTooltip(imageTooltip);
 	}
 	
 	@FXML
@@ -132,11 +158,13 @@ public class RegisterController {
 		String email = txtEmail1.getText().strip();
 		String password = txtPassword1.getText().strip();
 		
-		User newUser = new User(name, surname, username, email, password);
+		Image userImage = this.imageFile == null ? null : new Image(this.imageFile.toURI().toString());
+		User newUser = new User(name, surname, username, email, password, userImage);
 		
 		try {
 			UserDAO.setUser(newUser);
 			NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!" , "Registration succesfully completed!" , "Hi " + username + "!\nWelcome to BikersLand!", null);
+			LoginSingleton.getLoginInstance().setUser(newUser);
 			App.setRoot("Homepage");
 		} catch (UsernameException e) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Registration Error" , "Username already exists!" , "A user already exists with username ", username);
@@ -148,7 +176,45 @@ public class RegisterController {
 			txtEmail2.setText("");
 			txtEmail1.requestFocus();
 		}
-				
-
 	}
+	
+	@FXML
+    private void uploadImage() {
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle("Open Resource File");
+    	fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.jpg", "*.jpeg", "*.png"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg", "*.jpeg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+            );
+    	
+    	File choosedFile = fileChooser.showOpenDialog(txtName.getParent().getScene().getWindow());
+    	
+    	if(choosedFile != null) {
+    		if(choosedFile.length() < 4194304) {
+    			this.imageFile = choosedFile;
+    			
+    			Image profileImage = new Image(this.imageFile.toURI().toString(), 100, 100, true, true);
+    			ImageView profileImagePreview = new ImageView(profileImage);
+    			Circle imgCircle = new Circle(50);
+    		    imgCircle.setCenterX(profileImage.getWidth()*0.5);
+    		    imgCircle.setCenterY(profileImage.getHeight()*0.5);
+    		    profileImagePreview.setClip(imgCircle);
+    			
+    			imageTooltip.setGraphic(profileImagePreview);
+    			lblImageName.setText(this.imageFile.getName());
+    			btnImage.setVisible(false);
+    			hbImageSelected.setVisible(true);
+    		} else {
+    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Image error", "Maximum size exceeded", "The selected image exceeds the maximum size of 4 MB!", null);
+    		}
+    	}    	
+    }
+    
+    @FXML
+    private void removeImage() {
+    	this.imageFile = null;
+    	hbImageSelected.setVisible(false);
+    	btnImage.setVisible(true);
+    }
 }

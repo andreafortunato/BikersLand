@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javafx.scene.image.Image;
+
 public class User {
 	private Integer id = null;
 	private String name = null;
@@ -11,26 +13,29 @@ public class User {
 	private String username = null;
 	private String email = null;
 	private String password = null;
+	private Image image = null;
 	private Date create_time = null;
 	
 	public User() {}
 	
-	public User(Integer id, String name, String surname, String username, String email, String password, Date create_time) {
+	public User(Integer id, String name, String surname, String username, String email, String password, Image image, Date create_time) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.image = image;
 		this.create_time = create_time;
 	}
 	
-	public User(String name, String surname, String username, String email, String password) {
+	public User(String name, String surname, String username, String email, String password, Image image) {
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.image = image;
 	}
 	
 	public Integer getId() {
@@ -87,6 +92,14 @@ public class User {
 
 	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
+	}
+	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}
 
 	public String toString() {

@@ -3,14 +3,21 @@ package com.bikersland;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Locale;
 
 import com.bikersland.db.EventDAO;
+import com.bikersland.db.TagDAO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 
 public class HeaderController {
 	
@@ -51,6 +58,17 @@ public class HeaderController {
     		hbLoggedIn.setVisible(false);
     		btnNewEvent.setVisible(false);
     	}
+    	
+    	Tooltip flagTooltip = new Tooltip(App.bundle.getString("change_lang"));
+    	flagTooltip.setShowDelay(Duration.ZERO);
+    	flagTooltip.setHideDelay(Duration.ZERO);
+    	flagTooltip.setFont(Font.font(flagTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
+    	Tooltip.install(btnLanguage, flagTooltip);
+    	
+    	if(App.locale == Locale.ITALIAN)
+    		btnLanguage.setImage(new Image(getClass().getResource("img/italy.png").toString()));
+    	else
+    		btnLanguage.setImage(new Image(getClass().getResource("img/usa.png").toString()));
     }
     
     @FXML
@@ -89,5 +107,18 @@ public class HeaderController {
     @FXML
     private void newEvent() throws IOException {
     	App.setRoot("NewEvent");
+    }
+    
+    @FXML
+    private void changeLanguage() throws IOException, SQLException {
+    	if(App.locale == Locale.ITALIAN) {
+    		App.locale = Locale.ENGLISH;
+    		btnLanguage.setImage(new Image(getClass().getResource("img/usa.png").toString()));
+    	} else {
+    		App.locale = Locale.ITALIAN;
+    		btnLanguage.setImage(new Image(getClass().getResource("img/italy.png").toString()));
+    	}
+    	App.tags = TagDAO.getTags();
+    	App.setRoot("Homepage");
     }
 }

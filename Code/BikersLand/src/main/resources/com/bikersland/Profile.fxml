@@ -29,7 +29,7 @@
                      <children>
                         <ImageView fx:id="imgProfileImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/italy.png" />
+                              <Image url="@img/background.jpg" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">

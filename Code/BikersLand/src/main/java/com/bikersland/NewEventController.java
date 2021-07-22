@@ -54,9 +54,6 @@ public class NewEventController {
 
     @FXML
     private Label lblCharacters;
-
-    @FXML
-    private ListView<Tappa> lvTappe;
     
     @FXML
     private TextField txtTitle;
@@ -111,10 +108,6 @@ public class NewEventController {
     		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " caratteri rimanenti");
     	});
     	
-    	
-    	
-    	lvTappe.setItems(tappaObservableList);
-    	lvTappe.setCellFactory(tappaListView -> new CustomListCellController());
     }
     
     @FXML
@@ -155,7 +148,10 @@ public class NewEventController {
     			lblImageName.setText(this.imageFile.getName());
     			hbImageSelected.setVisible(true);
     		} else {
-    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Image error", "Maximum size exceeded", "The selected image exceeds the maximum size of 4 MB!", null);
+    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+    					App.bundle.getString("timedalert_new_event_image_error_title"),
+    					App.bundle.getString("timedalert_new_event_image_error_header"),
+    					App.bundle.getString("timedalert_new_event_image_error_content"), null);
     		}
     	}    	
     }
@@ -171,28 +167,31 @@ public class NewEventController {
     	String emptyField = "";
     	Boolean isEmpty = false;
     	if(txtTitle.getText().strip().length() == 0) {
-    		emptyField = "title";
+    		emptyField = App.bundle.getString("title");
     		isEmpty = true;
     	}
     	else if(comboDepartureCity.getValue() == null){
-    		emptyField = "departure city";
+    		emptyField = App.bundle.getString("departure_city_2");
     		isEmpty = true;
     	}
     	else if(comboDestinationCity.getValue() == null){
-    		emptyField = "destination city";
+    		emptyField = App.bundle.getString("destination_city_2");
     		isEmpty = true;
     	}
     	else if(dateDeparture.getValue() == null){
-    		emptyField = "departure date";
+    		emptyField = App.bundle.getString("departure_date_2");
     		isEmpty = true;
     	}
     	else if(dateReturn.getValue() == null){
-    		emptyField = "return date";
+    		emptyField = App.bundle.getString("return_date_2");
     		isEmpty = true;
     	}
     	
     	if(isEmpty) {
-    		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Empty fields", "You must fill all fields!", "There is an unfilled field: ", emptyField);
+    		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+    				App.bundle.getString("timedalert_new_event_empty_error_title"),
+    				App.bundle.getString("timedalert_new_event_empty_error_header"),
+    				App.bundle.getString("timedalert_new_event_empty_error_content"), emptyField);
     		return;
     	}
     	
@@ -210,10 +209,16 @@ public class NewEventController {
     			event.setTags(comboTags.getCheckModel().getCheckedItems());
     		}
 	    	
-    		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!", "Creation Complete!", "You will be redirected on Event Details of your ", event.getTitle());
+    		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
+    				App.bundle.getString("timedalert_new_event_success_title_title"),
+    				App.bundle.getString("timedalert_new_event_success_title_header"),
+    				App.bundle.getString("timedalert_new_event_success_title_content"), event.getTitle());
 	    	App.setRoot("EventDetails", event);
     	} else {
-	    	NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Error!", "Create Event Error!", "There was an error while trying to create your event.\n\nPlease try again... ", null);
+	    	NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+	    			App.bundle.getString("timedalert_new_event_error_title_title"),
+	    			App.bundle.getString("timedalert_new_event_error_title_header"),
+	    			App.bundle.getString("timedalert_new_event_error_title_content"), null);
     	}
     }
 

@@ -45,6 +45,7 @@ public class NonSoComeChiamarla {
     		fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(App.class.getResource("CardViaggio.fxml"));
             fxmlLoader.setController(new ViaggioController(event));
+            fxmlLoader.setResources(App.bundle);
             
             StackPane viaggioBox = null;
 			try {

@@ -1,0 +1,18 @@
+Togliere "throws SQLException" e sostituirlo con "try/catch"
+
+Creare e sistemare le classi bean, controller, ecc...
+
+Implementare traduzioni tramite il tasto Flag (https://www.youtube.com/watch?v=rAtCF2WLUnQ)
+
+Utilizzare SonarCloud (e SonarLint su Eclipse) per eliminare TUTTI gli errori/warnings
+
+Creare classe "CustomTooltip", figlia di Tooltip. Avrà di default:
+	customTooltip.setShowDelay(Duration.ZERO);
+    customTooltip.setHideDelay(Duration.ZERO);
+    customTooltip.setFont(Font.font(customTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
+
+Gestione connessioni e disconnessioni database (COME?)
+
+In NewEvent, quando si seleziona un tag diventa trasparente...
+
+Tradurre i TimedAlert

@@ -70,20 +70,20 @@
                                           <Label fx:id="lblReturnDate" text="ReturnDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label fx:id="lblDepartureCity" text="DepartureCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label fx:id="lblDestinationCity" text="DestinationCity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Label fx:id="lblPartecipants" text="Partecipants" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblPartecipants" text="Participants" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                           <Label fx:id="lblDescription" text="Description" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                           <ListView fx:id="lvTags" focusTraversable="false" maxHeight="100.0" maxWidth="200.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                           <Label fx:id="lblCreateTime" text="Create_Time" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                           <Label fx:id="lblOwnerUsername" text="Owner_Username" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                          <Label text="Departure date:" />
-                                          <Label text="Return date:" GridPane.rowIndex="1" />
-                                          <Label text="From:" GridPane.rowIndex="2" />
-                                          <Label text="To:" GridPane.rowIndex="3" />
-                                          <Label text="Number of partecipants:" GridPane.rowIndex="4" />
-                                          <Label text="Description:" GridPane.rowIndex="5" />
+                                          <Label text="%departure_date" />
+                                          <Label text="%return_date" GridPane.rowIndex="1" />
+                                          <Label text="%departure_city" GridPane.rowIndex="2" />
+                                          <Label text="%destination_city" GridPane.rowIndex="3" />
+                                          <Label text="%participants_number" GridPane.rowIndex="4" />
+                                          <Label text="%description" GridPane.rowIndex="5" />
                                           <Label text="Tags:" GridPane.rowIndex="6" />
-                                          <Label text="Created on:" GridPane.rowIndex="7" />
-                                          <Label text="Created by:" GridPane.rowIndex="8" />
+                                          <Label text="%created_on" GridPane.rowIndex="7" />
+                                          <Label text="%created_by" GridPane.rowIndex="8" />
                                        </children>
                                     </GridPane>
                                     <VBox alignment="CENTER">
@@ -91,13 +91,13 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                        <children>
-                                          <Label alignment="CENTER" text="Partecipants" />
+                                          <Label alignment="CENTER" text="%participants" />
                                           <ListView fx:id="lvPartecipants" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" />
                                        </children>
                                     </VBox>
                                  </children>
                               </HBox>
-                              <Button fx:id="btnJoin" mnemonicParsing="false" onAction="#joinEvent" prefHeight="55.0" prefWidth="683.0" text="Partecipa">
+                              <Button fx:id="btnJoin" mnemonicParsing="false" onAction="#joinEvent" prefHeight="55.0" prefWidth="683.0" text="%join">
                                  <VBox.margin>
                                     <Insets top="20.0" />
                                  </VBox.margin>

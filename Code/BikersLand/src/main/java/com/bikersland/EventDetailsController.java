@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.bikersland.db.EventTagDAO;
-import com.bikersland.db.PartecipationDAO;
+import com.bikersland.db.ParticipationDAO;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -80,16 +80,14 @@ public class EventDetailsController {
 		lblReturnDate.setText(NonSoComeChiamarla.dateToString(event.getReturn_date()));
 		lblDepartureCity.setText(event.getDeparture_city());
 		lblDestinationCity.setText(event.getDestination_city());
-		lblPartecipants.setText("<-- ANCORA DA CALCOLARE -->");
 		lblDescription.setText(event.getDescription());
-		lvTags.setItems(FXCollections.observableArrayList(EventTagDAO.getEventTags(event.getId())));
+		lvTags.setItems(FXCollections.observableArrayList(EventTagDAO.getEventTags(event.getId())).sorted());
 		lvTags.setOnMousePressed(e -> lvTags.getSelectionModel().clearSelection());
 		lblCreateTime.setText(NonSoComeChiamarla.dateToString(event.getCreate_time()));
 		lblOwnerUsername.setText(event.getOwner_username());
 		
-		lvPartecipants.setItems(FXCollections.observableArrayList(PartecipationDAO.getJoinedUsersByEvent(event)));
-
-		System.out.println(event.getId());
+		lvPartecipants.setItems(FXCollections.observableArrayList(ParticipationDAO.getJoinedUsersByEvent(event)));
+		lblPartecipants.setText(String.valueOf(lvPartecipants.getItems().size()));
 		
 		Image image = event.getImage();
 		if(image == null)
@@ -110,7 +108,7 @@ public class EventDetailsController {
     		btnJoin.setVisible(false);
     	} else {
     		try {
-				setIsJoined(PartecipationDAO.isJoinedEvent(user, event));
+				setIsJoined(ParticipationDAO.isJoinedEvent(user, event));
 			} catch (SQLException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -121,11 +119,11 @@ public class EventDetailsController {
 	@FXML
     private void joinEvent() throws SQLException, IOException {
     	if(isJoined) {
-    		PartecipationDAO.removeJoinedEvent(user, event);
+    		ParticipationDAO.removeJoinedEvent(user, event);
     		
     		setIsJoined(false);
     	} else {
-    		PartecipationDAO.addJoinedEvent(user, event);
+    		ParticipationDAO.addJoinedEvent(user, event);
     		
     		setIsJoined(true);
     	}
@@ -134,7 +132,7 @@ public class EventDetailsController {
 	private void setIsJoined(Boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
-			btnJoin.setText("Rimuovi partecipazione");
+			btnJoin.setText(App.bundle.getString("remove_participation"));
 			
 			if(!lvPartecipants.getItems().contains(user.getUsername())) {
 				ObservableList<String> partecipants = lvPartecipants.getItems();
@@ -144,7 +142,7 @@ public class EventDetailsController {
 			}
 		}
 		else {
-			btnJoin.setText("Partecipa");
+			btnJoin.setText(App.bundle.getString("join"));
 			lvPartecipants.getItems().remove(user.getUsername());
 		}
 	}

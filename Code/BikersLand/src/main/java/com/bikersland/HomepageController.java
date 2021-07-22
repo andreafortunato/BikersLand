@@ -116,22 +116,27 @@ public class HomepageController {
     	pnlMain.setVisible(false);
     	spEventList.setVisible(false);
     	
-    	    	
-//    	partenzaDistanzaSlider.setSnapToTicks(true);
     	sliderPartenzaDistanza.setMajorTickUnit(25);
     	sliderPartenzaDistanza.setMinorTickCount(2);
     	sliderPartenzaDistanza.setShowTickLabels(true);
-    	
-    	
     	sliderPartenzaDistanza.valueProperty().addListener((observable, oldValue, newValue) -> {
     		sliderPartenzaDistanza.setValue(newValue.intValue());
             lblPartenzaDistanza.setText(Integer.toString(newValue.intValue()) + " Km da");
         });
-    	
     	sliderPartenzaDistanza.setOnMousePressed(event -> imgBackground.requestFocus());
     	
+    	sliderArrivoDistanza.setMajorTickUnit(25);
+    	sliderArrivoDistanza.setMinorTickCount(2);
+    	sliderArrivoDistanza.setShowTickLabels(true);
+    	sliderArrivoDistanza.valueProperty().addListener((observable, oldValue, newValue) -> {
+    		sliderArrivoDistanza.setValue(newValue.intValue());
+            lblArrivoDistanza.setText(Integer.toString(newValue.intValue()) + " Km da");
+        });
+    	sliderArrivoDistanza.setOnMousePressed(event -> imgBackground.requestFocus());    	
+    	
+    	
     	ObservableList<String> cities = FXCollections.observableArrayList(App.cities);
-    	cities.add(0, "All");
+    	cities.add(0, App.bundle.getString("all_female"));
     	
         comboPartenzaCitta.setItems(cities);
         comboPartenzaDistanza.setItems(FXCollections.observableArrayList(App.cities));
@@ -201,23 +206,10 @@ public class HomepageController {
         	
         	
         	try {
-				this.eventList = EventDAO.getEventByCities("All", "All");
+				this.eventList = EventDAO.getEventByCities(App.bundle.getString("all_female"), App.bundle.getString("all_female"));
 			} catch (SQLException | IOException e) {
 				e.printStackTrace();
 			}
-//        	if(LoginSingleton.getLoginInstance().getUser() != null) {
-//        		try {
-//					this.eventList = EventDAO.getEventByCities("All", "All", LoginSingleton.getLoginInstance().getUser());
-//				} catch (SQLException | IOException e) {
-//					e.printStackTrace();
-//				}
-//        	} else {
-//        		try {
-//					this.eventList = EventDAO.getEventByCities("All", "All");
-//				} catch (SQLException | IOException e) {
-//					e.printStackTrace();
-//				}
-//        	}
         	
         	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventList);
         	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
@@ -254,6 +246,9 @@ public class HomepageController {
 	    	lblPartenzaDistanza.setDisable(true);
 	    	comboPartenzaDistanza.setDisable(true);
 	    	comboPartenzaCitta.setDisable(false);
+	    	
+	    	if(!radioArrivoDistanza.isSelected())
+	    		btnSearch.setDisable(false);
     	}
     }
     
@@ -264,6 +259,8 @@ public class HomepageController {
         	lblPartenzaDistanza.setDisable(false);
         	comboPartenzaDistanza.setDisable(false);
         	comboPartenzaCitta.setDisable(true);
+        	
+        	btnSearch.setDisable(true);
     	}
     }
     
@@ -274,6 +271,9 @@ public class HomepageController {
 	    	lblArrivoDistanza.setDisable(true);
 	    	comboArrivoDistanza.setDisable(true);
 	    	comboArrivoCitta.setDisable(false);
+	    	
+	    	if(!radioPartenzaDistanza.isSelected())
+	    		btnSearch.setDisable(false);
     	}
     }
     
@@ -284,6 +284,7 @@ public class HomepageController {
         	lblArrivoDistanza.setDisable(false);
         	comboArrivoDistanza.setDisable(false);
         	comboArrivoCitta.setDisable(true);
+        	btnSearch.setDisable(true);
     	}
     }
     
