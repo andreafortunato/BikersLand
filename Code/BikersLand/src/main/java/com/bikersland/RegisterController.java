@@ -168,7 +168,7 @@ public class RegisterController {
 					+ username +
 					App.bundle.getString("timedalert_register_success_content_2"), null);
 			
-			LoginSingleton.getLoginInstance().setUser(newUser);
+			LoginSingleton.getLoginInstance().setUser(UserDAO.getUserByUsername(username));
 			App.setRoot("Homepage");
 		} catch (UsernameException e) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
