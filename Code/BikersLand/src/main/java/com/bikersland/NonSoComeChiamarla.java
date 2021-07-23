@@ -156,12 +156,4 @@ public class NonSoComeChiamarla {
 		SimpleDateFormat dateOnly = new SimpleDateFormat("dd-MM-yyyy");
 		return dateOnly.format(date);
 	}
-	
-	public static boolean needsTooltip(Label label){
-	    Text text = new Text(label.getText());
-	    text.setFont(label.getFont());
-	    Bounds tb = text.getBoundsInLocal();
-	    
-	    return tb.getWidth() > label.getWidth();
-	  }
 }

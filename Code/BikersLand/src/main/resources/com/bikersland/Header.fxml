@@ -33,8 +33,8 @@
                   </HBox>
                   <HBox fx:id="hbLoggedIn" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Button fx:id="btnProfile" mnemonicParsing="false" onAction="#goToProfile" prefHeight="40.0" prefWidth="140.0" text="IL TUO PROFILO" />
-                        <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="140.0" text="LOGOUT" />
+                        <Button fx:id="btnProfile" mnemonicParsing="false" onAction="#goToProfile" prefHeight="40.0" prefWidth="140.0" text="%your_profile" />
+                        <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="140.0" text="%logout" />
                      </children>
                   </HBox>
                </children>

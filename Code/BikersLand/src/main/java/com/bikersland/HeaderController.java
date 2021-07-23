@@ -59,10 +59,7 @@ public class HeaderController {
     		btnNewEvent.setVisible(false);
     	}
     	
-    	Tooltip flagTooltip = new Tooltip(App.bundle.getString("change_lang"));
-    	flagTooltip.setShowDelay(Duration.ZERO);
-    	flagTooltip.setHideDelay(Duration.ZERO);
-    	flagTooltip.setFont(Font.font(flagTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
+    	InstantTooltip flagTooltip = new InstantTooltip(App.bundle.getString("change_lang"));
     	Tooltip.install(btnLanguage, flagTooltip);
     	
     	if(App.locale == Locale.ITALIAN)

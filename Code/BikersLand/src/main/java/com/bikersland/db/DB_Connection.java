@@ -19,15 +19,16 @@ public class DB_Connection {
     private static String PASS = "bikersland";
     private static String DB_URL = "jdbc:mysql://localhost:3306/bikersland";
 //    private static String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
+    private static String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     
 	public static Connection connection = null;
 	
 	public static Connection getConnection() {
 		if(connection == null) {
-//            Class.forName(DRIVER_CLASS_NAME);
 			try {
+				Class.forName(DRIVER_CLASS_NAME);
 				connection = DriverManager.getConnection(DB_URL, USER, PASS);
-			} catch (SQLException e) {
+			} catch (SQLException | ClassNotFoundException e) {
 				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
 						App.bundle.getString("timedalert_db_conn_error_title"),
 						App.bundle.getString("timedalert_db_conn_error_header"),

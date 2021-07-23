@@ -18,21 +18,21 @@
       <fx:include fx:id="header" source="Header.fxml" />
    </top>
    <center>
-      <VBox alignment="CENTER" maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" spacing="20.0" styleClass="registerBox" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxWidth="330.0" prefHeight="200.0" prefWidth="330.0" spacing="20.0" styleClass="registerBox" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 20;" text="Crea un nuovo account" />
+            <Label alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 20;" text="%create_account" />
             <HBox spacing="20.0">
                <children>
-                  <TextField fx:id="txtName" promptText="Nome" />
-                  <TextField fx:id="txtSurname" promptText="Cognome" />
+                  <TextField fx:id="txtName" promptText="%name" />
+                  <TextField fx:id="txtSurname" promptText="%surname" />
                </children>
             </HBox>
             <HBox maxHeight="43.0" minHeight="43.0" prefHeight="43.0" spacing="20.0">
                <children>
-                  <TextField fx:id="txtUsername" promptText="Username" />
+                  <TextField fx:id="txtUsername" promptText="%username" />
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnImage" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#uploadImage" text="Load Image..." />
+                        <Button fx:id="btnImage" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#uploadImage" text="%load_image_2" />
                         <HBox fx:id="hbImageSelected" alignment="CENTER_LEFT" spacing="5.0" visible="false">
                            <children>
                               <ImageView fitHeight="15.0" fitWidth="15.0" onMouseClicked="#removeImage" pickOnBounds="true" preserveRatio="true">
@@ -51,10 +51,10 @@
                </children>
             </HBox>
             <TextField fx:id="txtEmail1" promptText="Email" />
-            <TextField fx:id="txtEmail2" promptText="Conferma Email" />
+            <TextField fx:id="txtEmail2" promptText="%confirm_email" />
             <PasswordField fx:id="txtPassword1" promptText="Password" />
-            <PasswordField fx:id="txtPassword2" promptText="Conferma Password" />
-            <Button fx:id="btnRegister" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#register" text="Register">
+            <PasswordField fx:id="txtPassword2" promptText="%confirm_password" />
+            <Button fx:id="btnRegister" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#register" text="%register">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

@@ -153,13 +153,14 @@
     -fx-background-color: -fx-background;
 }
 
-.list-cell:filled:selected {
-	-fx-background-color: -color-primary;
-}
-
 .list-cell:filled:hover { 
     -fx-background-color: -color-primary-dark;
     -fx-text-fill: white;
+}
+
+.new-event-tags .list-cell:filled:hover,
+.new-event-tags .list-cell:focused {
+	-fx-text-fill: black;
 }
 
 .registerBox .text-field-error,

@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.bikersland.db.CityDAO;
+import com.bikersland.db.DB_Connection;
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.FavoriteEventDAO;
 import com.bikersland.db.TagDAO;
@@ -28,7 +30,7 @@ public class App extends Application {
 
     public static Scene scene;
     
-    public static Locale locale = Locale.ITALIAN;
+    public static Locale locale = Locale.ENGLISH;
     public static ResourceBundle bundle;
     
     @Override
@@ -45,6 +47,15 @@ public class App extends Application {
         
         stage.setMinWidth(stage.getWidth());
         stage.setMinHeight(stage.getHeight());
+        
+        stage.setOnCloseRequest(event -> {
+        	try {
+				DB_Connection.getConnection().close();
+				System.out.println("Ciao");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        });
     }
 
     static void setRoot(String fxml) throws IOException {

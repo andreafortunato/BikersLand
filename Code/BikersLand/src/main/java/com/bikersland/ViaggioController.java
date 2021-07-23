@@ -79,7 +79,7 @@ public class ViaggioController {
     private Boolean isFavorite = false;
     private Boolean isJoined = false;
     
-    private Tooltip favoriteTooltip = new Tooltip("");
+    private InstantTooltip favoriteTooltip = new InstantTooltip("");
     
     private User user = null;
     
@@ -95,9 +95,6 @@ public class ViaggioController {
     public void initialize() {
     	user = LoginSingleton.getLoginInstance().getUser();
     	
-    	favoriteTooltip.setShowDelay(Duration.ZERO);
-    	favoriteTooltip.setHideDelay(Duration.ZERO);
-    	favoriteTooltip.setFont(Font.font(favoriteTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
     	Tooltip.install(imgStar, favoriteTooltip);
     	
     	Rectangle imgRound = new Rectangle(400, 170);
@@ -122,10 +119,7 @@ public class ViaggioController {
 		}
     	imgViaggio.setPreserveRatio(true);
     	
-    	Tooltip imgTooltip = new Tooltip(App.bundle.getString("see_event_details"));
-    	imgTooltip.setShowDelay(Duration.ZERO);
-    	imgTooltip.setHideDelay(Duration.ZERO);
-    	imgTooltip.setFont(Font.font(imgTooltip.getFont().getFamily(), FontWeight.BOLD, 13));
+    	InstantTooltip imgTooltip = new InstantTooltip(App.bundle.getString("see_event_details"));
     	Tooltip.install(imgViaggio, imgTooltip);
     	
     	lblTitle.setText(event.getTitle());
@@ -136,10 +130,7 @@ public class ViaggioController {
     		lblTags.setText("No tags!");
     	else {
     	    lblTags.setText(String.join(", ", event.getTags()));
-    	    Tooltip tp = new Tooltip(lblTags.getText());
-    		tp.setShowDelay(Duration.ZERO);
-    		tp.setHideDelay(Duration.ZERO);
-    		tp.setFont(Font.font(tp.getFont().getFamily(), FontWeight.BOLD, 13));
+    	    InstantTooltip tp = new InstantTooltip(lblTags.getText());
     		lblTags.setTooltip(tp);
     	}
     	lblDepartureDate.setText(NonSoComeChiamarla.dateToString(event.getDeparture_date()));
@@ -163,15 +154,11 @@ public class ViaggioController {
 			for(String participant: participants)
 				participantList += participant + "\n";
 			
-			Tooltip participantsTooltip;
+			InstantTooltip participantsTooltip;
 			if(participants.size() == 0)			
-//				participantsTooltip = new Tooltip("Nobody joined this event!");
-				participantsTooltip = new Tooltip(App.bundle.getString("no_participants"));
+				participantsTooltip = new InstantTooltip(App.bundle.getString("no_participants"));
 			else
-				participantsTooltip = new Tooltip(App.bundle.getString("participants") + ":\n\n" + participantList);
-			participantsTooltip.setShowDelay(Duration.ZERO);
-			participantsTooltip.setHideDelay(Duration.ZERO);
-			participantsTooltip.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 13));
+				participantsTooltip = new InstantTooltip(App.bundle.getString("participants") + ":\n\n" + participantList);
 			btnParticipants.setTooltip(participantsTooltip);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -253,14 +240,14 @@ public class ViaggioController {
             animation.setCycleCount(1);
             animation.play();
             
-            favoriteTooltip.setText(App.bundle.getString("remove_from_favourites"));
+            favoriteTooltip.setText(App.bundle.getString("remove_from_favorites"));
 		}
 		else {
 			if(animation != null)
     			animation.stop();
 			imgStar.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
 			
-			favoriteTooltip.setText(App.bundle.getString("add_to_favourites"));
+			favoriteTooltip.setText(App.bundle.getString("add_to_favorites"));
 		}
 	}
 	

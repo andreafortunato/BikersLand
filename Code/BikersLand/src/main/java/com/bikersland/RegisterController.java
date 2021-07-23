@@ -65,7 +65,7 @@ public class RegisterController {
     
     private boolean validEmail = false;
     
-    private Tooltip imageTooltip = new Tooltip();
+    private InstantTooltip imageTooltip = new InstantTooltip();
     private File imageFile = null;
     
     private ChangeListener<String> checkEnableBtnRegister = new ChangeListener<String>() {
@@ -74,10 +74,6 @@ public class RegisterController {
 			List<TextField> textFields = Arrays.asList(txtName, txtSurname, txtUsername, txtEmail1, txtEmail2, txtPassword1, txtPassword2);
 			
 			for(TextField tf : textFields) {
-				if(tf == null) {
-					System.out.println("QUALCOSA E' NULL!");
-					System.exit(-1);
-				}
 				if(tf.getText().strip().length() == 0) {
 					btnRegister.setDisable(true);
 					return;
@@ -137,15 +133,17 @@ public class RegisterController {
 			e.printStackTrace();
 		}
 		
-		imageTooltip.setShowDelay(Duration.ZERO);
-    	imageTooltip.setHideDelay(Duration.ZERO);
     	lblImageName.setTooltip(imageTooltip);
 	}
 	
 	@FXML
 	private void register() throws SQLException, IOException {
 		if(!txtPassword1.getText().equals(txtPassword2.getText())) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Registration Error", "Passwords do not match", "The two passwords you entered do not match.\n\n Please try again...", null);
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					App.bundle.getString("timedalert_register_error_title"),
+					App.bundle.getString("timedalert_register_password_error_header"),
+					App.bundle.getString("timedalert_register_password_error_content"), null);
+			
 			txtPassword1.setText("");
 			txtPassword2.setText("");
 			txtPassword1.requestFocus();
@@ -163,15 +161,27 @@ public class RegisterController {
 		
 		try {
 			UserDAO.setUser(newUser);
-			NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION, "Success!" , "Registration succesfully completed!" , "Hi " + username + "!\nWelcome to BikersLand!", null);
+			NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
+					App.bundle.getString("success"),
+					App.bundle.getString("timedalert_register_success_header"),
+					App.bundle.getString("timedalert_register_success_content_1")
+					+ username +
+					App.bundle.getString("timedalert_register_success_content_2"), null);
+			
 			LoginSingleton.getLoginInstance().setUser(newUser);
 			App.setRoot("Homepage");
 		} catch (UsernameException e) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Registration Error" , "Username already exists!" , "A user already exists with username ", username);
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					App.bundle.getString("timedalert_register_error_title"),
+					App.bundle.getString("timedalert_register_error_username_header"),
+					App.bundle.getString("timedalert_register_error_username_content"), username);
 			txtUsername.setText("");
 			txtUsername.requestFocus();
 		} catch (EmailException e) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Registration Error" , "Email already exists!" , "A user already exists with email ", email);
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					App.bundle.getString("timedalert_register_error_title"),
+					App.bundle.getString("timedalert_register_error_email_header"),
+					App.bundle.getString("timedalert_register_error_email_content"), email);
 			txtEmail1.setText("");
 			txtEmail2.setText("");
 			txtEmail1.requestFocus();
@@ -206,7 +216,10 @@ public class RegisterController {
     			btnImage.setVisible(false);
     			hbImageSelected.setVisible(true);
     		} else {
-    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR, "Image error", "Maximum size exceeded", "The selected image exceeds the maximum size of 4 MB!", null);
+    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+    					App.bundle.getString("timedalert_image_error_title"),
+    					App.bundle.getString("timedalert_image_error_header"),
+    					App.bundle.getString("timedalert_image_error_content"), null);
     		}
     	}    	
     }

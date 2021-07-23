@@ -64,22 +64,11 @@ public class NewEventController {
     @FXML
     private HBox hbImageSelected;
     
-    private Tooltip imageTooltip = new Tooltip();
+    private InstantTooltip imageTooltip = new InstantTooltip();
     
     private File imageFile = null;
     
     private int maxDescriptionCharacters = 250;
-    
-    public static ObservableList<Tappa> tappaObservableList;
-
-    public NewEventController()  {
-    	tappaObservableList = FXCollections.observableArrayList();
-
-        //add some Students
-    	for(int i = 0; i < 1; i++) {
-			tappaObservableList.add(new Tappa());
-		}
-    }
     
     public void initialize() throws SQLException {
     	comboDepartureCity.getItems().addAll(App.cities);
@@ -95,8 +84,6 @@ public class NewEventController {
             }
         });
     	
-    	imageTooltip.setShowDelay(Duration.ZERO);
-    	imageTooltip.setHideDelay(Duration.ZERO);
     	lblImageName.setTooltip(imageTooltip);
     	
     	txtDescription.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -105,7 +92,7 @@ public class NewEventController {
     			return;
     		}
     		
-    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " caratteri rimanenti");
+    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " " + App.bundle.getString("remaining_characters"));
     	});
     	
     }
@@ -149,9 +136,9 @@ public class NewEventController {
     			hbImageSelected.setVisible(true);
     		} else {
     			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-    					App.bundle.getString("timedalert_new_event_image_error_title"),
-    					App.bundle.getString("timedalert_new_event_image_error_header"),
-    					App.bundle.getString("timedalert_new_event_image_error_content"), null);
+    					App.bundle.getString("timedalert_image_error_title"),
+    					App.bundle.getString("timedalert_image_error_header"),
+    					App.bundle.getString("timedalert_image_error_content"), null);
     		}
     	}    	
     }
@@ -199,7 +186,7 @@ public class NewEventController {
     	
     	Event event = new Event(txtTitle.getText().strip(), txtDescription.getText().strip(), LoginSingleton.getLoginInstance().getUser().getUsername(),
     			comboDepartureCity.getValue(), comboDestinationCity.getValue(), Date.valueOf(dateDeparture.getValue()),
-    			Date.valueOf(dateReturn.getValue()), eventImage, comboTags.getItems()); //TODO: controllare this.imageFile se NULL (in caso affermativo, metterne una di default direttamente da EventDetails)
+    			Date.valueOf(dateReturn.getValue()), eventImage, comboTags.getItems());
     	
     	event = EventDAO.setEvent(event);
     	
@@ -210,15 +197,15 @@ public class NewEventController {
     		}
 	    	
     		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
-    				App.bundle.getString("timedalert_new_event_success_title_title"),
-    				App.bundle.getString("timedalert_new_event_success_title_header"),
-    				App.bundle.getString("timedalert_new_event_success_title_content"), event.getTitle());
+    				App.bundle.getString("success"),
+    				App.bundle.getString("timedalert_new_event_success_header"),
+    				App.bundle.getString("timedalert_new_event_success_content"), event.getTitle());
 	    	App.setRoot("EventDetails", event);
     	} else {
 	    	NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-	    			App.bundle.getString("timedalert_new_event_error_title_title"),
-	    			App.bundle.getString("timedalert_new_event_error_title_header"),
-	    			App.bundle.getString("timedalert_new_event_error_title_content"), null);
+	    			App.bundle.getString("error"),
+	    			App.bundle.getString("timedalert_new_event_error_header"),
+	    			App.bundle.getString("timedalert_new_event_error_content"), null);
     	}
     }
 

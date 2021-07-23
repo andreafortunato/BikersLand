@@ -50,6 +50,13 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		/****************************************/
+		// TODO: Da rimuovere
+		txtUser.setText("galaxy");
+		txtPassword.setText("password");
+		/****************************************/
+		
 	}
 	
 	@FXML

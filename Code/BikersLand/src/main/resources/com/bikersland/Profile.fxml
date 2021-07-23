@@ -20,7 +20,7 @@
          <children>
             <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="750.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label text="Il tuo profilo">
+                  <Label text="%your_profile_2">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
@@ -58,14 +58,14 @@
                   </HBox>
                   <VBox fx:id="vbViaggi" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label text="Eventi a cui partecipi o hai partecipato in passato">
+                        <Label text="%events_participate_participated">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Label>
                         <TabPane>
                            <tabs>
-                              <Tab closable="false" text="Eventi partecipati">
+                              <Tab closable="false" text="%joined_events">
                                  <content>
                                     <ScrollPane fitToWidth="true">
                                        <content>
@@ -78,7 +78,7 @@
                                     </ScrollPane>
                                  </content>
                               </Tab>
-                              <Tab closable="false" text="Eventi preferiti">
+                              <Tab closable="false" text="%favorite_events">
                                  <content>
                                     <GridPane fx:id="gridViaggi1" alignment="CENTER" gridLinesVisible="true" hgap="20.0" vgap="30.0">
                                        <padding>

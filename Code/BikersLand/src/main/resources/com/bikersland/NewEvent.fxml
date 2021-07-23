@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckComboBox?>
@@ -37,7 +38,7 @@
                <content>
                   <VBox alignment="TOP_CENTER" fillWidth="false" maxWidth="1.7976931348623157E308" prefHeight="750.0" spacing="10.0">
                      <children>
-                        <Label text="Crea un nuovo evento">
+                        <Label text="%create_new_event">
                            <font>
                               <Font name="System Bold" size="30.0" />
                            </font>
@@ -58,18 +59,22 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Titolo" />
-                              <Label text="Città di partenza" GridPane.rowIndex="1" />
-                              <Label text="Città di arrivo" GridPane.rowIndex="2" />
-                              <Label text="Data partenza" GridPane.rowIndex="3" />
-                              <Label text="Data ritorno" GridPane.rowIndex="4" />
-                              <Label text="Descrizione" GridPane.rowIndex="5">
+                              <Label text="%title" />
+                              <Label text="%departure_city_2" GridPane.rowIndex="1" />
+                              <Label text="%destination_city_2" GridPane.rowIndex="2" />
+                              <Label text="%departure_date_2" GridPane.rowIndex="3" />
+                              <Label text="%return_date_2" GridPane.rowIndex="4" />
+                              <Label text="%description_2" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets bottom="50.0" />
                                  </GridPane.margin>
                               </Label>
                               <Label text="Tag" GridPane.rowIndex="6" />
-                              <CheckComboBox fx:id="comboTags" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <StackPane styleClass="new-event-tags" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <children>
+                                    <CheckComboBox fx:id="comboTags" maxWidth="1.7976931348623157E308" />
+                                 </children>
+                              </StackPane>
                               <SearchableComboBox fx:id="comboDepartureCity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <SearchableComboBox fx:id="comboDestinationCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <DatePicker fx:id="dateDeparture" editable="false" onAction="#enableDateReturn" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -77,17 +82,17 @@
                               <VBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <children>
                                     <TextArea fx:id="txtDescription" maxHeight="80.0" wrapText="true" />
-                                    <Label fx:id="lblCharacters" text="250 caratteri rimanenti">
+                                    <Label fx:id="lblCharacters" text="%250_chars">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>
                                     </Label>
                                  </children>
                               </VBox>
-                              <Label text="Carica immagine" GridPane.rowIndex="7" />
+                              <Label text="%load_image" GridPane.rowIndex="7" />
                               <HBox alignment="CENTER_LEFT" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#uploadImage" text="Seleziona..." />
+                                    <Button mnemonicParsing="false" onAction="#uploadImage" text="%select" />
                                     <HBox fx:id="hbImageSelected" alignment="CENTER_LEFT" spacing="5.0" visible="false" HBox.hgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="15.0" fitWidth="15.0" onMouseClicked="#removeImage" pickOnBounds="true" preserveRatio="true">
@@ -112,7 +117,7 @@
                               <Insets />
                            </opaqueInsets>
                         </GridPane>
-                        <Button mnemonicParsing="false" onAction="#createEvent" prefHeight="55.0" prefWidth="683.0" text="Crea Evento">
+                        <Button mnemonicParsing="false" onAction="#createEvent" prefHeight="55.0" prefWidth="683.0" text="%create_event">
                            <VBox.margin>
                               <Insets top="30.0" />
                            </VBox.margin>
