@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import com.bikersland.Event;
-import com.bikersland.User;
+import com.bikersland.model.Event;
+import com.bikersland.model.User;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

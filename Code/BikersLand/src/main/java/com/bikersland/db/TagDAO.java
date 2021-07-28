@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bikersland.App;
+import com.bikersland.db.queries.SimpleQueries;
+import com.bikersland.exception.TagNotFoundException;
 
 public class TagDAO {
 	public static List<String> getTags() throws SQLException {
@@ -36,25 +38,32 @@ public class TagDAO {
         return tagList;
 	}
 	
-	public static List<Integer> tagNameToTagId(List<String> tagList) throws SQLException {
-		List<Integer> tagIdList= new ArrayList<>();
+	public static List<Integer> tagNameToTagId(List<String> tagList) throws SQLException, TagNotFoundException {
+		List<Integer> tagIdList = new ArrayList<>();
 		
-		String query;
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		ResultSet rs;
+		Statement stmt = null;
+		ResultSet rs = null;
 		
-		for(String tagName:tagList) {
-			query = "SELECT id FROM tag WHERE en='" + tagName + "' OR it='" + tagName + "';";
-			rs = stmt.executeQuery(query);
+		try {
+			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			if(rs.next()) {
-				tagIdList.add(rs.getInt("id"));
+			for(String tagName:tagList) {
+				rs = SimpleQueries.tagNameToTagIdQuery(stmt, tagName);
+				
+				if(rs.next()) {
+					tagIdList.add(rs.getInt("id"));
+				} else {
+					throw new TagNotFoundException();
+				}
 			}
+			
+			return tagIdList;
+		} finally {
+			if (rs != null)
+				rs.close();
+			
+			if (stmt != null)
+				stmt.close();
 		}
-       
-        if (stmt != null)
-        	stmt.close();
-        
-		return tagIdList;
 	}
 }

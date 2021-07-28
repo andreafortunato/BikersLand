@@ -9,24 +9,22 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bikersland.App;
+import com.bikersland.db.queries.CRUDQueries;
 
 import javafx.collections.FXCollections;
 
 public class EventTagDAO {
-	public static void addEventTags(Integer eventId, List<String> tagList) throws SQLException {
-		List<Integer> tagIdList = TagDAO.tagNameToTagId(tagList);
-		
-        String query = "INSERT INTO event_tag VALUES ";
-        for(Integer tagId: tagIdList)
-        	query += "(" + eventId + ", '" + tagId + "'), ";
-        query = query.substring(0, query.length()-2) + ";";
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
-		stmt.executeUpdate(query);
-       
-        if (stmt != null)
-        	stmt.close();
+	public static void addEventTags(Integer eventId, List<Integer> tagList) throws SQLException {
+        		
+		Statement stmtAddEventTags = null;
+		try {
+			stmtAddEventTags = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            
+			CRUDQueries.addEventTagsQuery(stmtAddEventTags, eventId, tagList);
+		} finally {
+			if (stmtAddEventTags != null)
+				stmtAddEventTags.close();
+		}
 	}
 	
 	public static List<String> getEventTags(Integer eventId) throws SQLException {

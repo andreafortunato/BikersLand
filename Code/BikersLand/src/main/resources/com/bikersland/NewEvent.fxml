@@ -21,7 +21,7 @@
 <?import org.controlsfx.control.CheckComboBox?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.NewEventController">
+<AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.controller.graphics.NewEventControllerView">
    <children>
       <!-- <Pane prefHeight="150.0" prefWidth="1200.0" style="-fx-background-color: derive(red, 130%);">
          <children>
@@ -77,8 +77,8 @@
                               </StackPane>
                               <SearchableComboBox fx:id="comboDepartureCity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <SearchableComboBox fx:id="comboDestinationCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <DatePicker fx:id="dateDeparture" editable="false" onAction="#enableDateReturn" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <DatePicker fx:id="dateReturn" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <DatePicker fx:id="pickerDepartureDate" editable="false" onAction="#enablePickerReturnDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <DatePicker fx:id="pickerReturnDate" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <VBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <children>
                                     <TextArea fx:id="txtDescription" maxHeight="80.0" wrapText="true" />

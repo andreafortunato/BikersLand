@@ -1,34 +1,32 @@
 package com.bikersland;
 
+import com.bikersland.exception.InternalDBException;
+import com.bikersland.model.Event;
+
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -85,7 +83,7 @@ public class NonSoComeChiamarla {
 	}
 	
 	public static void showTimedAlert(AlertType alertType, String title, String header, String content, String contentRed) {
-		int seconds = 3;
+		int seconds = 0;
 		
 		TextFlow flow = new TextFlow();
 
@@ -155,5 +153,9 @@ public class NonSoComeChiamarla {
 	public static String dateToString(Date date) {
 		SimpleDateFormat dateOnly = new SimpleDateFormat("dd-MM-yyyy");
 		return dateOnly.format(date);
+	}
+
+	public static void test() throws InternalDBException {
+		throw new InternalDBException("Messaggio di prova", new SQLException("boh"), "metodo(String)", "File.java");
 	}
 }

@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.bikersland.db.FavoriteEventDAO;
 import com.bikersland.db.ParticipationDAO;
+import com.bikersland.model.User;
+import com.bikersland.model.Event;
+import com.bikersland.singleton.LoginSingleton;
 
 import javafx.animation.Animation;
 import javafx.application.Platform;
@@ -148,7 +151,7 @@ public class ViaggioController {
 		
 		List<String> participants;
 		try {
-			participants = ParticipationDAO.getJoinedUsersByEvent(event);
+			participants = ParticipationDAO.getParticipantsByEventId(event);
 			btnParticipants.setText(String.valueOf(participants.size()));
 			String participantList = "";
 			for(String participant: participants)
@@ -216,11 +219,11 @@ public class ViaggioController {
     @FXML
     private void joinEvent() throws SQLException, IOException {
     	if(isJoined) {
-    		ParticipationDAO.removeJoinedEvent(user, event);
+    		ParticipationDAO.removeUserParticipation(user, event);
     		
     		setIsJoined(false);
     	} else {
-    		ParticipationDAO.addJoinedEvent(user, event);
+    		ParticipationDAO.addUserParticipation(user, event);
     		
     		setIsJoined(true);
     	}

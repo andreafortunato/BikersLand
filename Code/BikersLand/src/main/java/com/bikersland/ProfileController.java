@@ -8,6 +8,9 @@ import java.util.List;
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.FavoriteEventDAO;
 import com.bikersland.db.ParticipationDAO;
+import com.bikersland.model.User;
+import com.bikersland.model.Event;
+import com.bikersland.singleton.LoginSingleton;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

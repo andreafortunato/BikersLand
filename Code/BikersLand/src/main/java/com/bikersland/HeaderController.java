@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.TagDAO;
+import com.bikersland.singleton.LoginSingleton;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -7,6 +7,7 @@ import java.util.List;
 import org.controlsfx.control.SearchableComboBox;
 
 import com.bikersland.db.EventDAO;
+import com.bikersland.model.Event;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

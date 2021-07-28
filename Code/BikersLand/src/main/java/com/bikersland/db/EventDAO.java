@@ -17,95 +17,107 @@ import java.util.Locale;
 import javax.imageio.ImageIO;
 
 import com.bikersland.App;
-import com.bikersland.Event;
-import com.bikersland.User;
+import com.bikersland.db.queries.CRUDQueries;
+import com.bikersland.exception.ImageConversionException;
+import com.bikersland.exception.event.EventNotFoundException;
+import com.bikersland.exception.user.DuplicateEmailException;
+import com.bikersland.exception.user.DuplicateUsernameException;
+import com.bikersland.model.Event;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 public class EventDAO {
-	public static Event setEvent(Event event) throws SQLException, IOException {
-		CallableStatement stmCreateEvent = DB_Connection.getConnection().prepareCall("{CALL CreateEvent(?,?,?,?,?,?,?,?)}");
-				
-		stmCreateEvent.setString(1, event.getTitle());
-		stmCreateEvent.setString(2, event.getDescription());
-		stmCreateEvent.setString(3, event.getOwner_username());
-		stmCreateEvent.setString(4, event.getDeparture_city());
-		stmCreateEvent.setString(5, event.getDestination_city());
-		stmCreateEvent.setDate(6, event.getDeparture_date());
-		stmCreateEvent.setDate(7, event.getReturn_date());
+	
+	private static final String ID_COL = "id";
+	private static final String TITLE_COL = "title";
+	private static final String DESCRIPTION_COL = "description";
+	private static final String OWNER_USERNAME_COL = "owner_username";
+	private static final String DEPARTURE_CITY_COL = "departure_city";
+	private static final String DESTINATION_CITY_COL = "destination_city";
+	private static final String DEPARTURE_DATE_COL = "departure_date";
+	private static final String RETURN_DATE_COL = "return_date";
+	private static final String IMAGE_COL = "image";
+	private static final String CREATE_TIME_COL = "create_time";
+	
+	private EventDAO() {}
+	
+	public static Event createNewEvent(Event event) throws SQLException, ImageConversionException, EventNotFoundException {
+		CallableStatement stmtCreateEvent = null;
+		ResultSet createNewEventRS = null;
 		
-		if(event.getImage() != null) {
-			BufferedImage buffImg = SwingFXUtils.fromFXImage(event.getImage(),null);
-			ByteArrayOutputStream bts = new ByteArrayOutputStream();
-			ImageIO.write(buffImg,"png" , bts);
-			InputStream blobImage = new ByteArrayInputStream(bts.toByteArray());
-			
-			stmCreateEvent.setBlob(8, blobImage);
-		} else {
-			stmCreateEvent.setNull(8, Types.BLOB);
-		}
-		
-		ResultSet newEvent = null;
 		try {
-			newEvent = stmCreateEvent.executeQuery();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		
-		
-		if(newEvent.next()) {
-			Image image;
-			if(newEvent.getBinaryStream("image") != null) {
-			BufferedImage img = ImageIO.read(newEvent.getBinaryStream("image"));
-        	image = SwingFXUtils.toFXImage(img, null);
-			} else {
-				image = null;
+			stmtCreateEvent = DB_Connection.getConnection().prepareCall("{CALL CreateEvent(?,?,?,?,?,?,?,?)}");
+			createNewEventRS = CRUDQueries.createNewEventQuery(stmtCreateEvent, event);
+			
+			if(createNewEventRS.next()) {
+				Image image;
+				if(createNewEventRS.getBinaryStream(IMAGE_COL) != null) {
+					try {
+						BufferedImage img = ImageIO.read(createNewEventRS.getBinaryStream(IMAGE_COL));
+						image = SwingFXUtils.toFXImage(img, null);
+					} catch (IOException e) {
+						/* Se si verifica un problema nella conversione dell'immagine, lancio 
+						   un'eccezione e gestisco l'errore come se fosse dovuto dal Database */
+						throw new ImageConversionException(e);
+					} finally {
+						createNewEventRS.close();
+						stmtCreateEvent.close();
+					}
+				} else {
+					image = null;
+				}
+				
+				return new Event(createNewEventRS.getInt(ID_COL), createNewEventRS.getString(TITLE_COL), createNewEventRS.getString(DESCRIPTION_COL),
+						createNewEventRS.getString(OWNER_USERNAME_COL), createNewEventRS.getString(DEPARTURE_CITY_COL),
+						createNewEventRS.getString(DESTINATION_CITY_COL), createNewEventRS.getDate(DEPARTURE_DATE_COL),
+						createNewEventRS.getDate(RETURN_DATE_COL), image, createNewEventRS.getDate(CREATE_TIME_COL), event.getTags());
 			}
 			
-			return new Event(newEvent.getInt("id"), newEvent.getString("title"), newEvent.getString("description"),
-					newEvent.getString("owner_username"), newEvent.getString("departure_city"),
-					newEvent.getString("destination_city"), newEvent.getDate("departure_date"),
-					newEvent.getDate("return_date"), image, newEvent.getDate("create_time"), event.getTags());
+			throw new EventNotFoundException();
+			
+		} finally {
+			if(createNewEventRS != null)
+				createNewEventRS.close();
+			
+			if(stmtCreateEvent != null)
+				stmtCreateEvent.close();
 		}
-		
-		return null;
 	}
 	
-	// TODO: Da rimuovere?
-	public static Event getEventByID(Integer id) throws SQLException, IOException {
-		Event event;
-		String query = "SELECT * FROM event WHERE id='" + id + "';";
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
-        ResultSet rs = stmt.executeQuery(query);
-        
-        if(rs.first()) {
-        	Image image;
-			if(rs.getBinaryStream("image") != null) {
-	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-	        	image = SwingFXUtils.toFXImage(img, null);
-			} else {
-				image = null;
-			}
-        	event = new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id")));
-        	//TODO: Controllare cosa succede se la lista di tags è nulla (cioè "EventTagDAO.getEventTags(rs.getInt("id"))" come
-        	//		si comporta se l'evento non ha tag ad esso associati)
-        } else {
-        	event = null;
-        }
-        
-        rs.close();
-        
-        if (stmt != null)
-        	stmt.close();
-        
-		return event;
-	}
+//	// TODO: Da rimuovere?
+//	public static Event getEventByID(Integer id) throws SQLException, IOException {
+//		Event event;
+//		String query = "SELECT * FROM event WHERE id='" + id + "';";
+//		
+//		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//                
+//        ResultSet rs = stmt.executeQuery(query);
+//        
+//        if(rs.first()) {
+//        	Image image;
+//			if(rs.getBinaryStream("image") != null) {
+//	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
+//	        	image = SwingFXUtils.toFXImage(img, null);
+//			} else {
+//				image = null;
+//			}
+//        	event = new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
+//        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
+//        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id")));
+//        	//TODO: Controllare cosa succede se la lista di tags è nulla (cioè "EventTagDAO.getEventTags(rs.getInt("id"))" come
+//        	//		si comporta se l'evento non ha tag ad esso associati)
+//        } else {
+//        	event = null;
+//        }
+//        
+//        rs.close();
+//        
+//        if (stmt != null)
+//        	stmt.close();
+//        
+//		return event;
+//	}
 	
 	public static List<Event> getEventByCities(String departureCity, String destinationCity) throws IOException, SQLException {
 		List<Event> eventList = new ArrayList<Event>();

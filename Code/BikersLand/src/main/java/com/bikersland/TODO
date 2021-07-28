@@ -4,7 +4,4 @@ Creare e sistemare le classi bean, controller, ecc...
 
 Utilizzare SonarCloud (e SonarLint su Eclipse) per eliminare TUTTI gli errori/warnings
 
-Gestione connessioni e disconnessioni database (COME?)
-
-Quando la Window viene chiusa, farne il "catch" e chiudere la connessione con il database
-	(stage -> setOnCloseRequest)
+Aggiungere eccezioni

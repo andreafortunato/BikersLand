@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.bikersland.App;
 import com.bikersland.NonSoComeChiamarla;
@@ -23,7 +25,7 @@ public class DB_Connection {
     
 	public static Connection connection = null;
 	
-	public static Connection getConnection() {
+	public static Connection getConnection() throws SQLException {
 		if(connection == null) {
 			try {
 				Class.forName(DRIVER_CLASS_NAME);
@@ -33,8 +35,19 @@ public class DB_Connection {
 						App.bundle.getString("timedalert_db_conn_error_title"),
 						App.bundle.getString("timedalert_db_conn_error_header"),
 						App.bundle.getString("timedalert_db_conn_error_content"), null);
+				
+				Logger.getGlobal().log(Level.SEVERE, "Catched SQLException/ClassNotFoundException in getConnection() method, inside DB_Connection.java", e);
+
 				System.exit(-1);
 			}
+		}
+		
+		try {
+			if(connection.isClosed()) {
+				connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			}
+		} catch (SQLException e) {
+			throw e;
 		}
 		
 		return connection;		

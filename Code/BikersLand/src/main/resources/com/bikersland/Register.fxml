@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.RegisterController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #202020;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.controller.graphics.RegisterControllerView">
    <top>
       <fx:include fx:id="header" source="Header.fxml" />
    </top>
