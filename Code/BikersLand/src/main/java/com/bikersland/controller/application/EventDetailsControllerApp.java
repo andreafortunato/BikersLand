@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
@@ -21,12 +21,12 @@ public class EventDetailsControllerApp {
 		} catch (SQLException sqle) {
 			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in getEventParticipants() function, inside EventDetailsControllerApp.java", sqle);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
 		}
 	}
 
 	public static Image getDefaultEventImage() {
-		return new Image(App.class.getResourceAsStream("img/background.jpg"));
+		return new Image(Main.class.getResourceAsStream("img/background.jpg"));
 	}
 
 	public static Boolean userJoinedEvent(Integer userId, Integer eventId) throws InternalDBException {
@@ -35,7 +35,7 @@ public class EventDetailsControllerApp {
 		} catch (SQLException sqle) {
 			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in userJoinedEvent() function, inside EventDetailsControllerApp.java", sqle);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
 		} 
 	}
 	
@@ -45,7 +45,7 @@ public class EventDetailsControllerApp {
 		} catch (SQLException sqle) {
 //			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in userJoinedEvent() function, inside EventDetailsControllerApp.java", sqle);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"), sqle, "addUserParticipation", "EventDetailsControllerApp.java");
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"), sqle, "addUserParticipation", "EventDetailsControllerApp.java");
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class EventDetailsControllerApp {
 		} catch (SQLException sqle) {
 //			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in userJoinedEvent() function, inside EventDetailsControllerApp.java", sqle);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"), sqle, "removeUserParticipation", "EventDetailsControllerApp.java");
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"), sqle, "removeUserParticipation", "EventDetailsControllerApp.java");
 		}
 	}
 }

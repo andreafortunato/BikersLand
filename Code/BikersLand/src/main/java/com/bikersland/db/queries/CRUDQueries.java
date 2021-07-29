@@ -100,4 +100,16 @@ public class CRUDQueries {
 		String query = "DELETE FROM participation WHERE user_id=" + userId + " AND event_id=" + eventId + ";";
 		return stmt.executeUpdate(query);
 	}
+	
+	public static int removeFavoriteEvent(Statement stmt, Integer userId, Integer eventId) throws SQLException {
+		String query = "DELETE FROM favorite_event WHERE user_id=" + userId + " AND event_id=" + eventId + ";";
+		
+		return stmt.executeUpdate(query);
+	}
+	
+	public static int addFavoriteEvent(Statement stmt, Integer userId, Integer eventId) throws SQLException {
+		String query = "INSERT INTO favorite_event VALUES(" + userId + ", " + eventId + ");";
+		
+		return stmt.executeUpdate(query);
+	}
 }

@@ -1,5 +1,7 @@
 package com.bikersland;
 
+import com.bikersland.bean.EventBean;
+import com.bikersland.controller.graphics.EventCardControllerView;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.model.Event;
 
@@ -34,16 +36,16 @@ import javafx.util.Duration;
 
 public class NonSoComeChiamarla {
 	
-	public static List<Node> eventsToNodeList(List<Event> eventList) {
+	public static List<Node> eventsToNodeList(List<EventBean> eventList) {
 		FXMLLoader fxmlLoader;
     	
     	List<Node> nodeList = FXCollections.observableArrayList();
     	
-    	for(Event event: eventList) {
+    	for(EventBean eventBean: eventList) {
     		fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(App.class.getResource("CardViaggio.fxml"));
-            fxmlLoader.setController(new ViaggioController(event));
-            fxmlLoader.setResources(App.bundle);
+            fxmlLoader.setLocation(Main.class.getResource("EventCard.fxml"));
+            fxmlLoader.setController(new EventCardControllerView(eventBean));
+            fxmlLoader.setResources(Main.bundle);
             
             StackPane viaggioBox = null;
 			try {
@@ -53,7 +55,7 @@ public class NonSoComeChiamarla {
 			}
 			
 			// Questa riga sotto non serve. E' utile per utilizzare il controller qualora servisse
-//            ViaggioController vc = fxmlLoader.getController();
+//            EventCardController vc = fxmlLoader.getController();
             
             if(viaggioBox != null)
             	nodeList.add(viaggioBox);
@@ -99,7 +101,7 @@ public class NonSoComeChiamarla {
 		
 		Alert alert = new Alert(alertType);
 		alert.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> e.consume());
-		alert.getDialogPane().getStylesheets().add(App.class.getResource("style.css").toExternalForm());
+		alert.getDialogPane().getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
 		alert.getDialogPane().getStyleClass().add("errorDialog");
 		alert.setTitle(" " + title);
 		alert.setHeaderText(header);

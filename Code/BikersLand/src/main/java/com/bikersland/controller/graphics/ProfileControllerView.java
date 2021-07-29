@@ -1,13 +1,19 @@
-package com.bikersland;
+package com.bikersland.controller.graphics;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bikersland.Main;
+import com.bikersland.NonSoComeChiamarla;
+import com.bikersland.bean.EventBean;
+import com.bikersland.bean.UserBean;
+import com.bikersland.controller.application.ProfileControllerApp;
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.FavoriteEventDAO;
 import com.bikersland.db.ParticipationDAO;
+import com.bikersland.exception.InternalDBException;
 import com.bikersland.model.User;
 import com.bikersland.model.Event;
 import com.bikersland.singleton.LoginSingleton;
@@ -21,6 +27,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +36,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
-public class ProfileController {
+public class ProfileControllerView {
 	
 	@FXML
     private ImageView imgProfileImage;
@@ -52,33 +59,34 @@ public class ProfileController {
     @FXML
     private GridPane gpFavoriteEvents;
     
-    private List<Event> joinedEventList;
+    private List<EventBean> joinedEventBeanList;
     private List<Node> joinedEventNodeList;
     
-    private List<Event> favoriteEventList;
+    private List<EventBean> favoriteEventBeanList;
     private List<Node> favoriteEventNodeList;
     
     private Integer gridPaneColumns = 2;
     
-    private User user;
+    private UserBean userBean;
     
     private int viaggioBoxWidth = 420;
 	
 	public void initialize() {
-		user = LoginSingleton.getLoginInstance().getUser();
 		
-		lblName.setText(user.getName());
-		lblSurname.setText(user.getSurname());
-		lblEmail.setText(user.getEmail());
+		userBean = ProfileControllerApp.getLoggedUser();
+		
+		lblName.setText(userBean.getName());
+		lblSurname.setText(userBean.getSurname());
+		lblEmail.setText(userBean.getEmail());
 		
 		Platform.runLater(() -> {
 			vbViaggi.prefWidthProperty().bind(vbViaggi.getParent().getScene().getWindow().widthProperty());
 		});
 		
-		Image image = user.getImage();
+		Image image = userBean.getImage();
 		Circle imgCircle = new Circle(50);
 		if(image == null) {
-			image = new Image(getClass().getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
+			image = new Image(Main.class.getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
 		} else {
 			double w = 0;
             double h = 0;
@@ -105,22 +113,28 @@ public class ProfileController {
 	    imgProfileImage.setImage(image);
 		imgProfileImage.setClip(imgCircle);
 		
+		
 		try {
-			joinedEventList = ParticipationDAO.getJoinedEventsByUser(user);
-			favoriteEventList = FavoriteEventDAO.getFavoriteEventsByUser(user);
-			for(Event event: favoriteEventList)
-				System.out.println(event + "\n");
-		} catch (SQLException | IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			
+			favoriteEventBeanList = ProfileControllerApp.getFavoriteEventsByUser(userBean.getId());
+			joinedEventBeanList = ProfileControllerApp.getJoinedEventsByUser(userBean.getId());
+			
+			
+		} catch (InternalDBException idbe) {
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
+			
+			Main.setRoot("Homepage");
 		}
 		
-		gridPaneColumns = (((Double)App.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
+		gridPaneColumns = (((Double)Main.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
 		
-		this.joinedEventNodeList = NonSoComeChiamarla.eventsToNodeList(joinedEventList);
+		this.joinedEventNodeList = NonSoComeChiamarla.eventsToNodeList(joinedEventBeanList);
     	NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, gridPaneColumns);
 		
-		this.favoriteEventNodeList = NonSoComeChiamarla.eventsToNodeList(favoriteEventList);
+		this.favoriteEventNodeList = NonSoComeChiamarla.eventsToNodeList(favoriteEventBeanList);
     	NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, gridPaneColumns);
 		
 		Platform.runLater(() -> {

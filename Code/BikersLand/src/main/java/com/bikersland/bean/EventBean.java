@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.event.TitleException;
@@ -84,10 +84,10 @@ public class EventBean {
 	
 	private void validateTitle(String stripped_title) throws TitleException {
 		if(stripped_title.length() < 4)
-			throw new TitleException(App.bundle.getString("ex_event_title_short"));
+			throw new TitleException(Main.bundle.getString("ex_event_title_short"));
 		
 		if(stripped_title.length() > 64)
-			throw new TitleException(App.bundle.getString("ex_event_title_long"));
+			throw new TitleException(Main.bundle.getString("ex_event_title_long"));
 	}
 
 	public String getDescription() {
@@ -153,7 +153,7 @@ public class EventBean {
 	
 	private void validateImageFile(File imageFile) throws ImageFileException {
     	if(imageFile.length() > 4194304)
-    		throw new ImageFileException(App.bundle.getString("ex_image_too_big"));
+    		throw new ImageFileException(Main.bundle.getString("ex_image_too_big"));
 	}
 	
 	public Date getCreate_time() {
@@ -169,7 +169,7 @@ public class EventBean {
 	}
 
 	public void setTags(List<String> tags) {
-		List<String> sortedTags = tags;
+		List<String> sortedTags = new ArrayList<>(tags);
 		sortedTags.sort((s1, s2) -> s1.compareTo(s2));
 		this.tags = sortedTags;
 	}

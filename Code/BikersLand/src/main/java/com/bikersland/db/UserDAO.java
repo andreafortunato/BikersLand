@@ -13,7 +13,7 @@ import com.bikersland.model.User;
 
 import UserDAO.InvalidLoginException;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.ImageConversionException;
@@ -47,10 +47,10 @@ public class UserDAO {
 				/* Username o Email già esistenti */
 				if(ex.getMessage().contains("username_UNIQUE")) {
 					/* Username già presente */
-					throw new DuplicateUsernameException(App.bundle.getString("ex_duplicate_username"));
+					throw new DuplicateUsernameException(Main.bundle.getString("ex_duplicate_username"));
 				} else {
 					/* Email già presente */
-					throw new DuplicateEmailException(App.bundle.getString("ex_duplicate_email"));
+					throw new DuplicateEmailException(Main.bundle.getString("ex_duplicate_email"));
 				}
 			}
 			
@@ -76,11 +76,11 @@ public class UserDAO {
 		        	BufferedImage img;
 					try {
 						img = ImageIO.read(rs.getBinaryStream(IMAGE_COL));
-					} catch (IOException | SQLException e) {
+					} catch (IOException ioe) {
 							rs.close();
 							stmt.close();
 						
-						throw new SQLException(e);
+						throw new SQLException(ioe);
 					}
 		        	image = SwingFXUtils.toFXImage(img, null);
 				} else {
@@ -120,11 +120,10 @@ public class UserDAO {
 					try {
 						img = ImageIO.read(rs.getBinaryStream(IMAGE_COL));
 					} catch (IOException e) {
-						throw new ImageConversionException(e);
-					} finally {
 						rs.close();
 						stmt.close();
-					}
+						throw new ImageConversionException(e);
+					} 
 		        	image = SwingFXUtils.toFXImage(img, null);
 				} else {
 					image = null;

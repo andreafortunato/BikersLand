@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.db.UserDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.model.User;
@@ -25,7 +25,7 @@ public class LoginControllerApp {
 		} catch (SQLException sqle) {
 			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in askLogin() function, inside LoginControllerApp.java", sqle);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
 		}
 	}
 	

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.InstantTooltip;
 import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.EventBean;
@@ -76,9 +76,9 @@ public class NewEventControllerView {
     private static final int maxDescriptionCharacters = 250;
     
     public void initialize() {
-    	comboDepartureCity.getItems().addAll(App.cities);
-    	comboDestinationCity.getItems().addAll(App.cities);
-    	comboTags.getItems().addAll(App.tags);
+    	comboDepartureCity.getItems().addAll(Main.cities);
+    	comboDestinationCity.getItems().addAll(Main.cities);
+    	comboTags.getItems().addAll(Main.tags);
     	
     	/* Disabilito le date precedenti a quella odierna */
     	pickerDepartureDate.setDayCellFactory(picker -> new DateCell() {
@@ -98,7 +98,7 @@ public class NewEventControllerView {
     			return;
     		}
     		
-    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " " + App.bundle.getString("remaining_characters"));
+    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " " + Main.bundle.getString("remaining_characters"));
     	});
     }
     
@@ -143,8 +143,8 @@ public class NewEventControllerView {
     			hbImageSelected.setVisible(true);
 			} catch (ImageFileException e) {
 				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						App.bundle.getString("timedalert_image_error_title"),
-						App.bundle.getString("timedalert_image_error_header"),
+						Main.bundle.getString("timedalert_image_error_title"),
+						Main.bundle.getString("timedalert_image_error_header"),
 						e.getMessage(), null);
 			}
     	} else {
@@ -168,31 +168,31 @@ public class NewEventControllerView {
     	String emptyField = "";
     	Boolean isEmpty = false;
     	if(txtTitle.getText().strip().length() == 0) {
-    		emptyField = App.bundle.getString("title");
+    		emptyField = Main.bundle.getString("title");
     		isEmpty = true;
     	}
     	else if(comboDepartureCity.getValue() == null){
-    		emptyField = App.bundle.getString("departure_city_2");
+    		emptyField = Main.bundle.getString("departure_city_2");
     		isEmpty = true;
     	}
     	else if(comboDestinationCity.getValue() == null){
-    		emptyField = App.bundle.getString("destination_city_2");
+    		emptyField = Main.bundle.getString("destination_city_2");
     		isEmpty = true;
     	}
     	else if(pickerDepartureDate.getValue() == null){
-    		emptyField = App.bundle.getString("departure_date_2");
+    		emptyField = Main.bundle.getString("departure_date_2");
     		isEmpty = true;
     	}
     	else if(pickerReturnDate.getValue() == null){
-    		emptyField = App.bundle.getString("return_date_2");
+    		emptyField = Main.bundle.getString("return_date_2");
     		isEmpty = true;
     	}
     	
     	if(isEmpty) {
     		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-    				App.bundle.getString("timedalert_new_event_empty_error_title"),
-    				App.bundle.getString("timedalert_new_event_empty_error_header"),
-    				App.bundle.getString("timedalert_new_event_empty_error_content"), emptyField);
+    				Main.bundle.getString("timedalert_new_event_empty_error_title"),
+    				Main.bundle.getString("timedalert_new_event_empty_error_header"),
+    				Main.bundle.getString("timedalert_new_event_empty_error_content"), emptyField);
     		return;
     	}
     	
@@ -209,21 +209,21 @@ public class NewEventControllerView {
         	EventBean createdEventBean = NewEventControllerApp.createNewEvent(eventBean);
         	
     		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
-    				App.bundle.getString("success"),
-					App.bundle.getString("timedalert_new_event_success_header"),
-					App.bundle.getString("timedalert_new_event_success_content"), createdEventBean.getTitle());
+    				Main.bundle.getString("success"),
+					Main.bundle.getString("timedalert_new_event_success_header"),
+					Main.bundle.getString("timedalert_new_event_success_content"), createdEventBean.getTitle());
     		
-    		App.setRoot("EventDetails", createdEventBean);
+    		Main.setRoot("EventDetails", createdEventBean);
 		} catch (TitleException te) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("error"),
-					App.bundle.getString("timedalert_event_title_error"),
+					Main.bundle.getString("error"),
+					Main.bundle.getString("timedalert_event_title_error"),
 					te.getMessage(), null);
 		} catch (InternalDBException idbe) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), App.logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
 		}
     	
 //    	event = EventDAO.setEvent(event);

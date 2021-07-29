@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.InstantTooltip;
 import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.UserBean;
@@ -146,9 +146,9 @@ public class RegisterControllerView {
 	private void register() {
 		if(!txtPassword1.getText().equals(txtPassword2.getText())) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_register_error_title"),
-					App.bundle.getString("timedalert_register_password_error_header"),
-					App.bundle.getString("timedalert_register_password_error_content"), null);
+					Main.bundle.getString("timedalert_register_error_title"),
+					Main.bundle.getString("timedalert_register_password_error_header"),
+					Main.bundle.getString("timedalert_register_password_error_content"), null);
 			
 //			txtPassword1.setText("");
 //			txtPassword2.setText("");
@@ -167,54 +167,54 @@ public class RegisterControllerView {
 			
 			RegisterControllerApp.register(userBean);
 			
-			App.setRoot("Homepage");
+			Main.setRoot("Homepage");
 		} catch (DuplicateUsernameException due) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_register_error_title"),
-					App.bundle.getString("timedalert_register_error_username_header"),
+					Main.bundle.getString("timedalert_register_error_title"),
+					Main.bundle.getString("timedalert_register_error_username_header"),
 					due.getMessage(), userBean.getUsername());
 			txtUsername.setText("");
 			txtUsername.requestFocus();
 		} catch (DuplicateEmailException dee) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_register_error_title"),
-					App.bundle.getString("timedalert_register_error_email_header"),
+					Main.bundle.getString("timedalert_register_error_title"),
+					Main.bundle.getString("timedalert_register_error_email_header"),
 					dee.getMessage(), userBean.getEmail());
 			txtEmail1.setText("");
 			txtEmail2.setText("");
 			txtEmail1.requestFocus();
 		} catch (NameException ne) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("error"),
-					App.bundle.getString("timedalert_register_name_error"),
+					Main.bundle.getString("error"),
+					Main.bundle.getString("timedalert_register_name_error"),
 					ne.getMessage(), null);
 		} catch (SurnameException se) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("error"),
-					App.bundle.getString("timedalert_register_surname_error"),
+					Main.bundle.getString("error"),
+					Main.bundle.getString("timedalert_register_surname_error"),
 					se.getMessage(), null);
 		} catch (UsernameException ue) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("error"),
-					App.bundle.getString("timedalert_register_username_error"),
+					Main.bundle.getString("error"),
+					Main.bundle.getString("timedalert_register_username_error"),
 					ue.getMessage(), null);
 		} catch (PasswordException pe) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("error"),
-					App.bundle.getString("timedalert_register_password_error"),
+					Main.bundle.getString("error"),
+					Main.bundle.getString("timedalert_register_password_error"),
 					pe.getMessage(), null);
 		} catch (AutomaticLoginException ale) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_sql_ex_header"),
-					ale.getMessage(), App.logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					ale.getMessage(), Main.logFile);
 			
-			App.setRoot("Login");
+			Main.setRoot("Login");
 		} catch (InternalDBException idbe) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), App.logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
 		}
 		
 		
@@ -286,8 +286,8 @@ public class RegisterControllerView {
 				hbImageSelected.setVisible(true);
 			} catch (ImageFileException e) {
 				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						App.bundle.getString("timedalert_image_error_title"),
-						App.bundle.getString("timedalert_image_error_header"),
+						Main.bundle.getString("timedalert_image_error_title"),
+						Main.bundle.getString("timedalert_image_error_header"),
 						e.getMessage(), null);
 			}
     	} else {

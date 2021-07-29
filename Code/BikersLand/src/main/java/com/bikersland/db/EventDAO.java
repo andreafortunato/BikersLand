@@ -16,8 +16,9 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
+import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.ImageConversionException;
 import com.bikersland.exception.event.EventNotFoundException;
 import com.bikersland.exception.user.DuplicateEmailException;
@@ -59,10 +60,9 @@ public class EventDAO {
 					} catch (IOException e) {
 						/* Se si verifica un problema nella conversione dell'immagine, lancio 
 						   un'eccezione e gestisco l'errore come se fosse dovuto dal Database */
-						throw new ImageConversionException(e);
-					} finally {
 						createNewEventRS.close();
 						stmtCreateEvent.close();
+						throw new ImageConversionException(e);
 					}
 				} else {
 					image = null;
@@ -119,44 +119,49 @@ public class EventDAO {
 //		return event;
 //	}
 	
-	public static List<Event> getEventByCities(String departureCity, String destinationCity) throws IOException, SQLException {
+	public static List<Event> getEventByCities(String departureCity, String destinationCity) throws SQLException {
 		List<Event> eventList = new ArrayList<Event>();
-		String query = "SELECT * FROM event";
-		if(departureCity.equals(App.bundle.getString("all_female")) && destinationCity.equals(App.bundle.getString("all_female"))) {
-			query += " ORDER BY id DESC;";
-		} else {
-			if(departureCity.equals(App.bundle.getString("all_female"))) {
-				query += " WHERE destination_city='" + destinationCity + "'";
-			} else if(destinationCity.equals(App.bundle.getString("all_female"))){
-				query += " WHERE departure_city='" + departureCity + "'";
-			} else {
-				query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	        rs = SimpleQueries.getEventByCities(stmt, departureCity, destinationCity);
+	        
+	        while(rs.next()) {
+				Image image;
+				if(rs.getBinaryStream(IMAGE_COL) != null) {
+		        	BufferedImage img;
+					try {
+						img = ImageIO.read(rs.getBinaryStream(IMAGE_COL));
+					} catch (IOException ioe) {
+						rs.close();
+						stmt.close();
+					
+						throw new SQLException(ioe);
+					}
+		        	image = SwingFXUtils.toFXImage(img, null);
+				} else {
+					image = null;
+				}
+				eventList.add(new Event(rs.getInt(ID_COL), rs.getString(TITLE_COL), rs.getString(DESCRIPTION_COL), rs.getString(OWNER_USERNAME_COL),
+	        			rs.getString(DEPARTURE_CITY_COL), rs.getString(DESTINATION_CITY_COL), rs.getDate(DEPARTURE_DATE_COL),
+	        			rs.getDate(RETURN_DATE_COL), image, rs.getDate(CREATE_TIME_COL), EventTagDAO.getEventTags(rs.getInt(ID_COL))));
 			}
-			query += " ORDER BY id DESC;";
+	        
+	        return eventList;
+		}finally {
+			if (stmt != null)
+				stmt.close();
+			
+			if(rs != null) 
+				rs.close();
 		}
 		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        
-		ResultSet rs = stmt.executeQuery(query);
 		
-		while(rs.next()) {
-			Image image;
-			if(rs.getBinaryStream("image") != null) {
-	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-	        	image = SwingFXUtils.toFXImage(img, null);
-			} else {
-				image = null;
-			}
-			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
-		}
-       
-        if (stmt != null)
-        	stmt.close();
-       		
-		return eventList;
 	}
+	
+	/*
 	
 	// TODO: Da rimuovere?
 	public static List<Event> getEventByTags(List<Integer> tagList) throws SQLException, IOException {
@@ -193,63 +198,59 @@ public class EventDAO {
 		return eventList;
 	}
 	
+	
 	public static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList) throws SQLException, IOException {
 		if(App.locale == Locale.ITALIAN)
 			return getEventByCitiesAndTags(departureCity, destinationCity, tagList, "it");
 		else
 			return getEventByCitiesAndTags(departureCity, destinationCity, tagList, "en");
-	}
+	}*/
 	
-	private static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList, String language) throws SQLException, IOException {
+	
+	public static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList, String language) throws SQLException{
 		
 		if(tagList.size() == 0) 
 			return getEventByCities(departureCity, destinationCity);
-		
-		
+
 		List<Event> eventList = new ArrayList<Event>();
 		
-		String queryCities = "SELECT * FROM event WHERE 1=1";
-		if(departureCity.equals(App.bundle.getString("all_female")) && destinationCity.equals(App.bundle.getString("all_female"))) {
-			;
-		} else if(departureCity.equals(App.bundle.getString("all_female"))) {
-			queryCities += " AND destination_city='" + destinationCity + "'";
-		} else if(destinationCity.equals(App.bundle.getString("all_female"))){
-			queryCities += " AND departure_city='" + departureCity + "'";
-		} else {
-			queryCities += " AND departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
-		}
+		ResultSet rs = null;
+		Statement stmt = null;
 		
 		
-		String queryTags = " AND id IN (SELECT DISTINCT ET.event_id FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE T." + language + " IN (";
-		for(String tag: tagList)
-        	queryTags += "'" + tag + "', ";
-        queryTags = queryTags.substring(0, queryTags.length()-2) + ") ";
-        queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT T." + language + ") = " + tagList.size() + ") ORDER BY id DESC;";
-		
-		String query = queryCities + queryTags;
-		
-        System.out.println(query);
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while(rs.next()) {
-			Image image;
-			if(rs.getBinaryStream("image") != null) {
-	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-	        	image = SwingFXUtils.toFXImage(img, null);
-			} else {
-				image = null;
+		try {
+			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	        rs = SimpleQueries.getEventByCitiesAndTags(stmt, departureCity, destinationCity, tagList, language);
+	        
+	        while(rs.next()) {
+				Image image;
+				if(rs.getBinaryStream(IMAGE_COL) != null) {
+		        	BufferedImage img;
+					try {
+						img = ImageIO.read(rs.getBinaryStream(IMAGE_COL));
+					} catch (IOException ioe) {
+						rs.close();
+						stmt.close();
+					
+						throw new SQLException(ioe);
+					} 
+		        	image = SwingFXUtils.toFXImage(img, null);
+				} else {
+					image = null;
+				}
+				eventList.add(new Event(rs.getInt(ID_COL), rs.getString(TITLE_COL), rs.getString(DESCRIPTION_COL), rs.getString(OWNER_USERNAME_COL),
+	        			rs.getString(DEPARTURE_CITY_COL), rs.getString(DESTINATION_CITY_COL), rs.getDate(DEPARTURE_DATE_COL),
+	        			rs.getDate(RETURN_DATE_COL), image, rs.getDate(CREATE_TIME_COL), EventTagDAO.getEventTags(rs.getInt(ID_COL))));
 			}
-			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
+	        
+	        return eventList;
+		}finally {
+			if (stmt != null)
+				stmt.close();
+			
+			if(rs != null) 
+				rs.close();
 		}
-       
-        if (stmt != null)
-        	stmt.close();
-       		
-		return eventList;
+		
 	}
 }

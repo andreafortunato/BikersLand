@@ -3,7 +3,7 @@ package com.bikersland.controller.graphics;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.EventDetailsControllerApp;
@@ -55,7 +55,7 @@ public class EventDetailsControllerView {
     private Label lblDestinationCity;
 
     @FXML
-    private Label lblPartecipants;
+    private Label lblParticipants;
     
     @FXML
     private Label lblCreateTime;
@@ -67,7 +67,7 @@ public class EventDetailsControllerView {
     private ListView<String> lvTags;
     
     @FXML
-    private ListView<String> lvPartecipants;
+    private ListView<String> lvParticipants;
     
     @FXML
     private Button btnJoin;
@@ -99,24 +99,24 @@ public class EventDetailsControllerView {
 		lblDescription.setText(eventBean.getDescription());
 		lvTags.setItems(FXCollections.observableArrayList(eventBean.getTags()));
 		if(lvTags.getItems().size() == 0)
-			lvTags.setItems(FXCollections.observableArrayList(App.bundle.getString("no_tags")));
+			lvTags.setItems(FXCollections.observableArrayList(Main.bundle.getString("no_tags")));
 		lvTags.setOnMousePressed(e -> lvTags.getSelectionModel().clearSelection());
 		lblCreateTime.setText(NonSoComeChiamarla.dateToString(eventBean.getCreate_time()));
 		lblOwnerUsername.setText(eventBean.getOwner_username());
 		
 		try {
-			lvPartecipants.setItems(FXCollections.observableArrayList(EventDetailsControllerApp.getEventParticipants(eventBean.getId())));
-			lblPartecipants.setText(String.valueOf(lvPartecipants.getItems().size()));
+			lvParticipants.setItems(FXCollections.observableArrayList(EventDetailsControllerApp.getEventParticipants(eventBean.getId())));
+			lblParticipants.setText(String.valueOf(lvParticipants.getItems().size()));
 		} catch (InternalDBException idbe) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), App.logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
 			
-			App.setRoot("Homepage");
+			Main.setRoot("Homepage");
 		} catch (NoEventParticipantsException nepe) {
-			lvPartecipants.setItems(FXCollections.observableArrayList(App.bundle.getString("no_participants")));
-			lblPartecipants.setText("0");
+			lvParticipants.setItems(FXCollections.observableArrayList(Main.bundle.getString("no_participants")));
+			lblParticipants.setText("0");
 		}
 		
 		Image image = eventBean.getImage();
@@ -134,18 +134,18 @@ public class EventDetailsControllerView {
 		}
     	imgBackground.setPreserveRatio(true);
     	
-    	if(loggedUserId != -1) {
+    	if(loggedUserId == -1) {
     		btnJoin.setVisible(false);
     	} else {
 			try {
 				setIsJoined(EventDetailsControllerApp.userJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
 				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						App.bundle.getString("timedalert_internal_error"),
-						App.bundle.getString("timedalert_sql_ex_header"),
-						idbe.getMessage(), App.logFile);
+						Main.bundle.getString("timedalert_internal_error"),
+						Main.bundle.getString("timedalert_sql_ex_header"),
+						idbe.getMessage(), Main.logFile);
 				
-				App.setRoot("Homepage");
+				Main.setRoot("Homepage");
 			}
     	}
 	}
@@ -155,41 +155,43 @@ public class EventDetailsControllerView {
 		try {
 			if(isJoined) {
 	    		EventDetailsControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
-	    		
+	    		lblParticipants.setText(String.valueOf(Integer.valueOf(lblParticipants.getText())-1));
 	    		setIsJoined(false);
 	    	} else {
 	    		EventDetailsControllerApp.addUserParticipation(loggedUserId, eventBean.getId());
-	    		
+	    		lblParticipants.setText(String.valueOf(Integer.valueOf(lblParticipants.getText())+1));
 	    		setIsJoined(true);
 	    	}
 		} catch (InternalDBException idbe) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), App.logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
 		}
     }
 	
 	private void setIsJoined(Boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
-			btnJoin.setText(App.bundle.getString("remove_participation"));
+			btnJoin.setText(Main.bundle.getString("remove_participation"));
 			
-			if(!lvPartecipants.getItems().contains(loggedUserUsername)) {
-				ObservableList<String> participants = lvPartecipants.getItems();
-				if(participants.size() == 1 && participants.get(0).equals(App.bundle.getString("no_participants"))) {
+			if(!lvParticipants.getItems().contains(loggedUserUsername)) {
+				ObservableList<String> participants = lvParticipants.getItems();
+				if(participants.size() == 1 && participants.get(0).equals(Main.bundle.getString("no_participants"))) {
 					participants.clear();
 				}
 				participants.add(loggedUserUsername);
 				FXCollections.sort(participants);
-				lvPartecipants.setItems(participants);
+				lvParticipants.setItems(participants);
+				
 			}
 		}
 		else {
-			btnJoin.setText(App.bundle.getString("join"));
-			lvPartecipants.getItems().remove(loggedUserUsername);
-			if(lvPartecipants.getItems().size() == 0)
-				lvPartecipants.setItems(FXCollections.observableArrayList(App.bundle.getString("no_participants")));
+			btnJoin.setText(Main.bundle.getString("join"));
+			lvParticipants.getItems().remove(loggedUserUsername);
+			if(lvParticipants.getItems().size() == 0)
+				lvParticipants.setItems(FXCollections.observableArrayList(Main.bundle.getString("no_participants")));
+			
 		}
 	}
 }

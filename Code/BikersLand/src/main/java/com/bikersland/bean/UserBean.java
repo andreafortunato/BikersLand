@@ -3,7 +3,7 @@ package com.bikersland.bean;
 import java.io.File;
 import java.util.Date;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.user.EmailException;
@@ -63,10 +63,10 @@ public class UserBean {
 	
 	private void validateName(String stripped_name) throws NameException {		
 		if(stripped_name.length() < 2)
-			throw new NameException(App.bundle.getString("ex_user_name_short"));
+			throw new NameException(Main.bundle.getString("ex_user_name_short"));
 		
 		if(stripped_name.length() > 32)
-			throw new NameException(App.bundle.getString("ex_user_name_long"));
+			throw new NameException(Main.bundle.getString("ex_user_name_long"));
 	}
 
 	public String getSurname() {
@@ -81,10 +81,10 @@ public class UserBean {
 	
 	private void validateSurname(String stripped_surname) throws SurnameException {
 		if(stripped_surname.length() < 2)
-			throw new SurnameException(App.bundle.getString("ex_user_surname_short"));
+			throw new SurnameException(Main.bundle.getString("ex_user_surname_short"));
 		
 		if(stripped_surname.length() > 32)
-			throw new SurnameException(App.bundle.getString("ex_user_surname_long"));
+			throw new SurnameException(Main.bundle.getString("ex_user_surname_long"));
 	}
 
 
@@ -100,10 +100,10 @@ public class UserBean {
 	
 	private void validateUsername(String stripped_username) throws UsernameException {
 		if(stripped_username.length() < 2)
-			throw new UsernameException(App.bundle.getString("ex_user_username_short"));
+			throw new UsernameException(Main.bundle.getString("ex_user_username_short"));
 		
 		if(stripped_username.length() > 16)
-			throw new UsernameException(App.bundle.getString("ex_user_username_long"));
+			throw new UsernameException(Main.bundle.getString("ex_user_username_long"));
 	}
 
 	public String getEmail() {
@@ -134,15 +134,15 @@ public class UserBean {
 	
 	private void validatePassword(String password) throws PasswordException {
 		if(password.length() < 6)
-			throw new PasswordException(App.bundle.getString("ex_user_password_short"));
+			throw new PasswordException(Main.bundle.getString("ex_user_password_short"));
 		if(password.length() > 64)
-			throw new PasswordException(App.bundle.getString("ex_user_password_long"));
+			throw new PasswordException(Main.bundle.getString("ex_user_password_long"));
 		if(!password.matches(".*\\d.*"))
-			throw new PasswordException(App.bundle.getString("ex_user_password_no_number"));
+			throw new PasswordException(Main.bundle.getString("ex_user_password_no_number"));
 		if(!password.matches(".*[A-Z].*"))
-			throw new PasswordException(App.bundle.getString("ex_user_password_no_capital_letter"));
+			throw new PasswordException(Main.bundle.getString("ex_user_password_no_capital_letter"));
 		if(!password.matches(".*[.!@#$%&*()_+=|<>?{}\\[\\]~-].*"))
-			throw new PasswordException(App.bundle.getString("ex_user_password_no_special_char"));
+			throw new PasswordException(Main.bundle.getString("ex_user_password_no_special_char"));
 	}
 
 	public Date getCreate_time() {
@@ -168,7 +168,7 @@ public class UserBean {
 	
 	private void validateImageFile(File imageFile) throws ImageFileException {
     	if(imageFile.length() > 4194304)
-    		throw new ImageFileException(App.bundle.getString("ex_image_too_big"));
+    		throw new ImageFileException(Main.bundle.getString("ex_image_too_big"));
 	}
 
 	public String toString() {

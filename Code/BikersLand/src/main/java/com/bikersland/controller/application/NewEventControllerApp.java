@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.db.EventDAO;
 import com.bikersland.db.EventTagDAO;
@@ -48,7 +48,7 @@ public class NewEventControllerApp {
 		} catch (SQLException | ImageConversionException | EventNotFoundException e) {
 			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in createNewEvent() function, inside NewEventControllerApp.java", e);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
 		} 
 	}
 	
@@ -61,7 +61,7 @@ public class NewEventControllerApp {
 		} catch (SQLException | TagNotFoundException sqle) {
 			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in setEventTags() function, inside NewEventControllerApp.java", sqle);
 			
-			throw new InternalDBException(App.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
 		}
 	}
 	

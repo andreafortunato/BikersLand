@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.bikersland.bean.EventBean;
+import com.bikersland.controller.application.AppControllerApp;
 import com.bikersland.controller.graphics.EventDetailsControllerView;
 import com.bikersland.db.CityDAO;
 import com.bikersland.db.DB_Connection;
@@ -26,7 +27,7 @@ import com.bikersland.exception.InternalDBException;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class Main extends Application {
 	
 	public static String logFile = System.getProperty("user.home") + "\\BikersLand.log";
 	
@@ -39,11 +40,23 @@ public class App extends Application {
     public static ResourceBundle bundle;
     
     @Override
-    public void start(Stage stage) throws IOException, SQLException {
+    public void start(Stage stage){
     	/* File di log per gli errori. Percorso di esempio: C:\Users\NomeUtente\BikersLand.log */
-    	FileHandler fh = new FileHandler(logFile, true);
+    	FileHandler fh = null;
+		try {
+			fh = new FileHandler(logFile, true);
+		} catch (SecurityException | IOException e) {
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					e.getMessage(), Main.logFile);
+			
+			System.exit(-1);
+			
+		}
     	Logger.getGlobal().addHandler(fh);
     	
+    	/*
     	try {
 			NonSoComeChiamarla.test();
 		} catch (InternalDBException e1) {
@@ -51,14 +64,35 @@ public class App extends Application {
 			System.out.println("\n\nCATTURATA");
 		}
     	
-    	System.exit(-1);
+    	System.exit(-1);*/
     	
     	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
     	
-    	App.cities = CityDAO.getCities();
-    	App.tags = TagDAO.getTags();
     	
-        scene = new Scene(loadFXML("Homepage"), 1253, 810);
+    	try {
+			Main.tags = AppControllerApp.getTags();
+			Main.cities = AppControllerApp.getCities();
+		} catch (InternalDBException idbe) {
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
+			
+			Main.setRoot("Homepage");
+		}
+    	
+        try {
+			scene = new Scene(loadFXML("Homepage"), 1253, 810);
+		} catch (IOException e1) {
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					e1.getMessage(), Main.logFile);
+			
+			e1.printStackTrace();
+			System.exit(-1);
+			
+		}
         stage.setScene(scene);
         
         stage.show();
@@ -80,9 +114,9 @@ public class App extends Application {
 			scene.setRoot(loadFXML(fxml));
 		} catch (IOException e) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_system_error_header"),
-					App.bundle.getString("timedalert_system_error_content"), logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_system_error_header"),
+					Main.bundle.getString("timedalert_system_error_content"), logFile);
 			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", e);
 			
 			System.exit(-1);
@@ -94,9 +128,9 @@ public class App extends Application {
 			scene.setRoot(loadFXML(fxml, eventBean));
 		} catch (IOException e) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_system_error_header"),
-					App.bundle.getString("timedalert_system_error_content"), logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_system_error_header"),
+					Main.bundle.getString("timedalert_system_error_content"), logFile);
 			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String, Event) method, inside App.java", e);
 			
 			System.exit(-1);
@@ -105,13 +139,13 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
     	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"), bundle);
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
         return fxmlLoader.load();
     }
     
     private static Parent loadFXML(String fxml, EventBean eventBean) throws IOException {
     	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"), bundle);
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
         fxmlLoader.setController(new EventDetailsControllerView(eventBean));
         return fxmlLoader.load();
     }

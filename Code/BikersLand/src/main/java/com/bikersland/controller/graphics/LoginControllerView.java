@@ -3,7 +3,7 @@ package com.bikersland.controller.graphics;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.controller.application.LoginControllerApp;
 import com.bikersland.exception.InternalDBException;
@@ -70,20 +70,20 @@ public class LoginControllerView {
 			
 			LoginControllerApp.askLogin(txtUser.getText().strip(), txtPassword.getText().strip());
 			
-			App.setRoot("Homepage");
+			Main.setRoot("Homepage");
 		} catch (InvalidLoginException e) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_login_error_title"),
-					App.bundle.getString("timedalert_login_error_header"),
-					App.bundle.getString("timedalert_login_error_content"), null);
+					Main.bundle.getString("timedalert_login_error_title"),
+					Main.bundle.getString("timedalert_login_error_header"),
+					Main.bundle.getString("timedalert_login_error_content"), null);
 			txtUser.setText("");
 			txtPassword.setText("");
 			txtUser.requestFocus();
 		} catch (InternalDBException idbe) {
 			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					App.bundle.getString("timedalert_internal_error"),
-					App.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), App.logFile);
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
 			
 			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in login() method, inside LoginControllerView.java", idbe);
 		} 

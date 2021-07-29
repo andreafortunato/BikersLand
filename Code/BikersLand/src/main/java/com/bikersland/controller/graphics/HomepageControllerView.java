@@ -1,12 +1,19 @@
-package com.bikersland;
+package com.bikersland.controller.graphics;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.controlsfx.control.SearchableComboBox;
 
+import com.bikersland.Main;
+import com.bikersland.NonSoComeChiamarla;
+import com.bikersland.TagsListCell;
+import com.bikersland.bean.EventBean;
+import com.bikersland.controller.application.HomepageControllerApp;
 import com.bikersland.db.EventDAO;
+import com.bikersland.exception.InternalDBException;
 import com.bikersland.model.Event;
 
 import javafx.application.Platform;
@@ -23,13 +30,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-public class HomepageController {
+public class HomepageControllerView {
 	
 	@FXML
     private AnchorPane pnlHeader;
@@ -83,7 +91,7 @@ public class HomepageController {
     private SearchableComboBox<String> comboArrivoDistanza;
     
     @FXML
-    private HeaderController headerController; /* IMPORTANTE: questa variabile deve avere come nome <fx:id value>Controller, dove
+    private HeaderControllerView headerController; /* IMPORTANTE: questa variabile deve avere come nome <fx:id value>Controller, dove
      											  <fx:id value> equivale in questo caso a "header", ovvero l'id del file fxml incluso */
     @FXML
     private Button btnSearch;
@@ -99,7 +107,7 @@ public class HomepageController {
     
     private int viaggioBoxWidth = 420;
     
-    private List<Event> eventList;
+    private List<EventBean> eventListBean;
     private List<Node> eventNodeList;
     
     private Integer gridPaneColumns = 2;
@@ -115,7 +123,7 @@ public class HomepageController {
     	sliderPartenzaDistanza.setShowTickLabels(true);
     	sliderPartenzaDistanza.valueProperty().addListener((observable, oldValue, newValue) -> {
     		sliderPartenzaDistanza.setValue(newValue.intValue());
-            lblPartenzaDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + App.bundle.getString("from"));
+            lblPartenzaDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + Main.bundle.getString("from"));
         });
     	sliderPartenzaDistanza.setOnMousePressed(event -> imgBackground.requestFocus());
     	
@@ -124,23 +132,23 @@ public class HomepageController {
     	sliderArrivoDistanza.setShowTickLabels(true);
     	sliderArrivoDistanza.valueProperty().addListener((observable, oldValue, newValue) -> {
     		sliderArrivoDistanza.setValue(newValue.intValue());
-            lblArrivoDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + App.bundle.getString("from"));
+            lblArrivoDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + Main.bundle.getString("from"));
         });
     	sliderArrivoDistanza.setOnMousePressed(event -> imgBackground.requestFocus());    	
     	
     	
-    	ObservableList<String> cities = FXCollections.observableArrayList(App.cities);
-    	cities.add(0, App.bundle.getString("all_female"));
+    	ObservableList<String> cities = FXCollections.observableArrayList(Main.cities);
+    	cities.add(0, Main.bundle.getString("all_female"));
     	
         comboPartenzaCitta.setItems(cities);
-        comboPartenzaDistanza.setItems(FXCollections.observableArrayList(App.cities));
+        comboPartenzaDistanza.setItems(FXCollections.observableArrayList(Main.cities));
         comboArrivoCitta.setItems(cities);
-        comboArrivoDistanza.setItems(FXCollections.observableArrayList(App.cities));
+        comboArrivoDistanza.setItems(FXCollections.observableArrayList(Main.cities));
         
         comboPartenzaCitta.getSelectionModel().select(0);
         comboArrivoCitta.getSelectionModel().select(0);
         
-        ObservableList<String> tags = FXCollections.observableArrayList(App.tags);
+        ObservableList<String> tags = FXCollections.observableArrayList(Main.tags);
         lvTags.setItems(tags);
         lvTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -149,28 +157,34 @@ public class HomepageController {
         Platform.runLater(() -> {
         	
         	try {
-        	imgBackground.fitWidthProperty().bind(App.scene.getWindow().widthProperty());
-        	imgBackground.setFitHeight(0.0);
-        	imgBackground.setPreserveRatio(true);
+	        	imgBackground.fitWidthProperty().bind(Main.scene.getWindow().widthProperty());
+	        	imgBackground.setFitHeight(0.0);
+	        	imgBackground.setPreserveRatio(true);
         	} catch (NullPointerException e) {
         		e.printStackTrace();
 				System.exit(-1);
 			}
         	
         	
-        	gridPaneColumns = (((Double)App.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;			
+        	gridPaneColumns = (((Double)Main.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;			
         	
         	
         	try {
-				this.eventList = EventDAO.getEventByCities(App.bundle.getString("all_female"), App.bundle.getString("all_female"));
-			} catch (SQLException | IOException e) {
-				e.printStackTrace();
+				this.eventListBean = HomepageControllerApp.getEventByCities(Main.bundle.getString("all_female"), Main.bundle.getString("all_female"));
+				
+        	} catch (InternalDBException idbe) {
+        		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+    					Main.bundle.getString("timedalert_internal_error"),
+    					Main.bundle.getString("timedalert_sql_ex_header"),
+    					idbe.getMessage(), Main.logFile);
+    			
+    			Main.setRoot("Homepage");
 			}
         	
-        	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventList);
+        	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventListBean);
         	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
         	
-        	App.scene.getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
+        	Main.scene.getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
 		    	int o = oldVal.intValue()-16-getNumViaggi()*20;
 		    	int n = newVal.intValue()-16-getNumViaggi()*20;
 		    	            	
@@ -275,10 +289,21 @@ public class HomepageController {
     }
     
     @FXML
-    private void search() throws IOException, SQLException {
-    	List<Event> searchedEventList;
+    private void search(){
+    	List<EventBean> searchedEventList = new ArrayList<EventBean>();
     	
-    	searchedEventList = EventDAO.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
+    	//searchedEventList = EventDAO.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
+    	try {
+			searchedEventList = HomepageControllerApp.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
+		} catch (InternalDBException idbe) {
+			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
+					Main.bundle.getString("timedalert_internal_error"),
+					Main.bundle.getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.logFile);
+			
+			Main.setRoot("Homepage");
+		}
+    	
     	
     	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(searchedEventList);
     	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);

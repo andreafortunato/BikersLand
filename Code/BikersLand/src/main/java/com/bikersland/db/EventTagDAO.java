@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
 
 import javafx.collections.FXCollections;
@@ -28,7 +28,7 @@ public class EventTagDAO {
 	}
 	
 	public static List<String> getEventTags(Integer eventId) throws SQLException {
-		if(App.locale == Locale.ITALIAN)
+		if(Main.locale == Locale.ITALIAN)
 			return getEventTags(eventId, "it");
 		else
 			return getEventTags(eventId, "en");

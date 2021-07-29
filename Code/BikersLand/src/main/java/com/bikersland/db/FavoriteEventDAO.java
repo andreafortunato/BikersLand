@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.bikersland.db.queries.CRUDQueries;
+import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.model.Event;
 import com.bikersland.model.User;
 
@@ -17,72 +19,118 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 public class FavoriteEventDAO {
-	public static Boolean isFavoriteEvent(User user, Event event) throws SQLException, IOException {
+	
+	private static final String ID_COL = "id";
+	private static final String TITLE_COL = "title";
+	private static final String DESCRIPTION_COL = "description";
+	private static final String OWNER_USERNAME_COL = "owner_username";
+	private static final String DEPARTURE_CITY_COL = "departure_city";
+	private static final String DESTINATION_CITY_COL = "destination_city";
+	private static final String DEPARTURE_DATE_COL = "departure_date";
+	private static final String RETURN_DATE_COL = "return_date";
+	private static final String IMAGE_COL = "image";
+	private static final String CREATE_TIME_COL = "create_time";
+	
+	
+	public static Boolean isFavoriteEvent(Integer userId, Integer eventId) throws SQLException{
 		Boolean isFavorite = false;
-		
-		String query = "SELECT * FROM favorite_event WHERE user_id=" + user.getId() + " AND event_id=" + event.getId() + ";";
-		
+
 		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 
-		ResultSet rs = stmt.executeQuery(query);
+		ResultSet rs = null;
 		
-		if(rs.next()) {
-			isFavorite = true;
-		}
-       
-        if (stmt != null)
-        	stmt.close();
-        
-		return isFavorite;
-	}
-	
-	public static void addFavoriteEvent(User user, Event event) throws SQLException, IOException {
-		String query = "INSERT INTO favorite_event VALUES(" + user.getId() + ", " + event.getId() + ");";
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
-		stmt.executeUpdate(query);
-       
-        if (stmt != null)
-        	stmt.close();
-	}
-	
-	public static void removeFavoriteEvent(User user, Event event) throws SQLException, IOException {
-		String query = "DELETE FROM favorite_event WHERE user_id=" + user.getId() + " AND event_id=" + event.getId() + ";";
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
-		stmt.executeUpdate(query);
-       
-        if (stmt != null)
-        	stmt.close();
-	}
-	
-	public static List<Event> getFavoriteEventsByUser(User user) throws SQLException, IOException {
-		List<Event> eventList = new ArrayList<Event>();
-		
-		String query = "SELECT * FROM event WHERE id IN (SELECT event_id FROM favorite_event WHERE user_id=" + user.getId() + ");";
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while(rs.next()) {
-			Image image;
-			if(rs.getBinaryStream("image") != null) {
-	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-	        	image = SwingFXUtils.toFXImage(img, null);
-			} else {
-				image = null;
+		try {
+			rs = SimpleQueries.isFavoriteEvent(stmt, userId, eventId);
+			
+			if(rs.next()) {
+				isFavorite = true;
 			}
-			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
+			
+			return isFavorite;
+		}finally{
+			
+			if(rs != null) {
+				rs.close();
+			}
+	       
+	        if (stmt != null)
+	        	stmt.close();
 		}
-       
-        if (stmt != null)
-        	stmt.close();
+		
+	}
+	
+	
+	public static void addFavoriteEvent(Integer userId, Integer eventId) throws SQLException{
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            
+			CRUDQueries.addFavoriteEvent(stmt, userId, eventId);
+		}finally {
+			if (stmt != null)
+	        	stmt.close();
+		}
+		
         
-		return eventList;
+	}
+	
+	public static void removeFavoriteEvent(Integer userId, Integer eventId) throws SQLException{        
+		Statement stmt = null;
+       
+		try {
+			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	     
+			CRUDQueries.removeFavoriteEvent(stmt, userId, eventId);
+		}finally{
+			if (stmt != null)
+	        	stmt.close();
+		}
+        
+	}
+	
+	public static List<Event> getFavoriteEventsByUser(Integer userId) throws SQLException{
+		List<Event> eventList = new ArrayList<Event>();
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            
+			rs = SimpleQueries.getFavoriteEventsByUser(stmt, userId);
+			
+			while(rs.next()) {
+				Image image;
+				if(rs.getBinaryStream(IMAGE_COL) != null) {
+		        	BufferedImage img;
+					try {
+						img = ImageIO.read(rs.getBinaryStream(IMAGE_COL));
+					} catch (IOException ioe) {
+						rs.close();
+						stmt.close();
+					
+						throw new SQLException(ioe);
+					}
+		        	image = SwingFXUtils.toFXImage(img, null);
+				} else {
+					image = null;
+				}
+				eventList.add(new Event(rs.getInt(ID_COL), rs.getString(TITLE_COL), rs.getString(DESCRIPTION_COL), rs.getString(OWNER_USERNAME_COL),
+	        			rs.getString(DEPARTURE_CITY_COL), rs.getString(DESTINATION_CITY_COL), rs.getDate(DEPARTURE_DATE_COL),
+	        			rs.getDate(RETURN_DATE_COL), image, rs.getDate(CREATE_TIME_COL), EventTagDAO.getEventTags(rs.getInt(ID_COL))));
+			}
+			
+			return eventList;
+		}finally {
+
+	        if (stmt != null)
+	        	stmt.close();
+	        
+	        if(rs != null)
+	        	rs.close();
+		}
+        
+		
 	}
 }

@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bikersland.App;
+import com.bikersland.Main;
 import com.bikersland.NonSoComeChiamarla;
 
 import javafx.scene.control.Alert.AlertType;
@@ -32,9 +32,9 @@ public class DB_Connection {
 				connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			} catch (SQLException | ClassNotFoundException e) {
 				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						App.bundle.getString("timedalert_db_conn_error_title"),
-						App.bundle.getString("timedalert_db_conn_error_header"),
-						App.bundle.getString("timedalert_db_conn_error_content"), null);
+						Main.bundle.getString("timedalert_db_conn_error_title"),
+						Main.bundle.getString("timedalert_db_conn_error_header"),
+						Main.bundle.getString("timedalert_db_conn_error_content"), null);
 				
 				Logger.getGlobal().log(Level.SEVERE, "Catched SQLException/ClassNotFoundException in getConnection() method, inside DB_Connection.java", e);
 
