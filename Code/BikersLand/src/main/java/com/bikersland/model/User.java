@@ -2,7 +2,7 @@ package com.bikersland.model;
 
 import java.util.Date;
 
-import com.bikersland.NonSoComeChiamarla;
+import com.bikersland.utility.ConvertMethods;
 
 import javafx.scene.image.Image;
 
@@ -83,11 +83,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Date getCreate_time() {
+	public Date getCreateTime() {
 		return create_time;
 	}
 
-	public void setCreate_time(Date create_time) {
+	public void setCreateTime(Date create_time) {
 		this.create_time = create_time;
 	}
 	
@@ -108,7 +108,7 @@ public class User {
 		if(this.create_time == null)
 			userString += this.create_time;
 		else
-			userString += NonSoComeChiamarla.dateToString(this.create_time);
+			userString += ConvertMethods.dateToLocalFormat(this.create_time);
 		
 		return userString;
 	}

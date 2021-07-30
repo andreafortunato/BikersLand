@@ -1,9 +1,7 @@
 package com.bikersland.controller.graphics;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,16 +9,14 @@ import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
 import com.bikersland.Main;
-import com.bikersland.InstantTooltip;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.NewEventControllerApp;
-import com.bikersland.db.EventDAO;
-import com.bikersland.db.EventTagDAO;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.event.TitleException;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.InstantTooltip;
+import com.bikersland.utility.TimedAlert;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -32,7 +28,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 public class NewEventControllerView {
@@ -76,9 +71,9 @@ public class NewEventControllerView {
     private static final int maxDescriptionCharacters = 250;
     
     public void initialize() {
-    	comboDepartureCity.getItems().addAll(Main.cities);
-    	comboDestinationCity.getItems().addAll(Main.cities);
-    	comboTags.getItems().addAll(Main.tags);
+    	comboDepartureCity.getItems().addAll(Main.getCities());
+    	comboDestinationCity.getItems().addAll(Main.getCities());
+    	comboTags.getItems().addAll(Main.getTags());
     	
     	/* Disabilito le date precedenti a quella odierna */
     	pickerDepartureDate.setDayCellFactory(picker -> new DateCell() {
@@ -98,7 +93,7 @@ public class NewEventControllerView {
     			return;
     		}
     		
-    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " " + Main.bundle.getString("remaining_characters"));
+    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " " + Main.getBundle().getString("remaining_characters"));
     	});
     }
     
@@ -142,9 +137,9 @@ public class NewEventControllerView {
     			lblImageName.setText(this.imageFile.getName());
     			hbImageSelected.setVisible(true);
 			} catch (ImageFileException e) {
-				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						Main.bundle.getString("timedalert_image_error_title"),
-						Main.bundle.getString("timedalert_image_error_header"),
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString("timedalert_image_error_title"),
+						Main.getBundle().getString("timedalert_image_error_header"),
 						e.getMessage(), null);
 			}
     	} else {
@@ -168,83 +163,63 @@ public class NewEventControllerView {
     	String emptyField = "";
     	Boolean isEmpty = false;
     	if(txtTitle.getText().strip().length() == 0) {
-    		emptyField = Main.bundle.getString("title");
+    		emptyField = Main.getBundle().getString("title");
     		isEmpty = true;
     	}
     	else if(comboDepartureCity.getValue() == null){
-    		emptyField = Main.bundle.getString("departure_city_2");
+    		emptyField = Main.getBundle().getString("departure_city_2");
     		isEmpty = true;
     	}
     	else if(comboDestinationCity.getValue() == null){
-    		emptyField = Main.bundle.getString("destination_city_2");
+    		emptyField = Main.getBundle().getString("destination_city_2");
     		isEmpty = true;
     	}
     	else if(pickerDepartureDate.getValue() == null){
-    		emptyField = Main.bundle.getString("departure_date_2");
+    		emptyField = Main.getBundle().getString("departure_date_2");
     		isEmpty = true;
     	}
     	else if(pickerReturnDate.getValue() == null){
-    		emptyField = Main.bundle.getString("return_date_2");
+    		emptyField = Main.getBundle().getString("return_date_2");
     		isEmpty = true;
     	}
     	
     	if(isEmpty) {
-    		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-    				Main.bundle.getString("timedalert_new_event_empty_error_title"),
-    				Main.bundle.getString("timedalert_new_event_empty_error_header"),
-    				Main.bundle.getString("timedalert_new_event_empty_error_content"), emptyField);
+    		TimedAlert.show(AlertType.ERROR,
+    				Main.getBundle().getString("timedalert_new_event_empty_error_title"),
+    				Main.getBundle().getString("timedalert_new_event_empty_error_header"),
+    				Main.getBundle().getString("timedalert_new_event_empty_error_content"), emptyField);
     		return;
     	}
     	
     	try {
     		eventBean.setTitle(txtTitle.getText().strip());
         	eventBean.setDescription(txtDescription.getText());
-        	eventBean.setOwner_username(LoginSingleton.getLoginInstance().getUser().getUsername());
-        	eventBean.setDeparture_city(comboDepartureCity.getValue());
-        	eventBean.setDestination_city(comboDestinationCity.getValue());
-        	eventBean.setDeparture_date(Date.valueOf(pickerDepartureDate.getValue()));
-        	eventBean.setReturn_date(Date.valueOf(pickerReturnDate.getValue()));
+        	eventBean.setOwnerUsername(LoginSingleton.getLoginInstance().getUser().getUsername());
+        	eventBean.setDepartureCity(comboDepartureCity.getValue());
+        	eventBean.setDestinationCity(comboDestinationCity.getValue());
+        	eventBean.setDepartureDate(Date.valueOf(pickerDepartureDate.getValue()));
+        	eventBean.setReturnDate(Date.valueOf(pickerReturnDate.getValue()));
         	eventBean.setTags(comboTags.getCheckModel().getCheckedItems());
         	
         	EventBean createdEventBean = NewEventControllerApp.createNewEvent(eventBean);
         	
-    		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
-    				Main.bundle.getString("success"),
-					Main.bundle.getString("timedalert_new_event_success_header"),
-					Main.bundle.getString("timedalert_new_event_success_content"), createdEventBean.getTitle());
+    		TimedAlert.show(AlertType.INFORMATION,
+    				Main.getBundle().getString("success"),
+					Main.getBundle().getString("timedalert_new_event_success_header"),
+					Main.getBundle().getString("timedalert_new_event_success_content"), createdEventBean.getTitle());
     		
     		Main.setRoot("EventDetails", createdEventBean);
 		} catch (TitleException te) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("error"),
-					Main.bundle.getString("timedalert_event_title_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("error"),
+					Main.getBundle().getString("timedalert_event_title_error"),
 					te.getMessage(), null);
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 		}
-    	
-//    	event = EventDAO.setEvent(event);
-//    	
-//    	if(event != null) {
-//    		if(!comboTags.getCheckModel().getCheckedItems().isEmpty()) {
-//    			EventTagDAO.addEventTags(event.getId(), comboTags.getCheckModel().getCheckedItems());
-//    			event.setTags(comboTags.getCheckModel().getCheckedItems());
-//    		}
-//	    	
-//    		NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
-//    				App.bundle.getString("success"),
-//    				App.bundle.getString("timedalert_new_event_success_header"),
-//    				App.bundle.getString("timedalert_new_event_success_content"), event.getTitle());
-//	    	App.setRoot("EventDetails", event);
-//    	} else {
-//	    	NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-//	    			App.bundle.getString("error"),
-//	    			App.bundle.getString("timedalert_new_event_error_header"),
-//	    			App.bundle.getString("timedalert_new_event_error_content"), null);
-//    	}
     }
 
 }

@@ -1,14 +1,11 @@
 package com.bikersland.db.queries;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
 import com.bikersland.Main;
-import com.bikersland.db.DB_Connection;
-import com.bikersland.model.Event;
 
 public class SimpleQueries {
 	
@@ -50,12 +47,12 @@ public class SimpleQueries {
 	
 	public static ResultSet getEventByCities(Statement stmt, String departureCity, String destinationCity) throws SQLException {
 		String query = "SELECT * FROM event";
-		if(departureCity.equals(Main.bundle.getString("all_female")) && destinationCity.equals(Main.bundle.getString("all_female"))) {
+		if(departureCity.equals(Main.getBundle().getString("all_female")) && destinationCity.equals(Main.getBundle().getString("all_female"))) {
 			query += " ORDER BY id DESC;";
 		} else {
-			if(departureCity.equals(Main.bundle.getString("all_female"))) {
+			if(departureCity.equals(Main.getBundle().getString("all_female"))) {
 				query += " WHERE destination_city='" + destinationCity + "'";
-			} else if(destinationCity.equals(Main.bundle.getString("all_female"))){
+			} else if(destinationCity.equals(Main.getBundle().getString("all_female"))){
 				query += " WHERE departure_city='" + departureCity + "'";
 			} else {
 				query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
@@ -69,11 +66,11 @@ public class SimpleQueries {
 	public static ResultSet getEventByCitiesAndTags(Statement stmt, String departureCity, String destinationCity, List<String> tagList, String language) throws SQLException {
 	
 		String queryCities = "SELECT * FROM event WHERE 1=1";
-		if(departureCity.equals(Main.bundle.getString("all_female")) && destinationCity.equals(Main.bundle.getString("all_female"))) {
+		if(departureCity.equals(Main.getBundle().getString("all_female")) && destinationCity.equals(Main.getBundle().getString("all_female"))) {
 			;
-		} else if(departureCity.equals(Main.bundle.getString("all_female"))) {
+		} else if(departureCity.equals(Main.getBundle().getString("all_female"))) {
 			queryCities += " AND destination_city='" + destinationCity + "'";
-		} else if(destinationCity.equals(Main.bundle.getString("all_female"))){
+		} else if(destinationCity.equals(Main.getBundle().getString("all_female"))){
 			queryCities += " AND departure_city='" + departureCity + "'";
 		} else {
 			queryCities += " AND departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";

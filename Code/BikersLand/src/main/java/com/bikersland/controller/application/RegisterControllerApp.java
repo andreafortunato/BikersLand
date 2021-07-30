@@ -1,8 +1,6 @@
 package com.bikersland.controller.application;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.bikersland.Main;
 import com.bikersland.bean.UserBean;
@@ -34,16 +32,12 @@ public class RegisterControllerApp {
 			try {
 				User loggedUser = UserDAO.getUserByUsername(newUser.getUsername());
 				LoginControllerApp.loginJustRegisteredUser(loggedUser);
-			} catch (SQLException | ImageConversionException | UserNotFoundException sqle) {
-				Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in register() function, inside RegisterControllerApp.java", sqle);
-				
-				throw new AutomaticLoginException(Main.bundle.getString("ex_failed_autologin"));
+			} catch (SQLException | ImageConversionException | UserNotFoundException e) {
+				throw new AutomaticLoginException(Main.getBundle().getString("ex_failed_autologin"), e, "register", "RegisterControllerApp.java");
 			}
 			
 		} catch (SQLException | ImageConversionException e) {
-			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in register() function, inside RegisterControllerApp.java", e);
-			
-			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), e, "register", "RegisterControllerApp.java");
 		}
 	}
 }

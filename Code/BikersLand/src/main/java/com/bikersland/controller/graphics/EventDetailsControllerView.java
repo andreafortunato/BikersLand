@@ -1,32 +1,24 @@
 package com.bikersland.controller.graphics;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import com.bikersland.Main;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.EventDetailsControllerApp;
-import com.bikersland.db.EventTagDAO;
-import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
-import com.bikersland.model.User;
-import com.bikersland.model.Event;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConvertMethods;
+import com.bikersland.utility.TimedAlert;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Duration;
 
 public class EventDetailsControllerView {
 	
@@ -92,30 +84,30 @@ public class EventDetailsControllerView {
 		}
 		
 		lblTitle.setText(eventBean.getTitle());
-		lblDepartureDate.setText(NonSoComeChiamarla.dateToString(eventBean.getDeparture_date()));
-		lblReturnDate.setText(NonSoComeChiamarla.dateToString(eventBean.getReturn_date()));
-		lblDepartureCity.setText(eventBean.getDeparture_city());
-		lblDestinationCity.setText(eventBean.getDestination_city());
+		lblDepartureDate.setText(ConvertMethods.dateToLocalFormat(eventBean.getDepartureDate()));
+		lblReturnDate.setText(ConvertMethods.dateToLocalFormat(eventBean.getReturnDate()));
+		lblDepartureCity.setText(eventBean.getDepartureCity());
+		lblDestinationCity.setText(eventBean.getDestinationCity());
 		lblDescription.setText(eventBean.getDescription());
 		lvTags.setItems(FXCollections.observableArrayList(eventBean.getTags()));
 		if(lvTags.getItems().size() == 0)
-			lvTags.setItems(FXCollections.observableArrayList(Main.bundle.getString("no_tags")));
+			lvTags.setItems(FXCollections.observableArrayList(Main.getBundle().getString("no_tags")));
 		lvTags.setOnMousePressed(e -> lvTags.getSelectionModel().clearSelection());
-		lblCreateTime.setText(NonSoComeChiamarla.dateToString(eventBean.getCreate_time()));
-		lblOwnerUsername.setText(eventBean.getOwner_username());
+		lblCreateTime.setText(ConvertMethods.dateToLocalFormat(eventBean.getCreateTime()));
+		lblOwnerUsername.setText(eventBean.getOwnerUsername());
 		
 		try {
 			lvParticipants.setItems(FXCollections.observableArrayList(EventDetailsControllerApp.getEventParticipants(eventBean.getId())));
 			lblParticipants.setText(String.valueOf(lvParticipants.getItems().size()));
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		} catch (NoEventParticipantsException nepe) {
-			lvParticipants.setItems(FXCollections.observableArrayList(Main.bundle.getString("no_participants")));
+			lvParticipants.setItems(FXCollections.observableArrayList(Main.getBundle().getString("no_participants")));
 			lblParticipants.setText("0");
 		}
 		
@@ -140,10 +132,10 @@ public class EventDetailsControllerView {
 			try {
 				setIsJoined(EventDetailsControllerApp.userJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
-				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						Main.bundle.getString("timedalert_internal_error"),
-						Main.bundle.getString("timedalert_sql_ex_header"),
-						idbe.getMessage(), Main.logFile);
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString("timedalert_internal_error"),
+						Main.getBundle().getString("timedalert_sql_ex_header"),
+						idbe.getMessage(), Main.getLogFile());
 				
 				Main.setRoot("Homepage");
 			}
@@ -163,21 +155,21 @@ public class EventDetailsControllerView {
 	    		setIsJoined(true);
 	    	}
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 		}
     }
 	
 	private void setIsJoined(Boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
-			btnJoin.setText(Main.bundle.getString("remove_participation"));
+			btnJoin.setText(Main.getBundle().getString("remove_participation"));
 			
 			if(!lvParticipants.getItems().contains(loggedUserUsername)) {
 				ObservableList<String> participants = lvParticipants.getItems();
-				if(participants.size() == 1 && participants.get(0).equals(Main.bundle.getString("no_participants"))) {
+				if(participants.size() == 1 && participants.get(0).equals(Main.getBundle().getString("no_participants"))) {
 					participants.clear();
 				}
 				participants.add(loggedUserUsername);
@@ -187,10 +179,10 @@ public class EventDetailsControllerView {
 			}
 		}
 		else {
-			btnJoin.setText(Main.bundle.getString("join"));
+			btnJoin.setText(Main.getBundle().getString("join"));
 			lvParticipants.getItems().remove(loggedUserUsername);
 			if(lvParticipants.getItems().size() == 0)
-				lvParticipants.setItems(FXCollections.observableArrayList(Main.bundle.getString("no_participants")));
+				lvParticipants.setItems(FXCollections.observableArrayList(Main.getBundle().getString("no_participants")));
 			
 		}
 	}

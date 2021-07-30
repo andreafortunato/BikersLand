@@ -3,8 +3,6 @@ package com.bikersland.controller.application;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
@@ -25,11 +23,11 @@ public class NewEventControllerApp {
 		Event event = new Event();
 		event.setTitle(eventBean.getTitle());
 		event.setDescription(eventBean.getDescription());
-		event.setOwner_username(eventBean.getOwner_username());
-		event.setDeparture_city(eventBean.getDeparture_city());
-		event.setDestination_city(eventBean.getDestination_city());
-		event.setDeparture_date(eventBean.getDeparture_date());
-		event.setReturn_date(eventBean.getReturn_date());
+		event.setOwnerUsername(eventBean.getOwnerUsername());
+		event.setDepartureCity(eventBean.getDepartureCity());
+		event.setDestinationCity(eventBean.getDestinationCity());
+		event.setDepartureDate(eventBean.getDepartureDate());
+		event.setReturnDate(eventBean.getReturnDate());
 		event.setImage(eventBean.getImage());
 		event.setTags(eventBean.getTags());
 		
@@ -41,14 +39,12 @@ public class NewEventControllerApp {
 			
 			EventBean createdEventBean = eventBean;
 			createdEventBean.setId(createdEvent.getId());
-			createdEventBean.setCreate_time(createdEvent.getCreate_time());
+			createdEventBean.setCreateTime(createdEvent.getCreateTime());
 			
 			return createdEventBean;
 						
 		} catch (SQLException | ImageConversionException | EventNotFoundException e) {
-			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in createNewEvent() function, inside NewEventControllerApp.java", e);
-			
-			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
+			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), e, "createNewEvent", "NewEventControllerApp.java");
 		} 
 	}
 	
@@ -58,10 +54,8 @@ public class NewEventControllerApp {
 			eventTagIdList = TagDAO.tagNameToTagId(createdEvent.getTags());
 			
 			EventTagDAO.addEventTags(createdEvent.getId(), eventTagIdList);
-		} catch (SQLException | TagNotFoundException sqle) {
-			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in setEventTags() function, inside NewEventControllerApp.java", sqle);
-			
-			throw new InternalDBException(Main.bundle.getString("ex_internal_db_error"));
+		} catch (SQLException | TagNotFoundException e) {
+			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), e, "setEventTags", "NewEventControllerApp.java");
 		}
 	}
 	

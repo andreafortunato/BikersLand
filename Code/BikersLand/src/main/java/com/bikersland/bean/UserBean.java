@@ -3,14 +3,16 @@ package com.bikersland.bean;
 import java.io.File;
 import java.util.Date;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 import com.bikersland.Main;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.user.EmailException;
 import com.bikersland.exception.user.NameException;
 import com.bikersland.exception.user.PasswordException;
 import com.bikersland.exception.user.SurnameException;
 import com.bikersland.exception.user.UsernameException;
+import com.bikersland.utility.ConvertMethods;
 
 import javafx.scene.image.Image;
 
@@ -22,7 +24,7 @@ public class UserBean {
 	private String email;
 	private String password;
 	private Image image;
-	private Date create_time;
+	private Date createTime;
 	
 	public UserBean() {
 		this(null, null, null, null, null, null, null, null);
@@ -32,7 +34,7 @@ public class UserBean {
 		this(null, name, surname, username, email, password, image, null);
 	}
 	
-	public UserBean(Integer id, String name, String surname, String username, String email, String password, Image image, Date create_time) {
+	public UserBean(Integer id, String name, String surname, String username, String email, String password, Image image, Date createTime) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -40,7 +42,7 @@ public class UserBean {
 		this.email = email;
 		this.password = password;
 		this.image = image;
-		this.create_time = create_time;
+		this.createTime = createTime;
 	}
 	
 	public Integer getId() {
@@ -56,17 +58,17 @@ public class UserBean {
 	}
 
 	public void setName(String name) throws NameException {
-		String stripped_name = name.strip();
-		validateName(stripped_name);
-		this.name = stripped_name;
+		String strippedName = name.strip();
+		validateName(strippedName);
+		this.name = strippedName;
 	}
 	
-	private void validateName(String stripped_name) throws NameException {		
-		if(stripped_name.length() < 2)
-			throw new NameException(Main.bundle.getString("ex_user_name_short"));
+	private void validateName(String strippedName) throws NameException {		
+		if(strippedName.length() < 2)
+			throw new NameException(Main.getBundle().getString("ex_user_name_short"));
 		
-		if(stripped_name.length() > 32)
-			throw new NameException(Main.bundle.getString("ex_user_name_long"));
+		if(strippedName.length() > 32)
+			throw new NameException(Main.getBundle().getString("ex_user_name_long"));
 	}
 
 	public String getSurname() {
@@ -74,17 +76,17 @@ public class UserBean {
 	}
 
 	public void setSurname(String surname) throws SurnameException {
-		String stripped_surname = surname.strip();
-		validateSurname(stripped_surname);
-		this.surname = stripped_surname;
+		String strippedSurname = surname.strip();
+		validateSurname(strippedSurname);
+		this.surname = strippedSurname;
 	}
 	
-	private void validateSurname(String stripped_surname) throws SurnameException {
-		if(stripped_surname.length() < 2)
-			throw new SurnameException(Main.bundle.getString("ex_user_surname_short"));
+	private void validateSurname(String strippedSurname) throws SurnameException {
+		if(strippedSurname.length() < 2)
+			throw new SurnameException(Main.getBundle().getString("ex_user_surname_short"));
 		
-		if(stripped_surname.length() > 32)
-			throw new SurnameException(Main.bundle.getString("ex_user_surname_long"));
+		if(strippedSurname.length() > 32)
+			throw new SurnameException(Main.getBundle().getString("ex_user_surname_long"));
 	}
 
 
@@ -93,17 +95,17 @@ public class UserBean {
 	}
 
 	public void setUsername(String username) throws UsernameException {
-		String stripped_username = username.strip();
-		validateUsername(stripped_username);
-		this.username = stripped_username;
+		String strippedUsername = username.strip();
+		validateUsername(strippedUsername);
+		this.username = strippedUsername;
 	}
 	
-	private void validateUsername(String stripped_username) throws UsernameException {
-		if(stripped_username.length() < 2)
-			throw new UsernameException(Main.bundle.getString("ex_user_username_short"));
+	private void validateUsername(String strippedUsername) throws UsernameException {
+		if(strippedUsername.length() < 2)
+			throw new UsernameException(Main.getBundle().getString("ex_user_username_short"));
 		
-		if(stripped_username.length() > 16)
-			throw new UsernameException(Main.bundle.getString("ex_user_username_long"));
+		if(strippedUsername.length() > 16)
+			throw new UsernameException(Main.getBundle().getString("ex_user_username_long"));
 	}
 
 	public String getEmail() {
@@ -111,15 +113,15 @@ public class UserBean {
 	}
 
 	public void setEmail(String email) throws EmailException {
-		String stripped_email = email.strip();
-		validateEmail(stripped_email);
-		this.email = stripped_email;
+		String strippedEmail = email.strip();
+		validateEmail(strippedEmail);
+		this.email = strippedEmail;
 	}
 	
-	private void validateEmail(String stripped_email) throws EmailException {		
-		if(stripped_email.length() < 6 ||
-				stripped_email.length() > 128 ||
-				!stripped_email.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"))
+	private void validateEmail(String strippedEmail) throws EmailException {		
+		if(strippedEmail.length() < 6 ||
+				strippedEmail.length() > 128 ||
+				!EmailValidator.getInstance().isValid(strippedEmail))
 			throw new EmailException();
 	}
 
@@ -134,23 +136,23 @@ public class UserBean {
 	
 	private void validatePassword(String password) throws PasswordException {
 		if(password.length() < 6)
-			throw new PasswordException(Main.bundle.getString("ex_user_password_short"));
+			throw new PasswordException(Main.getBundle().getString("ex_user_password_short"));
 		if(password.length() > 64)
-			throw new PasswordException(Main.bundle.getString("ex_user_password_long"));
+			throw new PasswordException(Main.getBundle().getString("ex_user_password_long"));
 		if(!password.matches(".*\\d.*"))
-			throw new PasswordException(Main.bundle.getString("ex_user_password_no_number"));
+			throw new PasswordException(Main.getBundle().getString("ex_user_password_no_number"));
 		if(!password.matches(".*[A-Z].*"))
-			throw new PasswordException(Main.bundle.getString("ex_user_password_no_capital_letter"));
+			throw new PasswordException(Main.getBundle().getString("ex_user_password_no_capital_letter"));
 		if(!password.matches(".*[.!@#$%&*()_+=|<>?{}\\[\\]~-].*"))
-			throw new PasswordException(Main.bundle.getString("ex_user_password_no_special_char"));
+			throw new PasswordException(Main.getBundle().getString("ex_user_password_no_special_char"));
 	}
 
-	public Date getCreate_time() {
-		return create_time;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreate_time(Date create_time) {
-		this.create_time = create_time;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 	
 	public Image getImage() {
@@ -168,7 +170,7 @@ public class UserBean {
 	
 	private void validateImageFile(File imageFile) throws ImageFileException {
     	if(imageFile.length() > 4194304)
-    		throw new ImageFileException(Main.bundle.getString("ex_image_too_big"));
+    		throw new ImageFileException(Main.getBundle().getString("ex_image_too_big"));
 	}
 
 	public String toString() {
@@ -177,10 +179,10 @@ public class UserBean {
         		"\nEmail: " + this.email + "\nPassword: " + this.password +
         		"\nCreate_time: ";
 		
-		if(this.create_time == null)
-			userString += this.create_time;
+		if(this.createTime == null)
+			userString += this.createTime;
 		else
-			userString += NonSoComeChiamarla.dateToString(this.create_time);
+			userString += ConvertMethods.dateToLocalFormat(this.createTime);
 		
 		return userString;
 	}

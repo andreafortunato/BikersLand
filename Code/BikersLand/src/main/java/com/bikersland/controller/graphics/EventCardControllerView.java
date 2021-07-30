@@ -1,34 +1,27 @@
 package com.bikersland.controller.graphics;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.bikersland.Main;
-import com.bikersland.InstantTooltip;
-import com.bikersland.NonSoComeChiamarla;
-import com.bikersland.SpriteAnimation;
 import com.bikersland.bean.EventBean;
-import com.bikersland.controller.application.EventDetailsControllerApp;
 import com.bikersland.controller.application.EventCardControllerApp;
-import com.bikersland.db.FavoriteEventDAO;
-import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
-import com.bikersland.model.User;
-import com.bikersland.model.Event;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConvertMethods;
+import com.bikersland.utility.InstantTooltip;
+import com.bikersland.utility.SpriteAnimation;
+import com.bikersland.utility.TimedAlert;
 
 import javafx.animation.Animation;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -36,8 +29,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 public class EventCardControllerView {
@@ -138,12 +129,12 @@ public class EventCardControllerView {
 		}
     	imgViaggio.setPreserveRatio(true);
     	
-    	InstantTooltip imgTooltip = new InstantTooltip(Main.bundle.getString("see_event_details"));
+    	InstantTooltip imgTooltip = new InstantTooltip(Main.getBundle().getString("see_event_details"));
     	Tooltip.install(imgViaggio, imgTooltip);
     	
     	lblTitle.setText(eventBean.getTitle());
-    	lblDepartureCity.setText(eventBean.getDeparture_city());
-    	lblDestinationCity.setText(eventBean.getDestination_city());
+    	lblDepartureCity.setText(eventBean.getDepartureCity());
+    	lblDestinationCity.setText(eventBean.getDestinationCity());
 //    	System.out.println(String.join(", ", event.getTags()));
     	if(eventBean.getTags().size() == 0)
     		lblTags.setText("No tags!");
@@ -152,9 +143,9 @@ public class EventCardControllerView {
     	    InstantTooltip tp = new InstantTooltip(lblTags.getText());
     		lblTags.setTooltip(tp);
     	}
-    	lblDepartureDate.setText(NonSoComeChiamarla.dateToString(eventBean.getDeparture_date()));
-    	lblReturnDate.setText(NonSoComeChiamarla.dateToString(eventBean.getReturn_date()));
-    	lblOwnerUsername.setText(eventBean.getOwner_username());
+    	lblDepartureDate.setText(ConvertMethods.dateToLocalFormat(eventBean.getDepartureDate()));
+    	lblReturnDate.setText(ConvertMethods.dateToLocalFormat(eventBean.getReturnDate()));
+    	lblOwnerUsername.setText(eventBean.getOwnerUsername());
     	
     	Platform.runLater(() -> {
     		AnchorPane.setLeftAnchor(lblTitle, (400-lblTitle.getWidth())/2);
@@ -177,17 +168,17 @@ public class EventCardControllerView {
 			for(String participant: participants)
 				participantList += participant + "\n";
 			
-			participantsTooltip = new InstantTooltip(Main.bundle.getString("participants") + ":\n\n" + participantList);
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString("participants") + ":\n\n" + participantList);
 			
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		}catch(NoEventParticipantsException nepe) {
-			participantsTooltip = new InstantTooltip(Main.bundle.getString("no_participants"));
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString("no_participants"));
 			btnParticipants.setText("0");
 		}
 		
@@ -206,10 +197,10 @@ public class EventCardControllerView {
 				
 				setIsJoined(EventCardControllerApp.isJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
-				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						Main.bundle.getString("timedalert_internal_error"),
-						Main.bundle.getString("timedalert_sql_ex_header"),
-						idbe.getMessage(), Main.logFile);
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString("timedalert_internal_error"),
+						Main.getBundle().getString("timedalert_sql_ex_header"),
+						idbe.getMessage(), Main.getLogFile());
 				
 				Main.setRoot("Homepage");
 			}
@@ -244,10 +235,10 @@ public class EventCardControllerView {
                 setIsFavorite(true);
         	}
     	}catch(InternalDBException idbe) {
-    		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+    		TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
     	}
@@ -260,7 +251,7 @@ public class EventCardControllerView {
     }
     
     @FXML
-    private void joinEvent() throws SQLException, IOException {
+    private void joinEvent() {
     	try {
 			if(isJoined) 
 	    		EventCardControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
@@ -273,10 +264,10 @@ public class EventCardControllerView {
 			setParticipantsText();
 			setIsJoined(!isJoined);
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 		}
     }
 
@@ -294,24 +285,24 @@ public class EventCardControllerView {
             animation.setCycleCount(1);
             animation.play();
             
-            favoriteTooltip.setText(Main.bundle.getString("remove_from_favorites"));
+            favoriteTooltip.setText(Main.getBundle().getString("remove_from_favorites"));
 		}
 		else {
 			if(animation != null)
     			animation.stop();
 			imgStar.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
 			
-			favoriteTooltip.setText(Main.bundle.getString("add_to_favorites"));
+			favoriteTooltip.setText(Main.getBundle().getString("add_to_favorites"));
 		}
 	}
 	
 	private void setIsJoined(Boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
-			btnJoin.setText(Main.bundle.getString("remove_participation"));
+			btnJoin.setText(Main.getBundle().getString("remove_participation"));
 		}
 		else {
-			btnJoin.setText(Main.bundle.getString("join"));
+			btnJoin.setText(Main.getBundle().getString("join"));
 		}
 	}
 	
@@ -328,17 +319,17 @@ public class EventCardControllerView {
 			for(String participant: participants)
 				participantList += participant + "\n";
 			
-			participantsTooltip = new InstantTooltip(Main.bundle.getString("participants") + ":\n\n" + participantList);
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString("participants") + ":\n\n" + participantList);
 			
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		}catch(NoEventParticipantsException nepe) {
-			participantsTooltip = new InstantTooltip(Main.bundle.getString("no_participants"));
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString("no_participants"));
 			btnParticipants.setText("0");
 		}
 		

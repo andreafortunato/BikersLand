@@ -111,7 +111,7 @@
                         </Label>
                         <HBox spacing="5.0">
                            <children>
-                              <Label text="%created_by" />
+                              <Label text="%created_by_2" />
                               <Label fx:id="lblOwnerUsername" text="NOME" />
                            </children>
                         </HBox>

@@ -2,6 +2,8 @@ package com.bikersland.exception;
 
 public class ImageConversionException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+	
 	public ImageConversionException() {
 		super();
 	}

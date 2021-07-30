@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 public class InternalDBException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+	
 	public InternalDBException() {
 		super();
 		Logger.getGlobal().log(Level.SEVERE, "Catched an unknown internal Exception");

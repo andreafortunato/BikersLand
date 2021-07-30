@@ -1,28 +1,20 @@
 package com.bikersland.db;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
-import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.ImageConversionException;
 import com.bikersland.exception.event.EventNotFoundException;
-import com.bikersland.exception.user.DuplicateEmailException;
-import com.bikersland.exception.user.DuplicateUsernameException;
 import com.bikersland.model.Event;
 
 import javafx.embed.swing.SwingFXUtils;

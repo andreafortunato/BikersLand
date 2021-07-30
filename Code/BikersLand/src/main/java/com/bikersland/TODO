@@ -1,7 +1,0 @@
-Togliere "throws SQLException" e sostituirlo con "try/catch"
-
-Creare e sistemare le classi bean, controller, ecc...
-
-Utilizzare SonarCloud (e SonarLint su Eclipse) per eliminare TUTTI gli errori/warnings
-
-Aggiungere eccezioni

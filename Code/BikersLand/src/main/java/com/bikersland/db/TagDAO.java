@@ -5,9 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import com.bikersland.Main;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.TagNotFoundException;
 

@@ -1,38 +1,23 @@
 package com.bikersland.controller.graphics;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bikersland.Main;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.EventBean;
 import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.ProfileControllerApp;
-import com.bikersland.db.EventDAO;
-import com.bikersland.db.FavoriteEventDAO;
-import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
-import com.bikersland.model.User;
-import com.bikersland.model.Event;
-import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConvertMethods;
+import com.bikersland.utility.CustomGridPane;
+import com.bikersland.utility.TimedAlert;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
@@ -54,10 +39,10 @@ public class ProfileControllerView {
     private VBox vbViaggi;
 
     @FXML
-    private GridPane gpJoinedEvents;
+    private CustomGridPane gpJoinedEvents;
 
     @FXML
-    private GridPane gpFavoriteEvents;
+    private CustomGridPane gpFavoriteEvents;
     
     private List<EventBean> joinedEventBeanList;
     private List<Node> joinedEventNodeList;
@@ -121,21 +106,21 @@ public class ProfileControllerView {
 			
 			
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		}
 		
-		gridPaneColumns = (((Double)Main.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
+		gridPaneColumns = (((Double)Main.getCurrentWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
 		
-		this.joinedEventNodeList = NonSoComeChiamarla.eventsToNodeList(joinedEventBeanList);
-    	NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, gridPaneColumns);
+		this.joinedEventNodeList = ConvertMethods.eventsToNodeList(joinedEventBeanList);
+		gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns);
 		
-		this.favoriteEventNodeList = NonSoComeChiamarla.eventsToNodeList(favoriteEventBeanList);
-    	NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, gridPaneColumns);
+		this.favoriteEventNodeList = ConvertMethods.eventsToNodeList(favoriteEventBeanList);
+		gpFavoriteEvents.populateGrid(favoriteEventNodeList, gridPaneColumns);
 		
 		Platform.runLater(() -> {
 			vbViaggi.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -147,8 +132,8 @@ public class ProfileControllerView {
 	        		gridPaneColumns = n/viaggioBoxWidth;
 	        	
 					try {
-						NonSoComeChiamarla.populateGrid(gpFavoriteEvents, favoriteEventNodeList, gridPaneColumns);
-						NonSoComeChiamarla.populateGrid(gpJoinedEvents, joinedEventNodeList, gridPaneColumns);
+						gpFavoriteEvents.populateGrid(favoriteEventNodeList, gridPaneColumns);
+						gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns);
 						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
 					} catch (Exception e) {
 						e.printStackTrace();

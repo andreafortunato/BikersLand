@@ -56,11 +56,11 @@ public class CRUDQueries {
 	public static ResultSet createNewEventQuery(CallableStatement stmtCreateEvent, Event event) throws SQLException, ImageConversionException {		
 		stmtCreateEvent.setString(1, event.getTitle());
 		stmtCreateEvent.setString(2, event.getDescription());
-		stmtCreateEvent.setString(3, event.getOwner_username());
-		stmtCreateEvent.setString(4, event.getDeparture_city());
-		stmtCreateEvent.setString(5, event.getDestination_city());
-		stmtCreateEvent.setDate(6, event.getDeparture_date());
-		stmtCreateEvent.setDate(7, event.getReturn_date());
+		stmtCreateEvent.setString(3, event.getOwnerUsername());
+		stmtCreateEvent.setString(4, event.getDepartureCity());
+		stmtCreateEvent.setString(5, event.getDestinationCity());
+		stmtCreateEvent.setDate(6, event.getDepartureDate());
+		stmtCreateEvent.setDate(7, event.getReturnDate());
 		
 		if(event.getImage() != null) {
 			BufferedImage buffImg = SwingFXUtils.fromFXImage(event.getImage(), null);

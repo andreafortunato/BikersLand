@@ -9,17 +9,15 @@ import java.sql.Statement;
 
 import javax.imageio.ImageIO;
 
-import com.bikersland.model.User;
-
-import UserDAO.InvalidLoginException;
-
 import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.ImageConversionException;
+import com.bikersland.exception.InvalidLoginException;
 import com.bikersland.exception.user.DuplicateEmailException;
 import com.bikersland.exception.user.DuplicateUsernameException;
 import com.bikersland.exception.user.UserNotFoundException;
+import com.bikersland.model.User;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -47,10 +45,10 @@ public class UserDAO {
 				/* Username o Email già esistenti */
 				if(ex.getMessage().contains("username_UNIQUE")) {
 					/* Username già presente */
-					throw new DuplicateUsernameException(Main.bundle.getString("ex_duplicate_username"));
+					throw new DuplicateUsernameException(Main.getBundle().getString("ex_duplicate_username"));
 				} else {
 					/* Email già presente */
-					throw new DuplicateEmailException(Main.bundle.getString("ex_duplicate_email"));
+					throw new DuplicateEmailException(Main.getBundle().getString("ex_duplicate_email"));
 				}
 			}
 			

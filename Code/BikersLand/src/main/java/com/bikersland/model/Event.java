@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bikersland.NonSoComeChiamarla;
+import com.bikersland.utility.ConvertMethods;
 
 import javafx.scene.image.Image;
 
@@ -55,9 +55,9 @@ public class Event {
 				+ "Tag List: %s\n"
 				+ "Create time: %s",
 				id, title, description, owner_username, departure_city,
-				destination_city, NonSoComeChiamarla.dateToString(departure_date),
-				NonSoComeChiamarla.dateToString(return_date), tags.toString(),
-				NonSoComeChiamarla.dateToString(create_time));
+				destination_city, ConvertMethods.dateToLocalFormat(departure_date),
+				ConvertMethods.dateToLocalFormat(return_date), tags.toString(),
+				ConvertMethods.dateToLocalFormat(create_time));
 	}
 
 	public Integer getId() {
@@ -84,43 +84,43 @@ public class Event {
 		this.description = description;
 	}
 
-	public String getOwner_username() {
+	public String getOwnerUsername() {
 		return owner_username;
 	}
 
-	public void setOwner_username(String owner_username) {
+	public void setOwnerUsername(String owner_username) {
 		this.owner_username = owner_username;
 	}
 
-	public String getDeparture_city() {
+	public String getDepartureCity() {
 		return departure_city;
 	}
 
-	public void setDeparture_city(String departure_city) {
+	public void setDepartureCity(String departure_city) {
 		this.departure_city = departure_city;
 	}
 
-	public String getDestination_city() {
+	public String getDestinationCity() {
 		return destination_city;
 	}
 
-	public void setDestination_city(String destination_city) {
+	public void setDestinationCity(String destination_city) {
 		this.destination_city = destination_city;
 	}
 
-	public Date getDeparture_date() {
+	public Date getDepartureDate() {
 		return departure_date;
 	}
 
-	public void setDeparture_date(Date departure_date) {
+	public void setDepartureDate(Date departure_date) {
 		this.departure_date = departure_date;
 	}
 
-	public Date getReturn_date() {
+	public Date getReturnDate() {
 		return return_date;
 	}
 
-	public void setReturn_date(Date return_date) {
+	public void setReturnDate(Date return_date) {
 		this.return_date = return_date;
 	}
 	
@@ -132,11 +132,11 @@ public class Event {
 		this.image = image;
 	}
 	
-	public Date getCreate_time() {
+	public Date getCreateTime() {
 		return create_time;
 	}
 
-	public void setCreate_time(Date create_time) {
+	public void setCreateTime(Date create_time) {
 		this.create_time = create_time;
 	}
 

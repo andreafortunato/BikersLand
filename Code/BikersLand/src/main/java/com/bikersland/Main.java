@@ -1,12 +1,5 @@
 package com.bikersland;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,27 +10,38 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.bikersland.bean.EventBean;
-import com.bikersland.controller.application.AppControllerApp;
+import com.bikersland.controller.application.MainControllerApp;
 import com.bikersland.controller.graphics.EventDetailsControllerView;
-import com.bikersland.db.CityDAO;
 import com.bikersland.db.DB_Connection;
-import com.bikersland.db.TagDAO;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.utility.TimedAlert;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * JavaFX App
  */
 public class Main extends Application {
 	
-	public static String logFile = System.getProperty("user.home") + "\\BikersLand.log";
+	private static final String TIMEDALERT_INTERNAL_ERROR = "timedalert_internal_error";
+	private static final String TIMEDALERT_SYSTEM_ERROR_HEADER = "timedalert_system_error_header";
+	private static final String TIMEDALERT_SYSTEM_ERROR_CONTENT = "timedalert_system_error_content";
 	
-	public static List<String> cities = null;
-	public static List<String> tags = null;
+	private static String logFile = System.getProperty("user.home") + "\\BikersLand.log";
 
-    public static Scene scene;
+	private static List<String> cities = null;
+	private static List<String> tags = null;
+
+    private static Locale locale = Locale.ENGLISH;
+    private static ResourceBundle bundle;
     
-    public static Locale locale = Locale.ENGLISH;
-    public static ResourceBundle bundle;
+    private static Scene scene;
     
     @Override
     public void start(Stage stage){
@@ -45,54 +49,33 @@ public class Main extends Application {
     	FileHandler fh = null;
 		try {
 			fh = new FileHandler(logFile, true);
+			Logger.getGlobal().addHandler(fh);
 		} catch (SecurityException | IOException e) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
 					Main.bundle.getString("timedalert_sql_ex_header"),
-					e.getMessage(), Main.logFile);
+					e.getMessage(), Main.getLogFile());
 			
 			System.exit(-1);
 			
 		}
-    	Logger.getGlobal().addHandler(fh);
-    	
-    	/*
-    	try {
-			NonSoComeChiamarla.test();
-		} catch (InternalDBException e1) {
-			e1.printStackTrace();
-			System.out.println("\n\nCATTURATA");
-		}
-    	
-    	System.exit(-1);*/
-    	
-    	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
-    	
+		
+		refreshBundle();
     	
     	try {
-			Main.tags = AppControllerApp.getTags();
-			Main.cities = AppControllerApp.getCities();
+			setTags(MainControllerApp.getTags());
+			setCities(MainControllerApp.getCities());
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
 					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		}
     	
-        try {
-			scene = new Scene(loadFXML("Homepage"), 1253, 810);
-		} catch (IOException e1) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					e1.getMessage(), Main.logFile);
-			
-			e1.printStackTrace();
-			System.exit(-1);
-			
-		}
+        initScene();
+        
         stage.setScene(scene);
         
         stage.show();
@@ -108,16 +91,33 @@ public class Main extends Application {
 			}
         });
     }
+    
+    private static void initScene() {
+    	
+    	try {
+    		Main.scene = new Scene(loadFXML("Homepage"), 1253, 810);
+		} catch (IOException ioe) {
+			TimedAlert.show(AlertType.ERROR,
+					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
+					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_HEADER),
+					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_CONTENT), logFile);
+			
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", ioe);
+			
+			System.exit(-1);
+			
+		}
+    }
 
     public static void setRoot(String fxml) {
         try {
 			scene.setRoot(loadFXML(fxml));
-		} catch (IOException e) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_system_error_header"),
-					Main.bundle.getString("timedalert_system_error_content"), logFile);
-			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", e);
+		} catch (IOException ioe) {
+			TimedAlert.show(AlertType.ERROR,
+					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
+					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_HEADER),
+					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_CONTENT), logFile);
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", ioe);
 			
 			System.exit(-1);
 		}
@@ -126,25 +126,26 @@ public class Main extends Application {
     public static void setRoot(String fxml, EventBean eventBean) {
         try {
 			scene.setRoot(loadFXML(fxml, eventBean));
-		} catch (IOException e) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_system_error_header"),
-					Main.bundle.getString("timedalert_system_error_content"), logFile);
-			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String, Event) method, inside App.java", e);
+		} catch (IOException ioe) {
+			TimedAlert.show(AlertType.ERROR,
+					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
+					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_HEADER),
+					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_CONTENT), logFile);
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String, Event) method, inside App.java", ioe);
 			
 			System.exit(-1);
 		}
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-    	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
+    	refreshBundle();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
+        fxmlLoader.setClassLoader(Main.class.getClassLoader());
         return fxmlLoader.load();
     }
     
     private static Parent loadFXML(String fxml, EventBean eventBean) throws IOException {
-    	bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
+    	refreshBundle();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
         fxmlLoader.setController(new EventDetailsControllerView(eventBean));
         return fxmlLoader.load();
@@ -153,5 +154,45 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
+    
+    public static ResourceBundle getBundle() {
+    	return bundle;
+    }
+    
+    public static void refreshBundle() {
+    	Main.bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
+    }
+    
+    public static List<String> getCities() {
+		return cities;
+	}
 
+	public static void setCities(List<String> cities) {
+		Main.cities = cities;
+	}
+
+	public static List<String> getTags() {
+		return tags;
+	}
+
+	public static void setTags(List<String> tags) {
+		Main.tags = tags;
+	}
+
+	public static Locale getLocale() {
+		return locale;
+	}
+
+	public static void setLocale(Locale locale) {
+		Main.locale = locale;
+	}
+	
+	public static String getLogFile() {
+		return logFile;
+	}
+	
+	public static Window getCurrentWindow() {
+		return scene.getWindow();
+	}
+	
 }

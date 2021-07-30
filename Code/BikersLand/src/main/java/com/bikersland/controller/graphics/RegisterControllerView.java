@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.bikersland.Main;
-import com.bikersland.InstantTooltip;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.RegisterControllerApp;
 import com.bikersland.exception.AutomaticLoginException;
@@ -19,20 +17,22 @@ import com.bikersland.exception.user.NameException;
 import com.bikersland.exception.user.PasswordException;
 import com.bikersland.exception.user.SurnameException;
 import com.bikersland.exception.user.UsernameException;
+import com.bikersland.utility.InstantTooltip;
+import com.bikersland.utility.TimedAlert;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class RegisterControllerView {
 
@@ -129,26 +129,32 @@ public class RegisterControllerView {
 		
 		lblImageName.setTooltip(previewProfileImageTooltip);
 		
-//		try {
-//			NonSoComeChiamarla.addTextLimiter(txtName, 32);
-//			NonSoComeChiamarla.addTextLimiter(txtSurname, 32);
-//			NonSoComeChiamarla.addTextLimiter(txtUsername, 16);
-//			NonSoComeChiamarla.addTextLimiter(txtEmail1, 128);
-//			NonSoComeChiamarla.addTextLimiter(txtEmail2, 128);
-//			NonSoComeChiamarla.addTextLimiter(txtPassword1, 64);
-//			NonSoComeChiamarla.addTextLimiter(txtPassword2, 64);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		/*
+		try {
+			ConvertMethods.addTextLimiter(txtName, 32);
+			ConvertMethods.addTextLimiter(txtSurname, 32);
+			ConvertMethods.addTextLimiter(txtUsername, 16);
+			ConvertMethods.addTextLimiter(txtEmail1, 128);
+			ConvertMethods.addTextLimiter(txtEmail2, 128);
+			ConvertMethods.addTextLimiter(txtPassword1, 64);
+			ConvertMethods.addTextLimiter(txtPassword2, 64);
+		} catch (IOException e) {
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in initialize() method, inside LoginControllerView.java", e);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_system_error_header"),
+					Main.getBundle().getString("timedalert_system_error_content"), Main.getLogFile());
+		}
+		*/
 	}
 	
 	@FXML
 	private void register() {
 		if(!txtPassword1.getText().equals(txtPassword2.getText())) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_register_error_title"),
-					Main.bundle.getString("timedalert_register_password_error_header"),
-					Main.bundle.getString("timedalert_register_password_error_content"), null);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_register_error_title"),
+					Main.getBundle().getString("timedalert_register_password_error_header"),
+					Main.getBundle().getString("timedalert_register_password_error_content"), null);
 			
 //			txtPassword1.setText("");
 //			txtPassword2.setText("");
@@ -169,91 +175,53 @@ public class RegisterControllerView {
 			
 			Main.setRoot("Homepage");
 		} catch (DuplicateUsernameException due) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_register_error_title"),
-					Main.bundle.getString("timedalert_register_error_username_header"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_register_error_title"),
+					Main.getBundle().getString("timedalert_register_error_username_header"),
 					due.getMessage(), userBean.getUsername());
 			txtUsername.setText("");
 			txtUsername.requestFocus();
 		} catch (DuplicateEmailException dee) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_register_error_title"),
-					Main.bundle.getString("timedalert_register_error_email_header"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_register_error_title"),
+					Main.getBundle().getString("timedalert_register_error_email_header"),
 					dee.getMessage(), userBean.getEmail());
 			txtEmail1.setText("");
 			txtEmail2.setText("");
 			txtEmail1.requestFocus();
 		} catch (NameException ne) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("error"),
-					Main.bundle.getString("timedalert_register_name_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("error"),
+					Main.getBundle().getString("timedalert_register_name_error"),
 					ne.getMessage(), null);
 		} catch (SurnameException se) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("error"),
-					Main.bundle.getString("timedalert_register_surname_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("error"),
+					Main.getBundle().getString("timedalert_register_surname_error"),
 					se.getMessage(), null);
 		} catch (UsernameException ue) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("error"),
-					Main.bundle.getString("timedalert_register_username_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("error"),
+					Main.getBundle().getString("timedalert_register_username_error"),
 					ue.getMessage(), null);
 		} catch (PasswordException pe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("error"),
-					Main.bundle.getString("timedalert_register_password_error"),
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("error"),
+					Main.getBundle().getString("timedalert_register_password_error"),
 					pe.getMessage(), null);
 		} catch (AutomaticLoginException ale) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					ale.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					ale.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Login");
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 		}
-		
-		
-//		String name = txtName.getText().strip();
-//		String surname = txtSurname.getText().strip();
-//		String username = txtUsername.getText().strip();
-//		String email = txtEmail1.getText().strip();
-//		String password = txtPassword1.getText().strip();
-//		
-//		Image userImage = this.imageFile == null ? null : new Image(this.imageFile.toURI().toString());
-//		User newUser = new User(name, surname, username, email, password, userImage);
-//		
-//		try {
-//			UserDAO.setUser(newUser);
-//			NonSoComeChiamarla.showTimedAlert(AlertType.INFORMATION,
-//					App.bundle.getString("success"),
-//					App.bundle.getString("timedalert_register_success_header"),
-//					App.bundle.getString("timedalert_register_success_content_1")
-//					+ username +
-//					App.bundle.getString("timedalert_register_success_content_2"), null);
-//			
-//			LoginSingleton.getLoginInstance().setUser(UserDAO.getUserByUsername(username));
-//			App.setRoot("Homepage");
-//		} catch (UsernameException e) {
-//			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-//					App.bundle.getString("timedalert_register_error_title"),
-//					App.bundle.getString("timedalert_register_error_username_header"),
-//					App.bundle.getString("timedalert_register_error_username_content"), username);
-//			txtUsername.setText("");
-//			txtUsername.requestFocus();
-//		} catch (EmailException e) {
-//			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-//					App.bundle.getString("timedalert_register_error_title"),
-//					App.bundle.getString("timedalert_register_error_email_header"),
-//					App.bundle.getString("timedalert_register_error_email_content"), email);
-//			txtEmail1.setText("");
-//			txtEmail2.setText("");
-//			txtEmail1.requestFocus();
-//		}
 	}
 	
 	@FXML
@@ -285,38 +253,15 @@ public class RegisterControllerView {
 				btnImage.setVisible(false);
 				hbImageSelected.setVisible(true);
 			} catch (ImageFileException e) {
-				NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-						Main.bundle.getString("timedalert_image_error_title"),
-						Main.bundle.getString("timedalert_image_error_header"),
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString("timedalert_image_error_title"),
+						Main.getBundle().getString("timedalert_image_error_header"),
 						e.getMessage(), null);
 			}
     	} else {
     		Image nullImage = null;
     		userBean.setImage(nullImage);
     	}
-    	
-//    	if(choosedFile != null) {
-//    		if(choosedFile.length() < 4194304) {
-//    			this.imageFile = choosedFile;
-//    			
-//    			Image profileImage = new Image(this.imageFile.toURI().toString(), 100, 100, true, true);
-//    			ImageView profileImagePreview = new ImageView(profileImage);
-//    			Circle imgCircle = new Circle(50);
-//    		    imgCircle.setCenterX(profileImage.getWidth()*0.5);
-//    		    imgCircle.setCenterY(profileImage.getHeight()*0.5);
-//    		    profileImagePreview.setClip(imgCircle);
-//    			
-//    			imageTooltip.setGraphic(profileImagePreview);
-//    			lblImageName.setText(this.imageFile.getName());
-//    			btnImage.setVisible(false);
-//    			hbImageSelected.setVisible(true);
-//    		} else {
-//    			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-//    					App.bundle.getString("timedalert_image_error_title"),
-//    					App.bundle.getString("timedalert_image_error_header"),
-//    					App.bundle.getString("timedalert_image_error_content"), null);
-//    		}
-//    	}
     }
     
     @FXML

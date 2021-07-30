@@ -1,4 +1,4 @@
-package com.bikersland;
+package com.bikersland.utility;
 
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Font;

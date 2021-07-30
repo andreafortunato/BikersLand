@@ -1,21 +1,18 @@
 package com.bikersland.controller.graphics;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.bikersland.Main;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.controller.application.LoginControllerApp;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.exception.InvalidLoginException;
+import com.bikersland.utility.TimedAlert;
 
-import UserDAO.InvalidLoginException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 
 public class LoginControllerView {
 	
@@ -44,12 +41,18 @@ public class LoginControllerView {
 		txtUser.textProperty().addListener(checkEnableBtnLogin);
 		txtPassword.textProperty().addListener(checkEnableBtnLogin);
 		
-//		try {
-//			NonSoComeChiamarla.addTextLimiter(txtUser, 32);
-//			NonSoComeChiamarla.addTextLimiter(txtPassword, 64);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		/*
+		try {
+			ConvertMethods.addTextLimiter(txtUser, 32);
+			ConvertMethods.addTextLimiter(txtPassword, 64);
+		} catch (IOException e) {
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in initialize() method, inside LoginControllerView.java", e);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_system_error_header"),
+					Main.getBundle().getString("timedalert_system_error_content"), Main.getLogFile());
+		}
+		*/
 		
 		/****************************************/
 		// TODO: Da rimuovere
@@ -72,20 +75,18 @@ public class LoginControllerView {
 			
 			Main.setRoot("Homepage");
 		} catch (InvalidLoginException e) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_login_error_title"),
-					Main.bundle.getString("timedalert_login_error_header"),
-					Main.bundle.getString("timedalert_login_error_content"), null);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_login_error_title"),
+					Main.getBundle().getString("timedalert_login_error_header"),
+					Main.getBundle().getString("timedalert_login_error_content"), null);
 			txtUser.setText("");
 			txtPassword.setText("");
 			txtUser.requestFocus();
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
-			
-			Logger.getGlobal().log(Level.SEVERE, "Catched SQLException in login() method, inside LoginControllerView.java", idbe);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 		} 
 	}
 }

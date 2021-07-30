@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bikersland.Main;
-import com.bikersland.NonSoComeChiamarla;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.event.TitleException;
+import com.bikersland.utility.ConvertMethods;
 
 import javafx.scene.image.Image;
 
@@ -16,34 +16,34 @@ public class EventBean {
 	private Integer id;
 	private String title;
 	private String description;
-	private String owner_username;
-	private String departure_city;
-	private String destination_city;
-	private Date departure_date;
-	private Date return_date;
+	private String ownerUsername;
+	private String departureCity;
+	private String destinationCity;
+	private Date departureDate;
+	private Date returnDate;
 	private Image image;
-	private Date create_time;
-	private List<String> tags = new ArrayList<String>();
+	private Date createTime;
+	private List<String> tags = new ArrayList<>();
 	
 	public EventBean() {
 		this(null, null, null, null, null, null, null, null, null, null, null);
 	}
 	
-	public EventBean(String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date, Image image, List<String> tags) {
-		this(null, title, description, owner_username, departure_city, destination_city, departure_date, return_date, image, null, tags);
+	public EventBean(String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, List<String> tags) {
+		this(null, title, description, ownerUsername, departureCity, destinationCity, departureDate, returnDate, image, null, tags);
 	}
 	
-	public EventBean(Integer id, String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date, Image image, Date create_time, List<String> tags) {
+	public EventBean(Integer id, String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, Date createTime, List<String> tags) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.owner_username = owner_username;
-		this.departure_city = departure_city;
-		this.destination_city = destination_city;
-		this.departure_date = departure_date;
-		this.return_date = return_date;
+		this.ownerUsername = ownerUsername;
+		this.departureCity = departureCity;
+		this.destinationCity = destinationCity;
+		this.departureDate = departureDate;
+		this.returnDate = returnDate;
 		this.image = image;
-		this.create_time = create_time;
+		this.createTime = createTime;
 		this.tags = tags;
 	}
 	
@@ -58,10 +58,10 @@ public class EventBean {
 				+ "Return Date: %s\n"
 				+ "Tag List: %s\n"
 				+ "Create time: %s",
-				id, title, description, owner_username, departure_city,
-				destination_city, NonSoComeChiamarla.dateToString(departure_date),
-				NonSoComeChiamarla.dateToString(return_date), tags.toString(),
-				NonSoComeChiamarla.dateToString(create_time));
+				id, title, description, ownerUsername, departureCity,
+				destinationCity, ConvertMethods.dateToLocalFormat(departureDate),
+				ConvertMethods.dateToLocalFormat(returnDate), tags.toString(),
+				ConvertMethods.dateToLocalFormat(createTime));
 	}
 
 	public Integer getId() {
@@ -77,17 +77,17 @@ public class EventBean {
 	}
 
 	public void setTitle(String title) throws TitleException {
-		String stripped_title = title.strip();
-		validateTitle(stripped_title);
-		this.title = stripped_title;
+		String strippedTitle = title.strip();
+		validateTitle(strippedTitle);
+		this.title = strippedTitle;
 	}
 	
-	private void validateTitle(String stripped_title) throws TitleException {
-		if(stripped_title.length() < 4)
-			throw new TitleException(Main.bundle.getString("ex_event_title_short"));
+	private void validateTitle(String strippedTitle) throws TitleException {
+		if(strippedTitle.length() < 4)
+			throw new TitleException(Main.getBundle().getString("ex_event_title_short"));
 		
-		if(stripped_title.length() > 64)
-			throw new TitleException(Main.bundle.getString("ex_event_title_long"));
+		if(strippedTitle.length() > 64)
+			throw new TitleException(Main.getBundle().getString("ex_event_title_long"));
 	}
 
 	public String getDescription() {
@@ -98,44 +98,44 @@ public class EventBean {
 		this.description = description;
 	}
 
-	public String getOwner_username() {
-		return owner_username;
+	public String getOwnerUsername() {
+		return ownerUsername;
 	}
 
-	public void setOwner_username(String owner_username) {
-		this.owner_username = owner_username;
+	public void setOwnerUsername(String ownerUsername) {
+		this.ownerUsername = ownerUsername;
 	}
 
-	public String getDeparture_city() {
-		return departure_city;
+	public String getDepartureCity() {
+		return departureCity;
 	}
 
-	public void setDeparture_city(String departure_city) {
-		this.departure_city = departure_city;
+	public void setDepartureCity(String departureCity) {
+		this.departureCity = departureCity;
 	}
 
-	public String getDestination_city() {
-		return destination_city;
+	public String getDestinationCity() {
+		return destinationCity;
 	}
 
-	public void setDestination_city(String destination_city) {
-		this.destination_city = destination_city;
+	public void setDestinationCity(String destinationCity) {
+		this.destinationCity = destinationCity;
 	}
 
-	public Date getDeparture_date() {
-		return departure_date;
+	public Date getDepartureDate() {
+		return departureDate;
 	}
 
-	public void setDeparture_date(Date departure_date) {
-		this.departure_date = departure_date;
+	public void setDepartureDate(Date departureDate) {
+		this.departureDate = departureDate;
 	}
 
-	public Date getReturn_date() {
-		return return_date;
+	public Date getReturnDate() {
+		return returnDate;
 	}
 
-	public void setReturn_date(Date return_date) {
-		this.return_date = return_date;
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 	
 	public Image getImage() {
@@ -153,15 +153,15 @@ public class EventBean {
 	
 	private void validateImageFile(File imageFile) throws ImageFileException {
     	if(imageFile.length() > 4194304)
-    		throw new ImageFileException(Main.bundle.getString("ex_image_too_big"));
+    		throw new ImageFileException(Main.getBundle().getString("ex_image_too_big"));
 	}
 	
-	public Date getCreate_time() {
-		return create_time;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreate_time(Date create_time) {
-		this.create_time = create_time;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public List<String> getTags() {

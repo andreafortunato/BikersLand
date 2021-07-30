@@ -4,14 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
-
-import javafx.collections.FXCollections;
 
 public class EventTagDAO {
 	public static void addEventTags(Integer eventId, List<Integer> tagList) throws SQLException {
@@ -28,7 +25,7 @@ public class EventTagDAO {
 	}
 	
 	public static List<String> getEventTags(Integer eventId) throws SQLException {
-		if(Main.locale == Locale.ITALIAN)
+		if(Main.getLocale() == Locale.ITALIAN)
 			return getEventTags(eventId, "it");
 		else
 			return getEventTags(eventId, "en");

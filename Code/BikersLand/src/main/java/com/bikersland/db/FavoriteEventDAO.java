@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import com.bikersland.db.queries.CRUDQueries;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.model.Event;
-import com.bikersland.model.User;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

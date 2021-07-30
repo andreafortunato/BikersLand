@@ -1,40 +1,36 @@
 package com.bikersland.controller.graphics;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.controlsfx.control.SearchableComboBox;
 
 import com.bikersland.Main;
-import com.bikersland.NonSoComeChiamarla;
-import com.bikersland.TagsListCell;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.HomepageControllerApp;
-import com.bikersland.db.EventDAO;
 import com.bikersland.exception.InternalDBException;
-import com.bikersland.model.Event;
+import com.bikersland.utility.ConvertMethods;
+import com.bikersland.utility.CustomGridPane;
+import com.bikersland.utility.TagsListCell;
+import com.bikersland.utility.TimedAlert;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 public class HomepageControllerView {
@@ -100,7 +96,7 @@ public class HomepageControllerView {
     private ScrollPane spEventList;
     
     @FXML
-    private GridPane gridViaggi;
+    private CustomGridPane gridViaggi;
     
     @FXML
     private ListView<String> lvTags;
@@ -114,6 +110,7 @@ public class HomepageControllerView {
     
     
     public void initialize() {
+    	
     	imgBackground.setVisible(false);
     	pnlMain.setVisible(false);
     	spEventList.setVisible(false);
@@ -123,7 +120,7 @@ public class HomepageControllerView {
     	sliderPartenzaDistanza.setShowTickLabels(true);
     	sliderPartenzaDistanza.valueProperty().addListener((observable, oldValue, newValue) -> {
     		sliderPartenzaDistanza.setValue(newValue.intValue());
-            lblPartenzaDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + Main.bundle.getString("from"));
+            lblPartenzaDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + Main.getBundle().getString("from"));
         });
     	sliderPartenzaDistanza.setOnMousePressed(event -> imgBackground.requestFocus());
     	
@@ -132,23 +129,23 @@ public class HomepageControllerView {
     	sliderArrivoDistanza.setShowTickLabels(true);
     	sliderArrivoDistanza.valueProperty().addListener((observable, oldValue, newValue) -> {
     		sliderArrivoDistanza.setValue(newValue.intValue());
-            lblArrivoDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + Main.bundle.getString("from"));
+            lblArrivoDistanza.setText(Integer.toString(newValue.intValue()) + " Km " + Main.getBundle().getString("from"));
         });
     	sliderArrivoDistanza.setOnMousePressed(event -> imgBackground.requestFocus());    	
     	
     	
-    	ObservableList<String> cities = FXCollections.observableArrayList(Main.cities);
-    	cities.add(0, Main.bundle.getString("all_female"));
+    	ObservableList<String> cities = FXCollections.observableArrayList(Main.getCities());
+    	cities.add(0, Main.getBundle().getString("all_female"));
     	
         comboPartenzaCitta.setItems(cities);
-        comboPartenzaDistanza.setItems(FXCollections.observableArrayList(Main.cities));
+        comboPartenzaDistanza.setItems(FXCollections.observableArrayList(Main.getCities()));
         comboArrivoCitta.setItems(cities);
-        comboArrivoDistanza.setItems(FXCollections.observableArrayList(Main.cities));
+        comboArrivoDistanza.setItems(FXCollections.observableArrayList(Main.getCities()));
         
         comboPartenzaCitta.getSelectionModel().select(0);
         comboArrivoCitta.getSelectionModel().select(0);
         
-        ObservableList<String> tags = FXCollections.observableArrayList(Main.tags);
+        ObservableList<String> tags = FXCollections.observableArrayList(Main.getTags());
         lvTags.setItems(tags);
         lvTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -157,7 +154,7 @@ public class HomepageControllerView {
         Platform.runLater(() -> {
         	
         	try {
-	        	imgBackground.fitWidthProperty().bind(Main.scene.getWindow().widthProperty());
+	        	imgBackground.fitWidthProperty().bind(Main.getCurrentWindow().widthProperty());
 	        	imgBackground.setFitHeight(0.0);
 	        	imgBackground.setPreserveRatio(true);
         	} catch (NullPointerException e) {
@@ -166,32 +163,33 @@ public class HomepageControllerView {
 			}
         	
         	
-        	gridPaneColumns = (((Double)Main.scene.getWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;			
+        	gridPaneColumns = (((Double)Main.getCurrentWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;			
         	
         	
         	try {
-				this.eventListBean = HomepageControllerApp.getEventByCities(Main.bundle.getString("all_female"), Main.bundle.getString("all_female"));
+				this.eventListBean = HomepageControllerApp.getEventByCities(Main.getBundle().getString("all_female"), Main.getBundle().getString("all_female"));
 				
         	} catch (InternalDBException idbe) {
-        		NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-    					Main.bundle.getString("timedalert_internal_error"),
-    					Main.bundle.getString("timedalert_sql_ex_header"),
-    					idbe.getMessage(), Main.logFile);
+        		TimedAlert.show(AlertType.ERROR,
+    					Main.getBundle().getString("timedalert_internal_error"),
+    					Main.getBundle().getString("timedalert_sql_ex_header"),
+    					idbe.getMessage(), Main.getLogFile());
     			
     			Main.setRoot("Homepage");
 			}
         	
-        	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(eventListBean);
-        	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
+        	this.eventNodeList = ConvertMethods.eventsToNodeList(eventListBean);
+//        	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
+        	gridViaggi.populateGrid(eventNodeList, gridPaneColumns);
         	
-        	Main.scene.getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
+        	Main.getCurrentWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
 		    	int o = oldVal.intValue()-16-getNumViaggi()*20;
 		    	int n = newVal.intValue()-16-getNumViaggi()*20;
 		    	            	
 		    	if(o/viaggioBoxWidth != n/viaggioBoxWidth) {
 		    		gridPaneColumns = n/viaggioBoxWidth;
 		    		try {
-						NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
+		    			gridViaggi.populateGrid(eventNodeList, gridPaneColumns);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -296,17 +294,17 @@ public class HomepageControllerView {
     	try {
 			searchedEventList = HomepageControllerApp.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
 		} catch (InternalDBException idbe) {
-			NonSoComeChiamarla.showTimedAlert(AlertType.ERROR,
-					Main.bundle.getString("timedalert_internal_error"),
-					Main.bundle.getString("timedalert_sql_ex_header"),
-					idbe.getMessage(), Main.logFile);
+			TimedAlert.show(AlertType.ERROR,
+					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString("timedalert_sql_ex_header"),
+					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		}
     	
     	
-    	this.eventNodeList = NonSoComeChiamarla.eventsToNodeList(searchedEventList);
-    	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
+    	this.eventNodeList = ConvertMethods.eventsToNodeList(searchedEventList);
+    	gridViaggi.populateGrid(eventNodeList, gridPaneColumns);
     }
 
 }
