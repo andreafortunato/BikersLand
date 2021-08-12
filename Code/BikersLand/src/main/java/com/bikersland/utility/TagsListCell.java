@@ -2,6 +2,7 @@ package com.bikersland.utility;
 
 import javafx.scene.control.ListCell;
 
+@java.lang.SuppressWarnings("squid:MaximumInheritanceDepth")
 public class TagsListCell extends ListCell<String> {
 	public TagsListCell() {
 		super();

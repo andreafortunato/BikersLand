@@ -9,6 +9,7 @@ import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.HomepageControllerApp;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.CustomGridPane;
 import com.bikersland.utility.TagsListCell;
@@ -135,7 +136,7 @@ public class HomepageControllerView {
     	
     	
     	ObservableList<String> cities = FXCollections.observableArrayList(Main.getCities());
-    	cities.add(0, Main.getBundle().getString("all_female"));
+    	cities.add(0, Main.getBundle().getString(ConstantStrings.ALL_FEMALE));
     	
         comboPartenzaCitta.setItems(cities);
         comboPartenzaDistanza.setItems(FXCollections.observableArrayList(Main.getCities()));
@@ -167,19 +168,18 @@ public class HomepageControllerView {
         	
         	
         	try {
-				this.eventListBean = HomepageControllerApp.getEventByCities(Main.getBundle().getString("all_female"), Main.getBundle().getString("all_female"));
+				this.eventListBean = HomepageControllerApp.getEventByCities(Main.getBundle().getString(ConstantStrings.ALL_FEMALE), Main.getBundle().getString(ConstantStrings.ALL_FEMALE));
 				
         	} catch (InternalDBException idbe) {
         		TimedAlert.show(AlertType.ERROR,
-    					Main.getBundle().getString("timedalert_internal_error"),
-    					Main.getBundle().getString("timedalert_sql_ex_header"),
+    					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+    					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
     					idbe.getMessage(), Main.getLogFile());
     			
     			Main.setRoot("Homepage");
 			}
         	
         	this.eventNodeList = ConvertMethods.eventsToNodeList(eventListBean);
-//        	NonSoComeChiamarla.populateGrid(gridViaggi, eventNodeList, gridPaneColumns);
         	gridViaggi.populateGrid(eventNodeList, gridPaneColumns);
         	
         	Main.getCurrentWindow().widthProperty().addListener((obs, oldVal, newVal) -> {            	
@@ -204,13 +204,6 @@ public class HomepageControllerView {
     
     private void ttt() {
     	lvTags.setCellFactory(lv -> {
-//            ListCell<String> cell = new ListCell<String>() {
-//                @Override
-//                protected void updateItem(String tag, boolean empty) {
-//                    super.updateItem(tag, empty);
-//                    setText(empty ? null : tag);
-//                }
-//            };
     		
     		TagsListCell cell = new TagsListCell();
 
@@ -288,15 +281,14 @@ public class HomepageControllerView {
     
     @FXML
     private void search(){
-    	List<EventBean> searchedEventList = new ArrayList<EventBean>();
+    	List<EventBean> searchedEventList = new ArrayList<>();
     	
-    	//searchedEventList = EventDAO.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
     	try {
 			searchedEventList = HomepageControllerApp.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");

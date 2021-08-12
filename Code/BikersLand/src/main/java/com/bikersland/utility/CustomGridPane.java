@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
+@java.lang.SuppressWarnings("squid:MaximumInheritanceDepth")
 public class CustomGridPane extends GridPane {
 
 	public CustomGridPane() {

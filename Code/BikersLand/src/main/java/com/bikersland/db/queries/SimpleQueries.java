@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import com.bikersland.Main;
+import com.bikersland.utility.ConstantStrings;
 
 public class SimpleQueries {
 	
@@ -47,12 +48,12 @@ public class SimpleQueries {
 	
 	public static ResultSet getEventByCities(Statement stmt, String departureCity, String destinationCity) throws SQLException {
 		String query = "SELECT * FROM event";
-		if(departureCity.equals(Main.getBundle().getString("all_female")) && destinationCity.equals(Main.getBundle().getString("all_female"))) {
+		if(departureCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE)) && destinationCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE))) {
 			query += " ORDER BY id DESC;";
 		} else {
-			if(departureCity.equals(Main.getBundle().getString("all_female"))) {
+			if(departureCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE))) {
 				query += " WHERE destination_city='" + destinationCity + "'";
-			} else if(destinationCity.equals(Main.getBundle().getString("all_female"))){
+			} else if(destinationCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE))){
 				query += " WHERE departure_city='" + departureCity + "'";
 			} else {
 				query += " WHERE departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
@@ -65,27 +66,27 @@ public class SimpleQueries {
 	
 	public static ResultSet getEventByCitiesAndTags(Statement stmt, String departureCity, String destinationCity, List<String> tagList, String language) throws SQLException {
 	
-		String queryCities = "SELECT * FROM event WHERE 1=1";
-		if(departureCity.equals(Main.getBundle().getString("all_female")) && destinationCity.equals(Main.getBundle().getString("all_female"))) {
-			;
-		} else if(departureCity.equals(Main.getBundle().getString("all_female"))) {
-			queryCities += " AND destination_city='" + destinationCity + "'";
-		} else if(destinationCity.equals(Main.getBundle().getString("all_female"))){
-			queryCities += " AND departure_city='" + departureCity + "'";
-		} else {
-			queryCities += " AND departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
+		String queryCities = "";
+		if(departureCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE)) && !destinationCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE))) {
+			queryCities = " AND destination_city='" + destinationCity + "'";
+		} else if(destinationCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE)) && !departureCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE))){
+			queryCities = " AND departure_city='" + departureCity + "'";
+		} else if(!departureCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE)) && !destinationCity.equals(Main.getBundle().getString(ConstantStrings.ALL_FEMALE))) {
+			queryCities = " AND departure_city='" + departureCity + "' AND destination_city='" + destinationCity + "'";
 		}
 		
+		queryCities = "SELECT * FROM event WHERE 1=1" + queryCities;
 		
-		String queryTags = " AND id IN (SELECT DISTINCT ET.event_id FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE T." + language + " IN (";
+		StringBuilder queryTagsBuilder = new StringBuilder(" AND id IN (SELECT DISTINCT ET.event_id FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE T." + language + " IN (");
 		for(String tag: tagList)
-        	queryTags += "'" + tag + "', ";
+        	queryTagsBuilder.append("'" + tag + "', ");
+		
+        String queryTags = queryTagsBuilder.toString();
         queryTags = queryTags.substring(0, queryTags.length()-2) + ") ";
         queryTags += "GROUP BY ET.event_id HAVING COUNT(DISTINCT T." + language + ") = " + tagList.size() + ") ORDER BY id DESC;";
 		
 		String query = queryCities + queryTags;
-	
-	
+		
 		return stmt.executeQuery(query);
 	}
 	
@@ -110,6 +111,12 @@ public class SimpleQueries {
 	
 	public static ResultSet getCities(Statement stmt) throws SQLException {
 		String query = "SELECT * FROM city ORDER BY name;";
+		
+		return stmt.executeQuery(query);
+	}
+	
+	public static ResultSet getEventTags(Statement stmt, Integer eventId, String language) throws SQLException {
+		String query = "SELECT T." + language + " FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE ET.event_id=" + eventId;
 		
 		return stmt.executeQuery(query);
 	}

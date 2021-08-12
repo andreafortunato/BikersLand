@@ -7,16 +7,19 @@ import com.bikersland.Main;
 import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
+import com.bikersland.utility.ConstantStrings;
 
 import javafx.scene.image.Image;
 
 public class EventDetailsControllerApp {
 	
+	private EventDetailsControllerApp() {}
+	
 	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException {
 		try {
 			return ParticipationDAO.getParticipantsByEventId(eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "getEventParticipants", "EventDetailsControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "getEventParticipants", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
 		}
 	}
 
@@ -28,7 +31,7 @@ public class EventDetailsControllerApp {
 		try {
 			return ParticipationDAO.isJoinedEvent(userId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "userJoinedEvent", "EventDetailsControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "userJoinedEvent", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
 		} 
 	}
 	
@@ -36,7 +39,7 @@ public class EventDetailsControllerApp {
 		try {
 			ParticipationDAO.addUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "addUserParticipation", "EventDetailsControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "addUserParticipation", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
 		}
 	}
 	
@@ -44,7 +47,7 @@ public class EventDetailsControllerApp {
 		try {
 			ParticipationDAO.removeUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "removeUserParticipation", "EventDetailsControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "removeUserParticipation", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
 		}
 	}
 }

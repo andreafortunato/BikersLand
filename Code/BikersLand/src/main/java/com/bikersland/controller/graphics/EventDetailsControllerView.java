@@ -6,6 +6,7 @@ import com.bikersland.controller.application.EventDetailsControllerApp;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.TimedAlert;
 
@@ -66,7 +67,7 @@ public class EventDetailsControllerView {
     
     private EventBean eventBean;
     
-    private Boolean isJoined;
+    private boolean isJoined;
     
     private Integer loggedUserId;
     private String loggedUserUsername;
@@ -90,7 +91,7 @@ public class EventDetailsControllerView {
 		lblDestinationCity.setText(eventBean.getDestinationCity());
 		lblDescription.setText(eventBean.getDescription());
 		lvTags.setItems(FXCollections.observableArrayList(eventBean.getTags()));
-		if(lvTags.getItems().size() == 0)
+		if(lvTags.getItems().isEmpty())
 			lvTags.setItems(FXCollections.observableArrayList(Main.getBundle().getString("no_tags")));
 		lvTags.setOnMousePressed(e -> lvTags.getSelectionModel().clearSelection());
 		lblCreateTime.setText(ConvertMethods.dateToLocalFormat(eventBean.getCreateTime()));
@@ -101,13 +102,13 @@ public class EventDetailsControllerView {
 			lblParticipants.setText(String.valueOf(lvParticipants.getItems().size()));
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
 		} catch (NoEventParticipantsException nepe) {
-			lvParticipants.setItems(FXCollections.observableArrayList(Main.getBundle().getString("no_participants")));
+			lvParticipants.setItems(FXCollections.observableArrayList(Main.getBundle().getString(ConstantStrings.NO_PARTICIPANTS)));
 			lblParticipants.setText("0");
 		}
 		
@@ -133,8 +134,8 @@ public class EventDetailsControllerView {
 				setIsJoined(EventDetailsControllerApp.userJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
 				TimedAlert.show(AlertType.ERROR,
-						Main.getBundle().getString("timedalert_internal_error"),
-						Main.getBundle().getString("timedalert_sql_ex_header"),
+						Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+						Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 						idbe.getMessage(), Main.getLogFile());
 				
 				Main.setRoot("Homepage");
@@ -156,20 +157,20 @@ public class EventDetailsControllerView {
 	    	}
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 		}
     }
 	
-	private void setIsJoined(Boolean isJoined) {
+	private void setIsJoined(boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
 			btnJoin.setText(Main.getBundle().getString("remove_participation"));
 			
 			if(!lvParticipants.getItems().contains(loggedUserUsername)) {
 				ObservableList<String> participants = lvParticipants.getItems();
-				if(participants.size() == 1 && participants.get(0).equals(Main.getBundle().getString("no_participants"))) {
+				if(participants.size() == 1 && participants.get(0).equals(Main.getBundle().getString(ConstantStrings.NO_PARTICIPANTS))) {
 					participants.clear();
 				}
 				participants.add(loggedUserUsername);
@@ -181,8 +182,8 @@ public class EventDetailsControllerView {
 		else {
 			btnJoin.setText(Main.getBundle().getString("join"));
 			lvParticipants.getItems().remove(loggedUserUsername);
-			if(lvParticipants.getItems().size() == 0)
-				lvParticipants.setItems(FXCollections.observableArrayList(Main.getBundle().getString("no_participants")));
+			if(lvParticipants.getItems().isEmpty())
+				lvParticipants.setItems(FXCollections.observableArrayList(Main.getBundle().getString(ConstantStrings.NO_PARTICIPANTS)));
 			
 		}
 	}

@@ -23,14 +23,14 @@ public class SpriteAnimation extends Transition {
             Duration duration, 
             int count,   int columns,
             int offsetX, int offsetY,
-            int width,   int height) {
+            int widthAndHeight) {
         this.imageView = imageView;
         this.count     = count;
         this.columns   = columns;
         this.offsetX   = offsetX;
         this.offsetY   = offsetY;
-        this.width     = width;
-        this.height    = height;
+        this.width     = widthAndHeight;
+        this.height    = widthAndHeight;
         setCycleDuration(duration);
         setInterpolator(Interpolator.LINEAR);
     }

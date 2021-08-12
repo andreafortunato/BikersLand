@@ -9,13 +9,16 @@ import java.util.List;
 import com.bikersland.db.queries.SimpleQueries;
 
 public class CityDAO {
+	
+	private CityDAO() {}
+	
 	public static List<String> getCities() throws SQLException {
-		List<String> tagList = new ArrayList<String>();
+		List<String> tagList = new ArrayList<>();
 		ResultSet rs = null;
 		Statement stmt = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = SimpleQueries.getCities(stmt);
 			
 			while(rs.next()) {

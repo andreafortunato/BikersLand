@@ -8,16 +8,19 @@ import com.bikersland.db.FavoriteEventDAO;
 import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
+import com.bikersland.utility.ConstantStrings;
 
 import javafx.scene.image.Image;
 
 public class EventCardControllerApp {
+	
+	private EventCardControllerApp() {}
 
 	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException {
 		try {
 			return ParticipationDAO.getParticipantsByEventId(eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "getEventParticipants", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "getEventParticipants", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 	
@@ -29,7 +32,7 @@ public class EventCardControllerApp {
 		try {
 			return FavoriteEventDAO.isFavoriteEvent(userId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "isFavoriteEvent", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "isFavoriteEvent", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 
@@ -37,7 +40,7 @@ public class EventCardControllerApp {
 		try {
 			return ParticipationDAO.isJoinedEvent(loggedUserId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "isJoinedEvent", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "isJoinedEvent", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 
@@ -45,7 +48,7 @@ public class EventCardControllerApp {
 		try {
 			FavoriteEventDAO.removeFavoriteEvent(loggedUserId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "removeFavoriteEvent", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "removeFavoriteEvent", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 
@@ -53,7 +56,7 @@ public class EventCardControllerApp {
 		try {
 			FavoriteEventDAO.addFavoriteEvent(loggedUserId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "addFavoriteEvent", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "addFavoriteEvent", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 
@@ -61,7 +64,7 @@ public class EventCardControllerApp {
 		try {
 			ParticipationDAO.addUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "addUserParticipation", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "addUserParticipation", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 	
@@ -69,7 +72,7 @@ public class EventCardControllerApp {
 		try {
 			ParticipationDAO.removeUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "removeUserParticipation", "EventCardControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "removeUserParticipation", ConstantStrings.EVENTCARDCONTROLLERAPP_JAVA);
 		}
 	}
 }

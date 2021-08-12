@@ -37,7 +37,7 @@ public class UserDAO {
 	public static void createNewUser(User user) throws DuplicateUsernameException, DuplicateEmailException, ImageConversionException, SQLException {	
 		CallableStatement stmtCreateUser = null;
 		try {
-			stmtCreateUser = DB_Connection.getConnection().prepareCall("{CALL CreateUser(?,?,?,?,?,?)}");
+			stmtCreateUser = DBConnection.getConnection().prepareCall("{CALL CreateUser(?,?,?,?,?,?)}");
 			CRUDQueries.createNewUserQuery(stmtCreateUser, user);
 		} catch (SQLException ex) {
 			int errorCode = ex.getErrorCode();
@@ -65,7 +65,7 @@ public class UserDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = SimpleQueries.askLoginQuery(stmt, usernameOrEmail, password);
 			
 			if(rs.first()) {
@@ -108,7 +108,7 @@ public class UserDAO {
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	        rs = SimpleQueries.getUserByUsernameQuery(stmt, username);
 	        
 	        if(rs.first()) {

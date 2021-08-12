@@ -19,6 +19,8 @@ import javafx.scene.image.Image;
 
 public class FavoriteEventDAO {
 	
+	private FavoriteEventDAO() {}
+	
 	private static final String ID_COL = "id";
 	private static final String TITLE_COL = "title";
 	private static final String DESCRIPTION_COL = "description";
@@ -34,11 +36,11 @@ public class FavoriteEventDAO {
 	public static Boolean isFavoriteEvent(Integer userId, Integer eventId) throws SQLException{
 		Boolean isFavorite = false;
 
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
+		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = SimpleQueries.isFavoriteEvent(stmt, userId, eventId);
 			
 			if(rs.next()) {
@@ -46,56 +48,50 @@ public class FavoriteEventDAO {
 			}
 			
 			return isFavorite;
-		}finally{
-			
+		} finally{
 			if(rs != null) {
 				rs.close();
 			}
-	       
+			
 	        if (stmt != null)
 	        	stmt.close();
 		}
-		
 	}
-	
 	
 	public static void addFavoriteEvent(Integer userId, Integer eventId) throws SQLException{
 		
 		Statement stmt = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             
 			CRUDQueries.addFavoriteEvent(stmt, userId, eventId);
-		}finally {
+		} finally {
 			if (stmt != null)
 	        	stmt.close();
 		}
-		
-        
 	}
 	
 	public static void removeFavoriteEvent(Integer userId, Integer eventId) throws SQLException{        
 		Statement stmt = null;
        
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	     
 			CRUDQueries.removeFavoriteEvent(stmt, userId, eventId);
-		}finally{
+		} finally{
 			if (stmt != null)
 	        	stmt.close();
 		}
-        
 	}
 	
 	public static List<Event> getFavoriteEventsByUser(Integer userId) throws SQLException{
-		List<Event> eventList = new ArrayList<Event>();
+		List<Event> eventList = new ArrayList<>();
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             
 			rs = SimpleQueries.getFavoriteEventsByUser(stmt, userId);
 			
@@ -121,15 +117,12 @@ public class FavoriteEventDAO {
 			}
 			
 			return eventList;
-		}finally {
-
+		} finally {
 	        if (stmt != null)
 	        	stmt.close();
 	        
 	        if(rs != null)
 	        	rs.close();
 		}
-        
-		
 	}
 }

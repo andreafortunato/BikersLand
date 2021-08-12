@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 
 public class ConvertMethods {
 	
+	private ConvertMethods() {}
+	
 	public static List<Node> eventsToNodeList(List<EventBean> eventList) {
 		FXMLLoader fxmlLoader;
     	

@@ -15,12 +15,13 @@ import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.event.TitleException;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConstantStrings;
+import com.bikersland.utility.CustomDateCell;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -68,7 +69,7 @@ public class NewEventControllerView {
     
     private EventBean eventBean = new EventBean();
     
-    private static final int maxDescriptionCharacters = 250;
+    private static final int MAX_DESCRIPTION_CHARACTERS = 250;
     
     public void initialize() {
     	comboDepartureCity.getItems().addAll(Main.getCities());
@@ -76,24 +77,17 @@ public class NewEventControllerView {
     	comboTags.getItems().addAll(Main.getTags());
     	
     	/* Disabilito le date precedenti a quella odierna */
-    	pickerDepartureDate.setDayCellFactory(picker -> new DateCell() {
-    		@Override
-    		public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-
-                setDisable(empty || date.compareTo(LocalDateTime.now().toLocalDate()) < 0 );
-            }
-        });
+    	pickerDepartureDate.setDayCellFactory(picker -> new CustomDateCell(LocalDateTime.now().toLocalDate()));
     	
     	lblImageName.setTooltip(previewEventImageTooltip);
     	
     	txtDescription.textProperty().addListener((obs, oldVal, newVal) -> {
-    		if(newVal.length() > maxDescriptionCharacters) {
+    		if(newVal.length() > MAX_DESCRIPTION_CHARACTERS) {
     			txtDescription.setText(oldVal);
     			return;
     		}
     		
-    		lblCharacters.setText(maxDescriptionCharacters-newVal.length() + " " + Main.getBundle().getString("remaining_characters"));
+    		lblCharacters.setText(MAX_DESCRIPTION_CHARACTERS-newVal.length() + " " + Main.getBundle().getString("remaining_characters"));
     	});
     }
     
@@ -102,14 +96,7 @@ public class NewEventControllerView {
     	LocalDate departureDate = pickerDepartureDate.getValue();
     	pickerReturnDate.setValue(departureDate);
     	
-    	pickerReturnDate.setDayCellFactory(picker -> new DateCell() {
-    		@Override
-    		public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-
-                setDisable(empty || date.compareTo(departureDate) < 0 );
-            }
-        });
+    	pickerReturnDate.setDayCellFactory(picker -> new CustomDateCell(departureDate));
     	
     	if(pickerReturnDate.isDisable())
     		pickerReturnDate.setDisable(false);
@@ -161,7 +148,7 @@ public class NewEventControllerView {
     @FXML
     private void createEvent() {    	
     	String emptyField = "";
-    	Boolean isEmpty = false;
+    	boolean isEmpty = false;
     	if(txtTitle.getText().strip().length() == 0) {
     		emptyField = Main.getBundle().getString("title");
     		isEmpty = true;
@@ -211,13 +198,13 @@ public class NewEventControllerView {
     		Main.setRoot("EventDetails", createdEventBean);
 		} catch (TitleException te) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("error"),
+					Main.getBundle().getString(ConstantStrings.ERROR),
 					Main.getBundle().getString("timedalert_event_title_error"),
 					te.getMessage(), null);
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 		}
     }

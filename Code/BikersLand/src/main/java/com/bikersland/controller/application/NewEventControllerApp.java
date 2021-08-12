@@ -1,7 +1,6 @@
 package com.bikersland.controller.application;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bikersland.Main;
@@ -14,10 +13,11 @@ import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.TagNotFoundException;
 import com.bikersland.exception.event.EventNotFoundException;
 import com.bikersland.model.Event;
+import com.bikersland.utility.ConstantStrings;
 
 public class NewEventControllerApp {
 	
-	private NewEventControllerApp() {};
+	private NewEventControllerApp() {}
 	
 	public static EventBean createNewEvent(EventBean eventBean) throws InternalDBException {
 		Event event = new Event();
@@ -44,18 +44,18 @@ public class NewEventControllerApp {
 			return createdEventBean;
 						
 		} catch (SQLException | ImageConversionException | EventNotFoundException e) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), e, "createNewEvent", "NewEventControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), e, "createNewEvent", "NewEventControllerApp.java");
 		} 
 	}
 	
 	private static void setEventTags(Event createdEvent) throws InternalDBException {
 		try {
-			List<Integer> eventTagIdList = new ArrayList<>();
+			List<Integer> eventTagIdList;
 			eventTagIdList = TagDAO.tagNameToTagId(createdEvent.getTags());
 			
 			EventTagDAO.addEventTags(createdEvent.getId(), eventTagIdList);
 		} catch (SQLException | TagNotFoundException e) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), e, "setEventTags", "NewEventControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), e, "setEventTags", "NewEventControllerApp.java");
 		}
 	}
 	

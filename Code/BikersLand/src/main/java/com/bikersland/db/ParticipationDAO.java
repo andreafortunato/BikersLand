@@ -20,6 +20,8 @@ import javafx.scene.image.Image;
 
 public class ParticipationDAO {
 	
+	private ParticipationDAO() {}
+	
 	private static final String ID_COL = "id";
 	private static final String TITLE_COL = "title";
 	private static final String DESCRIPTION_COL = "description";
@@ -38,7 +40,7 @@ public class ParticipationDAO {
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = SimpleQueries.userJoinedEvent(stmt, userId, eventId);
 			
 			if(rs.next()) {
@@ -59,7 +61,7 @@ public class ParticipationDAO {
 		Statement stmt = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			CRUDQueries.addUserParticipationQuery(stmt, userId, eventId);
 		} finally {
 			if (stmt != null)
@@ -70,7 +72,7 @@ public class ParticipationDAO {
 	public static void removeUserParticipation(Integer userId, Integer eventId) throws SQLException {		
 		Statement stmt = null;
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			CRUDQueries.removeUserParticipationQuery(stmt, userId, eventId);
 		} finally {
 			if (stmt != null)
@@ -79,13 +81,13 @@ public class ParticipationDAO {
 	}
 	
 	public static List<Event> getJoinedEventsByUser(Integer userId) throws SQLException{
-		List<Event> eventList = new ArrayList<Event>();
+		List<Event> eventList = new ArrayList<>();
 		
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             
 			 rs = SimpleQueries.getJoinedEventsByUser(stmt, userId);
 			
@@ -123,13 +125,13 @@ public class ParticipationDAO {
 	}
 	
 	public static List<String> getParticipantsByEventId(Integer eventId) throws SQLException, NoEventParticipantsException {
-		List<String> userList = new ArrayList<String>();
+		List<String> userList = new ArrayList<>();
 				
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = SimpleQueries.getParticipantsByEventIdQuery(stmt, eventId);
 			
 			if(!rs.isBeforeFirst())

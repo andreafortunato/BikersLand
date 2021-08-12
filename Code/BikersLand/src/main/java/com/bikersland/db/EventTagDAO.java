@@ -9,13 +9,17 @@ import java.util.Locale;
 
 import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
+import com.bikersland.db.queries.SimpleQueries;
 
 public class EventTagDAO {
+	
+	private EventTagDAO() {}
+	
 	public static void addEventTags(Integer eventId, List<Integer> tagList) throws SQLException {
         		
 		Statement stmtAddEventTags = null;
 		try {
-			stmtAddEventTags = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmtAddEventTags = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             
 			CRUDQueries.addEventTagsQuery(stmtAddEventTags, eventId, tagList);
 		} finally {
@@ -32,21 +36,25 @@ public class EventTagDAO {
 	}
 	
 	private static List<String> getEventTags(Integer eventId, String language) throws SQLException {
-		List<String> tagList = new ArrayList<String>();
-				
-		String query = "SELECT T." + language + " FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE ET.event_id=" + eventId;
+		List<String> tagList = new ArrayList<>();
 		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while(rs.next()) {
-			tagList.add(rs.getString(language));
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs = SimpleQueries.getEventTags(stmt, eventId, language);
+			
+			while(rs.next()) {
+				tagList.add(rs.getString(language));
+			}
+			
+			return tagList;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			
+			if(rs != null) 
+				rs.close();
 		}
-       
-        if (stmt != null)
-        	stmt.close();
-        
-        return tagList;
 	}
 }

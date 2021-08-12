@@ -12,12 +12,13 @@ import com.bikersland.exception.user.DuplicateEmailException;
 import com.bikersland.exception.user.DuplicateUsernameException;
 import com.bikersland.exception.user.UserNotFoundException;
 import com.bikersland.model.User;
+import com.bikersland.utility.ConstantStrings;
 
 public class RegisterControllerApp {
 	
 	private RegisterControllerApp() {}
 	
-	public static void register(UserBean userBean) throws DuplicateUsernameException, DuplicateEmailException, AutomaticLoginException, InternalDBException {
+	public static void register(UserBean userBean) throws DuplicateUsernameException, DuplicateEmailException, InternalDBException {
 		User newUser = new User();
 		newUser.setName(userBean.getName());
 		newUser.setSurname(userBean.getSurname());
@@ -28,16 +29,15 @@ public class RegisterControllerApp {
 		
 		try {
 			UserDAO.createNewUser(newUser);
-			
-			try {
-				User loggedUser = UserDAO.getUserByUsername(newUser.getUsername());
-				LoginControllerApp.loginJustRegisteredUser(loggedUser);
-			} catch (SQLException | ImageConversionException | UserNotFoundException e) {
-				throw new AutomaticLoginException(Main.getBundle().getString("ex_failed_autologin"), e, "register", "RegisterControllerApp.java");
-			}
-			
 		} catch (SQLException | ImageConversionException e) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), e, "register", "RegisterControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), e, "register", "RegisterControllerApp.java");
+		}
+		
+		try {
+			User loggedUser = UserDAO.getUserByUsername(newUser.getUsername());
+			LoginControllerApp.loginJustRegisteredUser(loggedUser);
+		} catch (SQLException | ImageConversionException | UserNotFoundException e) {
+			throw new AutomaticLoginException(Main.getBundle().getString("ex_failed_autologin"), e, "register", "RegisterControllerApp.java");
 		}
 	}
 }

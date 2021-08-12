@@ -17,11 +17,11 @@ import com.bikersland.exception.user.NameException;
 import com.bikersland.exception.user.PasswordException;
 import com.bikersland.exception.user.SurnameException;
 import com.bikersland.exception.user.UsernameException;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -69,6 +69,8 @@ public class RegisterControllerView {
     @FXML
     private Button btnRegister;
     
+    private static final String TEXT_FIELD_ERROR = "text-field-error";
+    
     private boolean validEmail = false;
     
     private InstantTooltip previewProfileImageTooltip = new InstantTooltip();
@@ -76,46 +78,40 @@ public class RegisterControllerView {
     
     private UserBean userBean = new UserBean();
     
-    private ChangeListener<String> checkEnableBtnRegister = new ChangeListener<String>() {
-		@Override
-		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-			List<TextField> textFields = Arrays.asList(txtName, txtSurname, txtUsername, txtEmail1, txtEmail2, txtPassword1, txtPassword2);
-			
-			for(TextField tf : textFields) {
-				if(tf.getText().strip().length() == 0) {
-					btnRegister.setDisable(true);
-					return;
-				}
-			}
-			
-			if(!validEmail) {
+    private ChangeListener<String> checkEnableBtnRegister = (obs, oldVal, newVal) -> {
+		List<TextField> textFields = Arrays.asList(txtName, txtSurname, txtUsername, txtEmail1, txtEmail2, txtPassword1, txtPassword2);
+		
+		for(TextField tf : textFields) {
+			if(tf.getText().strip().length() == 0) {
 				btnRegister.setDisable(true);
 				return;
 			}
-			
-			btnRegister.setDisable(false);
 		}
+		
+		if(!validEmail) {
+			btnRegister.setDisable(true);
+			return;
+		}
+		
+		btnRegister.setDisable(false);
 	};
 	
-	private ChangeListener<String> emailListener = new ChangeListener<String>() {
-		@Override
-		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-			try {
-				/* L'email 'txtEmail1' deve essere valida, mentre l'email 'txtEmail2' deve essere uguale alla prima */
-				userBean.setEmail(txtEmail1.getText());
-				
-				txtEmail1.getStyleClass().removeIf(style -> style.equals("text-field-error"));
-				if(!txtEmail1.getText().strip().equals(txtEmail2.getText().strip())) {
-					txtEmail2.getStyleClass().add("text-field-error");
-					validEmail = false;
-				} else {
-					txtEmail2.getStyleClass().removeIf(style -> style.equals("text-field-error"));
-					validEmail = true;
-				}
-			} catch (EmailException e) {
-				txtEmail1.getStyleClass().add("text-field-error");
+	private ChangeListener<String> emailListener = (obs, oldVal, newVal) -> {
+		try {
+			/* L'email 'txtEmail1' deve essere valida, mentre l'email 'txtEmail2' deve essere uguale alla prima */
+			userBean.setEmail(txtEmail1.getText());
+			
+			txtEmail1.getStyleClass().removeIf(style -> style.equals(TEXT_FIELD_ERROR));
+			if(!txtEmail1.getText().strip().equals(txtEmail2.getText().strip())) {
+				txtEmail2.getStyleClass().add(TEXT_FIELD_ERROR);
 				validEmail = false;
+			} else {
+				txtEmail2.getStyleClass().removeIf(style -> style.equals(TEXT_FIELD_ERROR));
+				validEmail = true;
 			}
+		} catch (EmailException e) {
+			txtEmail1.getStyleClass().add(TEXT_FIELD_ERROR);
+			validEmail = false;
 		}
 	};
 	
@@ -141,7 +137,7 @@ public class RegisterControllerView {
 		} catch (IOException e) {
 			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in initialize() method, inside LoginControllerView.java", e);
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
 					Main.getBundle().getString("timedalert_system_error_header"),
 					Main.getBundle().getString("timedalert_system_error_content"), Main.getLogFile());
 		}
@@ -152,14 +148,10 @@ public class RegisterControllerView {
 	private void register() {
 		if(!txtPassword1.getText().equals(txtPassword2.getText())) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_register_error_title"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_REGISTER_ERROR_TITLE),
 					Main.getBundle().getString("timedalert_register_password_error_header"),
 					Main.getBundle().getString("timedalert_register_password_error_content"), null);
-			
-//			txtPassword1.setText("");
-//			txtPassword2.setText("");
-//			txtPassword1.requestFocus();
-			
+						
 			txtPassword2.setText("");
 			txtPassword2.requestFocus();
 			return;
@@ -176,14 +168,14 @@ public class RegisterControllerView {
 			Main.setRoot("Homepage");
 		} catch (DuplicateUsernameException due) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_register_error_title"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_REGISTER_ERROR_TITLE),
 					Main.getBundle().getString("timedalert_register_error_username_header"),
 					due.getMessage(), userBean.getUsername());
 			txtUsername.setText("");
 			txtUsername.requestFocus();
 		} catch (DuplicateEmailException dee) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_register_error_title"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_REGISTER_ERROR_TITLE),
 					Main.getBundle().getString("timedalert_register_error_email_header"),
 					dee.getMessage(), userBean.getEmail());
 			txtEmail1.setText("");
@@ -191,35 +183,35 @@ public class RegisterControllerView {
 			txtEmail1.requestFocus();
 		} catch (NameException ne) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("error"),
+					Main.getBundle().getString(ConstantStrings.ERROR),
 					Main.getBundle().getString("timedalert_register_name_error"),
 					ne.getMessage(), null);
 		} catch (SurnameException se) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("error"),
+					Main.getBundle().getString(ConstantStrings.ERROR),
 					Main.getBundle().getString("timedalert_register_surname_error"),
 					se.getMessage(), null);
 		} catch (UsernameException ue) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("error"),
+					Main.getBundle().getString(ConstantStrings.ERROR),
 					Main.getBundle().getString("timedalert_register_username_error"),
 					ue.getMessage(), null);
 		} catch (PasswordException pe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("error"),
+					Main.getBundle().getString(ConstantStrings.ERROR),
 					Main.getBundle().getString("timedalert_register_password_error"),
 					pe.getMessage(), null);
 		} catch (AutomaticLoginException ale) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					ale.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Login");
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 		}
 	}

@@ -13,10 +13,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 public class TimedAlert {
-	private TimedAlert() {};
+	private TimedAlert() {}
 	
 	public static void show(AlertType alertType, String title, String header, String content, String contentRed) {
 		show(3, alertType, title, header, content, contentRed);
@@ -36,14 +37,14 @@ public class TimedAlert {
 		flow.getChildren().addAll(txt1, txt2);
 		
 		Alert alert = new Alert(alertType);
-		alert.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> e.consume());
+		alert.getDialogPane().getScene().getWindow().setOnCloseRequest(WindowEvent::consume);
 		alert.getDialogPane().getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
 		alert.getDialogPane().getStyleClass().add("errorDialog");
 		alert.setTitle(" " + title);
 		alert.setHeaderText(header);
 		flow.setPrefWidth(400);
 		alert.getDialogPane().setContent(flow);
-		((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setStyle("-fx-font-size: 15px;");;
+		((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setStyle("-fx-font-size: 15px;");
 		((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("(" + seconds + ") OK");
 		((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setDisable(true);
 		((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setFocusTraversable(false);
@@ -59,15 +60,12 @@ public class TimedAlert {
 	        }
 	    } ) );
 	    idlestage.setCycleCount(seconds);
-	    idlestage.setOnFinished(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
+	    idlestage.setOnFinished(event -> {
 				((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("OK");
 				((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setDisable(false);
 				alert.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> alert.hide());
-			}
 		});
+	    
 	    idlestage.play();
 		alert.showAndWait();
 	}

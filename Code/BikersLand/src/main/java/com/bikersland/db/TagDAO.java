@@ -5,26 +5,30 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import com.bikersland.Main;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.TagNotFoundException;
 
 public class TagDAO {
-	/*
+	
+	private TagDAO() {}
+	
 	public static List<String> getTags() throws SQLException {
-		if(App.locale == Locale.ITALIAN)
+		if(Main.getLocale() == Locale.ITALIAN)
 			return getTags("it");
 		else
 			return getTags("en");
-	}*/
+	}
 	
-	public static List<String> getTags(String language) throws SQLException {
-		List<String> tagList = new ArrayList<String>();
+	private static List<String> getTags(String language) throws SQLException {
+		List<String> tagList = new ArrayList<>();
 		ResultSet rs = null;
 		Statement stmt = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = SimpleQueries.getTags(stmt, language);
 			while(rs.next()) {
 				tagList.add(rs.getString(language));
@@ -47,7 +51,7 @@ public class TagDAO {
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			for(String tagName:tagList) {
 				rs = SimpleQueries.tagNameToTagIdQuery(stmt, tagName);

@@ -6,10 +6,10 @@ import com.bikersland.Main;
 import com.bikersland.controller.application.HeaderControllerApp;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -77,18 +77,11 @@ public class HeaderControllerView {
     @FXML
     private void register() {
     	Main.setRoot("Register");
-//    	Event event = EventDAO.getEventByID(1);
-//    	App.setRoot("EventDetails", event);
-    }
-    
-    @FXML
-    private void btnClick(ActionEvent event) {
-    	System.out.println("Metodo comune invocato da " + ((Button)event.getSource()).getText() + "!");
     }
     
     @FXML
     private void goToHomepage() {
-    	Main.setRoot("Homepage");
+    	goHomepage();
     }
     
     @FXML
@@ -99,7 +92,7 @@ public class HeaderControllerView {
     @FXML
     private void logout() {
     	LoginSingleton.logout();
-    	Main.setRoot("Homepage");
+    	goHomepage();
     }
     
     @FXML
@@ -116,17 +109,20 @@ public class HeaderControllerView {
     		Main.setLocale(Locale.ITALIAN);
     		btnLanguage.setImage(new Image(Main.class.getResource("img/italy.png").toString()));
     	}
-    	//App.tags = TagDAO.getTags();
+    	
     	try {
 			Main.setTags(HeaderControllerApp.getTags());
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
-			//App.setRoot("Homepage");
 		}
+    	goHomepage();
+    }
+    
+    private void goHomepage() {
     	Main.setRoot("Homepage");
     }
 }

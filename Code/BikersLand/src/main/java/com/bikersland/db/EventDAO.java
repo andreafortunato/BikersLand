@@ -40,7 +40,7 @@ public class EventDAO {
 		ResultSet createNewEventRS = null;
 		
 		try {
-			stmtCreateEvent = DB_Connection.getConnection().prepareCall("{CALL CreateEvent(?,?,?,?,?,?,?,?)}");
+			stmtCreateEvent = DBConnection.getConnection().prepareCall("{CALL CreateEvent(?,?,?,?,?,?,?,?)}");
 			createNewEventRS = CRUDQueries.createNewEventQuery(stmtCreateEvent, event);
 			
 			if(createNewEventRS.next()) {
@@ -76,48 +76,14 @@ public class EventDAO {
 				stmtCreateEvent.close();
 		}
 	}
-	
-//	// TODO: Da rimuovere?
-//	public static Event getEventByID(Integer id) throws SQLException, IOException {
-//		Event event;
-//		String query = "SELECT * FROM event WHERE id='" + id + "';";
-//		
-//		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-//                
-//        ResultSet rs = stmt.executeQuery(query);
-//        
-//        if(rs.first()) {
-//        	Image image;
-//			if(rs.getBinaryStream("image") != null) {
-//	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-//	        	image = SwingFXUtils.toFXImage(img, null);
-//			} else {
-//				image = null;
-//			}
-//        	event = new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-//        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-//        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id")));
-//        	//TODO: Controllare cosa succede se la lista di tags è nulla (cioè "EventTagDAO.getEventTags(rs.getInt("id"))" come
-//        	//		si comporta se l'evento non ha tag ad esso associati)
-//        } else {
-//        	event = null;
-//        }
-//        
-//        rs.close();
-//        
-//        if (stmt != null)
-//        	stmt.close();
-//        
-//		return event;
-//	}
-	
+		
 	public static List<Event> getEventByCities(String departureCity, String destinationCity) throws SQLException {
-		List<Event> eventList = new ArrayList<Event>();
+		List<Event> eventList = new ArrayList<>();
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	        rs = SimpleQueries.getEventByCities(stmt, departureCity, destinationCity);
 	        
 	        while(rs.next()) {
@@ -142,7 +108,7 @@ public class EventDAO {
 			}
 	        
 	        return eventList;
-		}finally {
+		} finally {
 			if (stmt != null)
 				stmt.close();
 			
@@ -151,67 +117,21 @@ public class EventDAO {
 		}
 		
 		
-	}
-	
-	/*
-	
-	// TODO: Da rimuovere?
-	public static List<Event> getEventByTags(List<Integer> tagList) throws SQLException, IOException {
-		List<Event> eventList = new ArrayList<Event>();
-		
-		String query = "SELECT * FROM event WHERE id IN (SELECT DISTINCT ET.event_id FROM event_tag ET WHERE ET.tag_id IN (";
-		for(Integer tag: tagList)
-        	query += "'" + tag + "', ";
-        query = query.substring(0, query.length()-2) + ") ";
-        query += "GROUP BY ET.event_id HAVING COUNT(DISTINCT ET.tag_id) = " + tagList.size() + ") ORDER BY id DESC;";
-        
-        System.out.println(query);
-		
-		Statement stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while(rs.next()) {
-			Image image;
-			if(rs.getBinaryStream("image") != null) {
-	        	BufferedImage img = ImageIO.read(rs.getBinaryStream("image"));
-	        	image = SwingFXUtils.toFXImage(img, null);
-			} else {
-				image = null;
-			}
-			eventList.add(new Event(rs.getInt("id"), rs.getString("title"), rs.getString("description"), rs.getString("owner_username"),
-        			rs.getString("departure_city"), rs.getString("destination_city"), rs.getDate("departure_date"),
-        			rs.getDate("return_date"), image, rs.getDate("create_time"), EventTagDAO.getEventTags(rs.getInt("id"))));
-		}
-       
-        if (stmt != null)
-        	stmt.close();
-       		
-		return eventList;
-	}
-	
-	
-	public static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList) throws SQLException, IOException {
-		if(App.locale == Locale.ITALIAN)
-			return getEventByCitiesAndTags(departureCity, destinationCity, tagList, "it");
-		else
-			return getEventByCitiesAndTags(departureCity, destinationCity, tagList, "en");
-	}*/
-	
+	}	
 	
 	public static List<Event> getEventByCitiesAndTags(String departureCity, String destinationCity, List<String> tagList, String language) throws SQLException{
 		
-		if(tagList.size() == 0) 
+		if(tagList.isEmpty()) 
 			return getEventByCities(departureCity, destinationCity);
 
-		List<Event> eventList = new ArrayList<Event>();
+		List<Event> eventList = new ArrayList<>();
 		
 		ResultSet rs = null;
 		Statement stmt = null;
 		
 		
 		try {
-			stmt = DB_Connection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	        rs = SimpleQueries.getEventByCitiesAndTags(stmt, departureCity, destinationCity, tagList, language);
 	        
 	        while(rs.next()) {

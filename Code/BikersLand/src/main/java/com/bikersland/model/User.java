@@ -14,7 +14,7 @@ public class User {
 	private String email;
 	private String password;
 	private Image image;
-	private Date create_time;
+	private Date createTime;
 	
 	public User() {
 		this(null, null, null, null, null, null, null, null);
@@ -24,7 +24,7 @@ public class User {
 		this(null, name, surname, username, email, password, image, null);
 	}
 	
-	public User(Integer id, String name, String surname, String username, String email, String password, Image image, Date create_time) {
+	public User(Integer id, String name, String surname, String username, String email, String password, Image image, Date createTime) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -32,7 +32,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.image = image;
-		this.create_time = create_time;
+		this.createTime = createTime;
 	}
 	
 	public Integer getId() {
@@ -84,11 +84,11 @@ public class User {
 	}
 
 	public Date getCreateTime() {
-		return create_time;
+		return createTime;
 	}
 
-	public void setCreateTime(Date create_time) {
-		this.create_time = create_time;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 	
 	public Image getImage() {
@@ -105,10 +105,10 @@ public class User {
         		"\nEmail: " + this.email + "\nPassword: " + this.password +
         		"\nCreate_time: ";
 		
-		if(this.create_time == null)
-			userString += this.create_time;
+		if(this.createTime == null)
+			userString += this.createTime;
 		else
-			userString += ConvertMethods.dateToLocalFormat(this.create_time);
+			userString += ConvertMethods.dateToLocalFormat(this.createTime);
 		
 		return userString;
 	}

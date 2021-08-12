@@ -12,8 +12,9 @@ import java.util.logging.Logger;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.MainControllerApp;
 import com.bikersland.controller.graphics.EventDetailsControllerView;
-import com.bikersland.db.DB_Connection;
+import com.bikersland.db.DBConnection;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.TimedAlert;
 
 import javafx.application.Application;
@@ -29,7 +30,7 @@ import javafx.stage.Window;
  */
 public class Main extends Application {
 	
-	private static final String TIMEDALERT_INTERNAL_ERROR = "timedalert_internal_error";
+	private static final String TIMEDALERT_INTERNAL_ERROR = ConstantStrings.TIMEDALERT_INTERNAL_ERROR;
 	private static final String TIMEDALERT_SYSTEM_ERROR_HEADER = "timedalert_system_error_header";
 	private static final String TIMEDALERT_SYSTEM_ERROR_CONTENT = "timedalert_system_error_content";
 	
@@ -53,7 +54,7 @@ public class Main extends Application {
 		} catch (SecurityException | IOException e) {
 			TimedAlert.show(AlertType.ERROR,
 					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
-					Main.bundle.getString("timedalert_sql_ex_header"),
+					Main.bundle.getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					e.getMessage(), Main.getLogFile());
 			
 			System.exit(-1);
@@ -68,7 +69,7 @@ public class Main extends Application {
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
 					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
-					Main.bundle.getString("timedalert_sql_ex_header"),
+					Main.bundle.getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
@@ -85,7 +86,7 @@ public class Main extends Application {
         
         stage.setOnCloseRequest(event -> {
         	try {
-				DB_Connection.getConnection().close();
+				DBConnection.getConnection().close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

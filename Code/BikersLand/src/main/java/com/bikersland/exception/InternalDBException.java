@@ -19,7 +19,7 @@ public class InternalDBException extends Exception {
 	
 	public InternalDBException(String message, Throwable e, String method, String file) {
 		super(message);
-		Logger.getGlobal().log(Level.SEVERE, "Catched Exception in " + method + " method, inside " + file, e);
+		Logger.getGlobal().log(Level.SEVERE, String.format("Catched Exception in %s method, inside %s", method, file), e);
 	}
 
 }

@@ -29,7 +29,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fx:id="imgStar" fitHeight="50.0" fitWidth="50.0" layoutX="345.0" layoutY="5.0" onMouseClicked="#selectStar" onMouseEntered="#focusStar" onMouseExited="#unfocusStar" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgStar" fitHeight="50.0" fitWidth="50.0" layoutX="345.0" layoutY="5.0" onMouseClicked="#selectStar" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/star_animation.png" />
                      </image>

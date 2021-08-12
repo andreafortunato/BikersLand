@@ -8,19 +8,20 @@ import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.InvalidLoginException;
 import com.bikersland.model.User;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConstantStrings;
 
 public class LoginControllerApp {
 	
-	private LoginControllerApp() {};
+	private LoginControllerApp() {}
 
-	public static void askLogin(String username_email, String password) throws InvalidLoginException, InternalDBException {
-		User logged_user;
+	public static void askLogin(String usernameEmail, String password) throws InvalidLoginException, InternalDBException {
+		User loggedUser;
 		
 		try {
-			logged_user = UserDAO.askLogin(username_email, password);
-			LoginSingleton.getLoginInstance().setUser(logged_user);
+			loggedUser = UserDAO.askLogin(usernameEmail, password);
+			LoginSingleton.getLoginInstance().setUser(loggedUser);
 		} catch (SQLException sqle) {
-			throw new InternalDBException(Main.getBundle().getString("ex_internal_db_error"), sqle, "askLogin", "LoginControllerApp.java");
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "askLogin", "LoginControllerApp.java");
 		}
 	}
 	

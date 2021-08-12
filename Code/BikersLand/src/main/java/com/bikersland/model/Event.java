@@ -12,34 +12,34 @@ public class Event {
 	private Integer id;
 	private String title;
 	private String description;
-	private String owner_username;
-	private String departure_city;
-	private String destination_city;
-	private Date departure_date;
-	private Date return_date;
+	private String ownerUsername;
+	private String departureCity;
+	private String destinationCity;
+	private Date departureDate;
+	private Date returnDate;
 	private Image image;
-	private Date create_time;
-	private List<String> tags = new ArrayList<String>();
+	private Date createTime;
+	private List<String> tags = new ArrayList<>();
 	
 	public Event() {
 		this(null, null, null, null, null, null, null, null, null, null, null);
 	}
 	
-	public Event(String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date, Image image, List<String> tags) {
-		this(null, title, description, owner_username, departure_city, destination_city, departure_date, return_date, image, null, tags);
+	public Event(String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, List<String> tags) {
+		this(null, title, description, ownerUsername, departureCity, destinationCity, departureDate, returnDate, image, null, tags);
 	}
 	
-	public Event(Integer id, String title, String description, String owner_username, String departure_city, String destination_city, Date departure_date, Date return_date, Image image, Date create_time, List<String> tags) {
+	public Event(Integer id, String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, Date createTime, List<String> tags) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.owner_username = owner_username;
-		this.departure_city = departure_city;
-		this.destination_city = destination_city;
-		this.departure_date = departure_date;
-		this.return_date = return_date;
+		this.ownerUsername = ownerUsername;
+		this.departureCity = departureCity;
+		this.destinationCity = destinationCity;
+		this.departureDate = departureDate;
+		this.returnDate = returnDate;
 		this.image = image;
-		this.create_time = create_time;
+		this.createTime = createTime;
 		this.tags = tags;
 	}
 	
@@ -54,10 +54,10 @@ public class Event {
 				+ "Return Date: %s\n"
 				+ "Tag List: %s\n"
 				+ "Create time: %s",
-				id, title, description, owner_username, departure_city,
-				destination_city, ConvertMethods.dateToLocalFormat(departure_date),
-				ConvertMethods.dateToLocalFormat(return_date), tags.toString(),
-				ConvertMethods.dateToLocalFormat(create_time));
+				id, title, description, ownerUsername, departureCity,
+				destinationCity, ConvertMethods.dateToLocalFormat(departureDate),
+				ConvertMethods.dateToLocalFormat(returnDate), tags.toString(),
+				ConvertMethods.dateToLocalFormat(createTime));
 	}
 
 	public Integer getId() {
@@ -85,43 +85,43 @@ public class Event {
 	}
 
 	public String getOwnerUsername() {
-		return owner_username;
+		return ownerUsername;
 	}
 
-	public void setOwnerUsername(String owner_username) {
-		this.owner_username = owner_username;
+	public void setOwnerUsername(String ownerUsername) {
+		this.ownerUsername = ownerUsername;
 	}
 
 	public String getDepartureCity() {
-		return departure_city;
+		return departureCity;
 	}
 
-	public void setDepartureCity(String departure_city) {
-		this.departure_city = departure_city;
+	public void setDepartureCity(String departureCity) {
+		this.departureCity = departureCity;
 	}
 
 	public String getDestinationCity() {
-		return destination_city;
+		return destinationCity;
 	}
 
-	public void setDestinationCity(String destination_city) {
-		this.destination_city = destination_city;
+	public void setDestinationCity(String destinationCity) {
+		this.destinationCity = destinationCity;
 	}
 
 	public Date getDepartureDate() {
-		return departure_date;
+		return departureDate;
 	}
 
-	public void setDepartureDate(Date departure_date) {
-		this.departure_date = departure_date;
+	public void setDepartureDate(Date departureDate) {
+		this.departureDate = departureDate;
 	}
 
 	public Date getReturnDate() {
-		return return_date;
+		return returnDate;
 	}
 
-	public void setReturnDate(Date return_date) {
-		this.return_date = return_date;
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 	
 	public Image getImage() {
@@ -133,11 +133,11 @@ public class Event {
 	}
 	
 	public Date getCreateTime() {
-		return create_time;
+		return createTime;
 	}
 
-	public void setCreateTime(Date create_time) {
-		this.create_time = create_time;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public List<String> getTags() {

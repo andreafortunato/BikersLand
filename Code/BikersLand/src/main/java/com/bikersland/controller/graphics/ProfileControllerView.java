@@ -1,5 +1,6 @@
 package com.bikersland.controller.graphics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bikersland.Main;
@@ -7,6 +8,7 @@ import com.bikersland.bean.EventBean;
 import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.ProfileControllerApp;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.CustomGridPane;
 import com.bikersland.utility.TimedAlert;
@@ -44,29 +46,23 @@ public class ProfileControllerView {
     @FXML
     private CustomGridPane gpFavoriteEvents;
     
-    private List<EventBean> joinedEventBeanList;
-    private List<Node> joinedEventNodeList;
-    
-    private List<EventBean> favoriteEventBeanList;
-    private List<Node> favoriteEventNodeList;
-    
-    private Integer gridPaneColumns = 2;
-    
-    private UserBean userBean;
-    
     private int viaggioBoxWidth = 420;
 	
 	public void initialize() {
-		
-		userBean = ProfileControllerApp.getLoggedUser();
+		List<EventBean> joinedEventBeanList;
+	    List<Node> joinedEventNodeList;
+	    List<EventBean> favoriteEventBeanList;
+	    List<Node> favoriteEventNodeList;
+	    
+	    UserBean userBean = ProfileControllerApp.getLoggedUser();
 		
 		lblName.setText(userBean.getName());
 		lblSurname.setText(userBean.getSurname());
 		lblEmail.setText(userBean.getEmail());
 		
-		Platform.runLater(() -> {
-			vbViaggi.prefWidthProperty().bind(vbViaggi.getParent().getScene().getWindow().widthProperty());
-		});
+		Platform.runLater(() -> 
+			vbViaggi.prefWidthProperty().bind(vbViaggi.getParent().getScene().getWindow().widthProperty())
+		);
 		
 		Image image = userBean.getImage();
 		Circle imgCircle = new Circle(50);
@@ -98,49 +94,45 @@ public class ProfileControllerView {
 	    imgProfileImage.setImage(image);
 		imgProfileImage.setClip(imgCircle);
 		
+		List<Integer> gridPaneColumns = new ArrayList<>();
+		gridPaneColumns.add((((Double)Main.getCurrentWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420);
 		
 		try {
-			
 			favoriteEventBeanList = ProfileControllerApp.getFavoriteEventsByUser(userBean.getId());
 			joinedEventBeanList = ProfileControllerApp.getJoinedEventsByUser(userBean.getId());
 			
+			joinedEventNodeList = ConvertMethods.eventsToNodeList(joinedEventBeanList);
+			gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns.get(0));
 			
+			favoriteEventNodeList = ConvertMethods.eventsToNodeList(favoriteEventBeanList);
+			gpFavoriteEvents.populateGrid(favoriteEventNodeList, gridPaneColumns.get(0));			
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
 			Main.setRoot("Homepage");
+			return;
 		}
-		
-		gridPaneColumns = (((Double)Main.getCurrentWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420;
-		
-		this.joinedEventNodeList = ConvertMethods.eventsToNodeList(joinedEventBeanList);
-		gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns);
-		
-		this.favoriteEventNodeList = ConvertMethods.eventsToNodeList(favoriteEventBeanList);
-		gpFavoriteEvents.populateGrid(favoriteEventNodeList, gridPaneColumns);
-		
-		Platform.runLater(() -> {
+		Platform.runLater(() -> 
 			vbViaggi.getParent().getScene().getWindow().widthProperty().addListener((obs, oldVal, newVal) -> {
 	        	
 	        	int o = oldVal.intValue()-16-getNumViaggi()*20;
 	        	int n = newVal.intValue()-16-getNumViaggi()*20;
 	        	            	
 	        	if(o/viaggioBoxWidth != n/viaggioBoxWidth)
-	        		gridPaneColumns = n/viaggioBoxWidth;
+	        		gridPaneColumns.set(0, n/viaggioBoxWidth);
 	        	
 					try {
-						gpFavoriteEvents.populateGrid(favoriteEventNodeList, gridPaneColumns);
-						gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns);
-						System.out.println("(" + o + ", " + n + ") --> (" + o/viaggioBoxWidth + ", " + n/viaggioBoxWidth + ")");
+						gpFavoriteEvents.populateGrid(favoriteEventNodeList, gridPaneColumns.get(0));
+						gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns.get(0));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 	        	
-	        });
-		});
+	        })
+		);
 	}
 	
 	public int getNumViaggi() {

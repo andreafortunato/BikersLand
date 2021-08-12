@@ -8,6 +8,7 @@ import com.bikersland.controller.application.EventCardControllerApp;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
 import com.bikersland.singleton.LoginSingleton;
+import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.SpriteAnimation;
@@ -72,17 +73,16 @@ public class EventCardControllerView {
     @FXML
     private Button btnParticipants;
 	
-	private static final int COLUMNS  = 7;
-	private static final int COUNT    = 7;
+	private static final int COLUMNS = 7;
+	private static final int COUNT = 7;
 	private static final int OFFSET_X = 0;
 	private static final int OFFSET_Y = 0;
-	private static final int WIDTH    = 128;
-	private static final int HEIGHT   = 128;
+	private static final int WIDTH_HEIGHT = 128;
 	private Animation animation = null;
 
     private EventBean eventBean;
-    private Boolean isFavorite = false;
-    private Boolean isJoined = false;
+    private boolean isFavorite = false;
+    private boolean isJoined = false;
     
     private InstantTooltip favoriteTooltip = new InstantTooltip("");
     
@@ -135,8 +135,7 @@ public class EventCardControllerView {
     	lblTitle.setText(eventBean.getTitle());
     	lblDepartureCity.setText(eventBean.getDepartureCity());
     	lblDestinationCity.setText(eventBean.getDestinationCity());
-//    	System.out.println(String.join(", ", event.getTags()));
-    	if(eventBean.getTags().size() == 0)
+    	if(eventBean.getTags().isEmpty())
     		lblTags.setText("No tags!");
     	else {
     	    lblTags.setText(String.join(", ", eventBean.getTags()));
@@ -150,8 +149,6 @@ public class EventCardControllerView {
     	Platform.runLater(() -> {
     		AnchorPane.setLeftAnchor(lblTitle, (400-lblTitle.getWidth())/2);
         	AnchorPane.setRightAnchor(lblTitle, (400-lblTitle.getWidth())/2);
-        	
-//        	btnJoin.setPrefWidth(btnJoin.getWidth()+8);
     	});
     	  
     	
@@ -164,21 +161,21 @@ public class EventCardControllerView {
 			participants = EventCardControllerApp.getEventParticipants(eventBean.getId());
 			
 			btnParticipants.setText(String.valueOf(participants.size()));
-			String participantList = "";
+			StringBuilder participantList = new StringBuilder();
 			for(String participant: participants)
-				participantList += participant + "\n";
+				participantList.append(participant + "\n");
 			
-			participantsTooltip = new InstantTooltip(Main.getBundle().getString("participants") + ":\n\n" + participantList);
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString("participants") + ":\n\n" + participantList.toString());
 			
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
-			Main.setRoot("Homepage");
+			goHomepage();
 		}catch(NoEventParticipantsException nepe) {
-			participantsTooltip = new InstantTooltip(Main.getBundle().getString("no_participants"));
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString(ConstantStrings.NO_PARTICIPANTS));
 			btnParticipants.setText("0");
 		}
 		
@@ -198,27 +195,13 @@ public class EventCardControllerView {
 				setIsJoined(EventCardControllerApp.isJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
 				TimedAlert.show(AlertType.ERROR,
-						Main.getBundle().getString("timedalert_internal_error"),
-						Main.getBundle().getString("timedalert_sql_ex_header"),
+						Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+						Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 						idbe.getMessage(), Main.getLogFile());
 				
-				Main.setRoot("Homepage");
+				goHomepage();
 			}
 		}
-    }
-    
-    @FXML
-    void focusStar() {
-//    	imgStar.setImage(new Image(getClass().getResource("img/star2.png").toString()));
-//    	imgStar.setViewport(new Rectangle2D(175, 0, WIDTH, HEIGHT));
-    }
-    
-    @FXML
-    void unfocusStar() {
-//    	if(animation != null)
-//    		animation.stop();
-//    	imgStar.setImage(new Image(getClass().getResource("img/star2.png").toString()));
-//    	imgStar.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
     }
 
     @FXML
@@ -236,11 +219,11 @@ public class EventCardControllerView {
         	}
     	}catch(InternalDBException idbe) {
     		TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
-			Main.setRoot("Homepage");
+    		goHomepage();
     	}
     	
     }
@@ -265,13 +248,13 @@ public class EventCardControllerView {
 			setIsJoined(!isJoined);
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 		}
     }
 
-	public void setIsFavorite(Boolean isFavorite) {
+	public void setIsFavorite(boolean isFavorite) {
 		this.isFavorite = isFavorite;
 		if(isFavorite) {
 			animation = new SpriteAnimation(
@@ -279,8 +262,7 @@ public class EventCardControllerView {
                     Duration.millis(200.0),
                     COUNT, COLUMNS,
                     OFFSET_X, OFFSET_Y,
-                    WIDTH, HEIGHT
-            );
+                    WIDTH_HEIGHT);
 
             animation.setCycleCount(1);
             animation.play();
@@ -290,13 +272,13 @@ public class EventCardControllerView {
 		else {
 			if(animation != null)
     			animation.stop();
-			imgStar.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
+			imgStar.setViewport(new Rectangle2D(0, 0, WIDTH_HEIGHT, WIDTH_HEIGHT));
 			
 			favoriteTooltip.setText(Main.getBundle().getString("add_to_favorites"));
 		}
 	}
 	
-	private void setIsJoined(Boolean isJoined) {
+	private void setIsJoined(boolean isJoined) {
 		this.isJoined = isJoined;
 		if(isJoined) {
 			btnJoin.setText(Main.getBundle().getString("remove_participation"));
@@ -315,24 +297,28 @@ public class EventCardControllerView {
 			participants = EventCardControllerApp.getEventParticipants(eventBean.getId());
 			
 			btnParticipants.setText(String.valueOf(participants.size()));
-			String participantList = "";
+			StringBuilder participantList = new StringBuilder();
 			for(String participant: participants)
-				participantList += participant + "\n";
+				participantList.append(participant + "\n");
 			
-			participantsTooltip = new InstantTooltip(Main.getBundle().getString("participants") + ":\n\n" + participantList);
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString("participants") + ":\n\n" + participantList.toString());
 			
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
-					Main.getBundle().getString("timedalert_internal_error"),
-					Main.getBundle().getString("timedalert_sql_ex_header"),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+					Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
-			Main.setRoot("Homepage");
+			goHomepage();
 		}catch(NoEventParticipantsException nepe) {
-			participantsTooltip = new InstantTooltip(Main.getBundle().getString("no_participants"));
+			participantsTooltip = new InstantTooltip(Main.getBundle().getString(ConstantStrings.NO_PARTICIPANTS));
 			btnParticipants.setText("0");
 		}
 		
 		btnParticipants.setTooltip(participantsTooltip);
+	}
+	
+	private void goHomepage() {
+		Main.setRoot("Homepage");
 	}
 }

@@ -39,8 +39,6 @@ public class CRUDQueries {
 			} catch (IOException e) {
 				/* Se si verifica un problema nella conversione dell'immagine, lancio 
 				   un'eccezione e gestisco l'errore come se fosse dovuto dal Database */
-//				Logger logger = new Logger();
-//				logger.log(Level.ERROR, "My Message");
 				throw new ImageConversionException(e);
 			}
 			InputStream blobImage = new ByteArrayInputStream(bts.toByteArray());
@@ -83,9 +81,11 @@ public class CRUDQueries {
 	}
 	
 	public static int addEventTagsQuery(Statement stmtAddEventTags, Integer eventId, List<Integer> eventTagIdList) throws SQLException {
-		String query = "INSERT INTO event_tag VALUES ";
+		StringBuilder queryBuilder = new StringBuilder("INSERT INTO event_tag VALUES ");
         for(Integer tagId: eventTagIdList)
-        	query += "(" + eventId + ", '" + tagId + "'), ";
+        	queryBuilder.append("(" + eventId + ", '" + tagId + "'), ");
+        
+        String query = queryBuilder.toString();
         query = query.substring(0, query.length()-2) + ";";
                 
 		return stmtAddEventTags.executeUpdate(query);
