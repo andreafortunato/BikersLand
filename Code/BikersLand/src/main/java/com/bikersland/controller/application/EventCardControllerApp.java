@@ -3,12 +3,12 @@ package com.bikersland.controller.application;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.db.FavoriteEventDAO;
 import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
 
 import javafx.scene.image.Image;
 

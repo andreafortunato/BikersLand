@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.db.EventDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.model.Event;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
 
 public class HomepageControllerApp {
 	
@@ -61,5 +61,4 @@ public class HomepageControllerApp {
 		
 		return eventBeanList;
 	}
-
 }

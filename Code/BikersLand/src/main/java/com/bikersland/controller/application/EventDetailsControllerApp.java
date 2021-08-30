@@ -3,11 +3,14 @@ package com.bikersland.controller.application;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.bikersland.Main;
+import com.bikersland.db.EventDAO;
 import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
+import com.bikersland.model.Event;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
+import com.bikersland.bean.EventBean;
 
 import javafx.scene.image.Image;
 
@@ -48,6 +51,21 @@ public class EventDetailsControllerApp {
 			ParticipationDAO.removeUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
 			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "removeUserParticipation", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
+		}
+	}
+	
+	public static EventBean getEventById(Integer eventId) throws InternalDBException {
+		try {
+			Event event = EventDAO.getEventById(eventId);
+			
+			if(event == null)
+				return null;
+			
+			return new EventBean(event.getId(), event.getTitle(), event.getDescription(),
+					event.getOwnerUsername(), event.getDepartureCity(), event.getDestinationCity(),
+					event.getDepartureDate(), event.getReturnDate(), event.getImage(), event.getCreateTime(), event.getTags());
+		} catch (SQLException sqle) {
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "getEventById", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
 		}
 	}
 }

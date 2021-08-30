@@ -1,6 +1,5 @@
 package com.bikersland.controller.graphics;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.EventDetailsControllerApp;
 import com.bikersland.exception.InternalDBException;
@@ -9,6 +8,7 @@ import com.bikersland.singleton.LoginSingleton;
 import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
-import com.bikersland.Main;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.user.EmailException;
 import com.bikersland.exception.user.NameException;
@@ -13,6 +12,7 @@ import com.bikersland.exception.user.PasswordException;
 import com.bikersland.exception.user.SurnameException;
 import com.bikersland.exception.user.UsernameException;
 import com.bikersland.utility.ConvertMethods;
+import com.bikersland.Main;
 
 import javafx.scene.image.Image;
 

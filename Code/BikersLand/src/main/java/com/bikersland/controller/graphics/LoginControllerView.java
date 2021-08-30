@@ -1,11 +1,11 @@
 package com.bikersland.controller.graphics;
 
-import com.bikersland.Main;
 import com.bikersland.controller.application.LoginControllerApp;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.InvalidLoginException;
 import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;

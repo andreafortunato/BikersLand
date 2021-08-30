@@ -2,7 +2,6 @@ package com.bikersland.controller.graphics;
 
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.EventCardControllerApp;
 import com.bikersland.exception.InternalDBException;
@@ -13,6 +12,7 @@ import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.SpriteAnimation;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.animation.Animation;
 import javafx.application.Platform;

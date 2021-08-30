@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+:root {
+  --color-primary: #0CF;
+  --color-primary-dark: derive(-color-primary, -30%);
+}
+
+/*da mettere sopra i nuovi e se modifico quelli sotto da mettere sopra*/ 
+
+.custom-btn, button {
+  color: #fff;
+  border-color: #007bff;
+  
+  background-color: #303030;
+  border-color: #FFF;
+  border-radius: 4px;
+  color: var(--color-primary);
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.custom-btn:hover, button:hover {
+  background-color: var(--color-primary);
+  color: #FFF;
+}
+
+.custom-btn:active, button:active {
+	filter: brightness(0.80);
+}
+
+.custom-btn:focus, button:focus {outline:0;}
+
+.parent {
+   display: table;
+   text-align: center;
+}
+#formLogin {
+   display: table-cell;
+   text-align: center;
+   vertical-align: middle;
+}
+
+body {
+	 background-color: #121212;
+}
+
+.headLabel{
+	color: white;
+	text-align:center;
+  color: var(--color-primary);
+  font-size: 30px;
+  font-weight: bolder;
+}
+
+div {
+  text-align: left;
+  /*
+  background-color: rgba(86,61,124,1);
+  border: 1px solid rgba(0,255,0,1);
+  */
+    
+  color: white;
+    
+  padding: 0px !important;
+  
+  display: inline-block;
+  background-color: transparent;
+}
+
+
+
+.header {
+  background-color: #121212;
+}

@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
 
 public class SimpleQueries {
 	
@@ -117,6 +117,12 @@ public class SimpleQueries {
 	
 	public static ResultSet getEventTags(Statement stmt, Integer eventId, String language) throws SQLException {
 		String query = "SELECT T." + language + " FROM event_tag ET JOIN tag T ON ET.tag_id=T.id WHERE ET.event_id=" + eventId;
+		
+		return stmt.executeQuery(query);
+	}
+	
+	public static ResultSet getEventById(Statement stmt, Integer eventId) throws SQLException {
+		String query = "SELECT * FROM event WHERE id=" + eventId;
 		
 		return stmt.executeQuery(query);
 	}

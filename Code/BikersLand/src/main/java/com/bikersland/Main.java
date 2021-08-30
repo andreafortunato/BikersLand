@@ -40,7 +40,7 @@ public class Main extends Application {
 	private static List<String> tags = null;
 
     private static Locale locale = Locale.ENGLISH;
-    private static ResourceBundle bundle;
+    private static ResourceBundle bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
     
     private static Scene scene;
     
@@ -58,7 +58,6 @@ public class Main extends Application {
 					e.getMessage(), Main.getLogFile());
 			
 			System.exit(-1);
-			
 		}
 		
 		refreshBundle();
@@ -72,7 +71,7 @@ public class Main extends Application {
 					Main.bundle.getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
 					idbe.getMessage(), Main.getLogFile());
 			
-			Main.setRoot("Homepage");
+			System.exit(-1);
 		}
     	
         initScene();
@@ -98,12 +97,12 @@ public class Main extends Application {
     	try {
     		Main.scene = new Scene(loadFXML("Homepage"), 1253, 810);
 		} catch (IOException ioe) {
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", ioe);
+			
 			TimedAlert.show(AlertType.ERROR,
 					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
 					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_HEADER),
 					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_CONTENT), logFile);
-			
-			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", ioe);
 			
 			System.exit(-1);
 			
@@ -114,11 +113,12 @@ public class Main extends Application {
         try {
 			scene.setRoot(loadFXML(fxml));
 		} catch (IOException ioe) {
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", ioe);
+			
 			TimedAlert.show(AlertType.ERROR,
 					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
 					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_HEADER),
 					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_CONTENT), logFile);
-			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String) method, inside App.java", ioe);
 			
 			System.exit(-1);
 		}
@@ -128,11 +128,12 @@ public class Main extends Application {
         try {
 			scene.setRoot(loadFXML(fxml, eventBean));
 		} catch (IOException ioe) {
+			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String, Event) method, inside App.java", ioe);
+			
 			TimedAlert.show(AlertType.ERROR,
 					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),
 					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_HEADER),
 					Main.bundle.getString(TIMEDALERT_SYSTEM_ERROR_CONTENT), logFile);
-			Logger.getGlobal().log(Level.SEVERE, "Catched IOException in setRoot(String, Event) method, inside App.java", ioe);
 			
 			System.exit(-1);
 		}

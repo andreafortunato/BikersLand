@@ -6,10 +6,11 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
 import com.bikersland.db.queries.SimpleQueries;
 import com.bikersland.exception.ImageConversionException;
@@ -18,6 +19,7 @@ import com.bikersland.exception.user.DuplicateEmailException;
 import com.bikersland.exception.user.DuplicateUsernameException;
 import com.bikersland.exception.user.UserNotFoundException;
 import com.bikersland.model.User;
+import com.bikersland.Main;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

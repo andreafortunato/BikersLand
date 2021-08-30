@@ -1,14 +1,16 @@
 package com.bikersland.controller.application;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.bikersland.Main;
 import com.bikersland.db.UserDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.InvalidLoginException;
 import com.bikersland.model.User;
 import com.bikersland.singleton.LoginSingleton;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
 
 public class LoginControllerApp {
 	
@@ -28,5 +30,4 @@ public class LoginControllerApp {
 	public static void loginJustRegisteredUser(User user) {
 		LoginSingleton.getLoginInstance().setUser(user);
 	}
-	
 }

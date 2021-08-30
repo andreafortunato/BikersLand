@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.bikersland.Main;
 import com.bikersland.db.queries.CRUDQueries;
 import com.bikersland.db.queries.SimpleQueries;
+import com.bikersland.Main;
 
 public class EventTagDAO {
 	

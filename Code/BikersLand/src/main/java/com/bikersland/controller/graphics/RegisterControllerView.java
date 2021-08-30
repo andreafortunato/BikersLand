@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.RegisterControllerApp;
 import com.bikersland.exception.AutomaticLoginException;
@@ -20,6 +19,7 @@ import com.bikersland.exception.user.UsernameException;
 import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;

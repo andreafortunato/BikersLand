@@ -2,7 +2,6 @@ package com.bikersland.controller.application;
 
 import java.sql.SQLException;
 
-import com.bikersland.Main;
 import com.bikersland.bean.UserBean;
 import com.bikersland.db.UserDAO;
 import com.bikersland.exception.AutomaticLoginException;
@@ -13,6 +12,7 @@ import com.bikersland.exception.user.DuplicateUsernameException;
 import com.bikersland.exception.user.UserNotFoundException;
 import com.bikersland.model.User;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
 
 public class RegisterControllerApp {
 	

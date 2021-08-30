@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.graphics.EventCardControllerView;
+import com.bikersland.Main;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;

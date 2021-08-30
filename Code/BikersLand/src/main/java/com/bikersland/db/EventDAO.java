@@ -163,6 +163,45 @@ public class EventDAO {
 			if(rs != null) 
 				rs.close();
 		}
+	}
+	
+	public static Event getEventById(Integer eventId) throws SQLException {	
+		ResultSet rs = null;
+		Statement stmt = null;
 		
+		try {
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	        rs = SimpleQueries.getEventById(stmt, eventId);
+	        
+	        if(rs.next()) {
+				Image image;
+				if(rs.getBinaryStream(IMAGE_COL) != null) {
+		        	BufferedImage img;
+					try {
+						img = ImageIO.read(rs.getBinaryStream(IMAGE_COL));
+					} catch (IOException ioe) {
+						rs.close();
+						stmt.close();
+					
+						throw new SQLException(ioe);
+					} 
+		        	image = SwingFXUtils.toFXImage(img, null);
+				} else {
+					image = null;
+				}
+				
+				return new Event(rs.getInt(ID_COL), rs.getString(TITLE_COL), rs.getString(DESCRIPTION_COL), rs.getString(OWNER_USERNAME_COL),
+	        			rs.getString(DEPARTURE_CITY_COL), rs.getString(DESTINATION_CITY_COL), rs.getDate(DEPARTURE_DATE_COL),
+	        			rs.getDate(RETURN_DATE_COL), image, rs.getDate(CREATE_TIME_COL), EventTagDAO.getEventTags(rs.getInt(ID_COL)));
+			} else {
+				return null;
+			}
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			
+			if(rs != null) 
+				rs.close();
+		}
 	}
 }

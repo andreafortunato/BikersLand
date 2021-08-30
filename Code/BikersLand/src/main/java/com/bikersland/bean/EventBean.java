@@ -5,10 +5,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.exception.ImageFileException;
 import com.bikersland.exception.event.TitleException;
 import com.bikersland.utility.ConvertMethods;
+import com.bikersland.Main;
 
 import javafx.scene.image.Image;
 
@@ -129,6 +129,9 @@ public class EventBean {
 	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
+	public void setDepartureDate(String departureDate) {
+		this.departureDate = Date.valueOf(departureDate);
+	}
 
 	public Date getReturnDate() {
 		return returnDate;
@@ -136,6 +139,10 @@ public class EventBean {
 
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
+	}
+	
+	public void setReturnDate(String returnDate) {
+		this.returnDate = Date.valueOf(returnDate);
 	}
 	
 	public Image getImage() {

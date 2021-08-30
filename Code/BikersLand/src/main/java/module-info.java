@@ -1,4 +1,4 @@
-module com.bikersland {
+module BikersLand {
     requires transitive javafx.controls;
     requires javafx.fxml;
 	requires javafx.graphics;
@@ -8,6 +8,7 @@ module com.bikersland {
 	requires javafx.swing;
 	requires java.desktop;
 	requires commons.validator;
+	requires jakarta.servlet;
 
     opens com.bikersland to javafx.fxml;
     opens com.bikersland.controller.graphics to javafx.fxml;

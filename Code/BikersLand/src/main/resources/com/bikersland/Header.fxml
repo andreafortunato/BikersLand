@@ -43,7 +43,7 @@
       </HBox>
       <ImageView fx:id="imgLogo" fitHeight="113.0" fitWidth="150.0" layoutX="40.0" layoutY="19.0" onMouseClicked="#goToHomepage" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/Logo%20White.png" />
+            <Image url="@img/Logo_White.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

@@ -2,13 +2,13 @@ package com.bikersland.controller.graphics;
 
 import java.util.Locale;
 
-import com.bikersland.Main;
 import com.bikersland.controller.application.HeaderControllerApp;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.singleton.LoginSingleton;
 import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;

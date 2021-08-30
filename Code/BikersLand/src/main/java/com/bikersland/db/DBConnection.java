@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bikersland.Main;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -30,17 +30,18 @@ public class DBConnection {
 			} catch (SQLException | ClassNotFoundException e) {
 				Logger.getGlobal().log(Level.SEVERE, "Catched SQLException/ClassNotFoundException in getConnection() method, inside DB_Connection.java", e);
 				
-				TimedAlert.show(AlertType.ERROR,
-						Main.getBundle().getString("timedalert_db_conn_error_title"),
-						Main.getBundle().getString("timedalert_db_conn_error_header"),
-						Main.getBundle().getString("timedalert_db_conn_error_content"), null);
-				
-				System.exit(-1);
+				throw new SQLException(e);
 			}
 		}
 		
 		if(connection.isClosed()) {
-			connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			try {
+				connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			} catch (SQLException sqle) {
+				Logger.getGlobal().log(Level.SEVERE, "Catched SQLException/ClassNotFoundException in getConnection() method, inside DB_Connection.java", sqle);
+				
+				throw new SQLException(sqle);
+			}
 		}
 		
 		return connection;		

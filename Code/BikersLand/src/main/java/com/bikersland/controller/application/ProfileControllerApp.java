@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.bean.UserBean;
 import com.bikersland.db.FavoriteEventDAO;
@@ -14,6 +13,7 @@ import com.bikersland.model.Event;
 import com.bikersland.model.User;
 import com.bikersland.singleton.LoginSingleton;
 import com.bikersland.utility.ConstantStrings;
+import com.bikersland.Main;
 
 public class ProfileControllerApp {
 	

@@ -3,7 +3,6 @@ package com.bikersland.controller.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.ProfileControllerApp;
@@ -12,6 +11,7 @@ import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.CustomGridPane;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

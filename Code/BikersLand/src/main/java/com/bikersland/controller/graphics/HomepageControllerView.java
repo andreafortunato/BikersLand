@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.controlsfx.control.SearchableComboBox;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.HomepageControllerApp;
 import com.bikersland.exception.InternalDBException;
@@ -14,6 +13,7 @@ import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.CustomGridPane;
 import com.bikersland.utility.TagsListCell;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

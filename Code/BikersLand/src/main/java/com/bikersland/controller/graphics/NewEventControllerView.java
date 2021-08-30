@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
-import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
 import com.bikersland.controller.application.NewEventControllerApp;
 import com.bikersland.exception.ImageFileException;
@@ -19,6 +18,7 @@ import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.CustomDateCell;
 import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
+import com.bikersland.Main;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
