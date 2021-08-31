@@ -38,6 +38,7 @@ public class LoginControllerView {
 		txtUser.textProperty().addListener(checkEnableBtnLogin);
 		txtPassword.textProperty().addListener(checkEnableBtnLogin);
 		
+		/* OFFICAL COMMENT BLOCK */
 		/*
 		try {
 			ConvertMethods.addTextLimiter(txtUser, 32);

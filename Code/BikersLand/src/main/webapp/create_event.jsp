@@ -19,7 +19,7 @@
 <%@ page import = "java.time.format.DateTimeFormatter" %>
 <%@ page import = "java.sql.Date" %>
 
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">  
 		    <title>Create New Event</title>
@@ -150,15 +150,16 @@
 	         EventBean createdEventBean = NewEventControllerApp.createNewEvent(eventBean);
 	         
 	         %>
+	           <form action="event_details.jsp" method="POST" id="form_details">
+	             <input type="hidden" id="event-id" name="event-id" value="<% out.write(createdEventBean.getId().toString()); %>">
+	           </form>
+	           
 		         <script type="text/javascript">
 	                alert("<% out.write("You will be redirected on event details of your event " + createdEventBean.getTitle()); %>");
-	                window.location.href = "<% out.write("event_details.jsp?event-id=" + createdEventBean.getId().toString()); %>";
+	                
+	                document.getElementById("form_details").submit();
 	           </script>
 	         <%
-	         
-	         //response.sendRedirect("event_details.jsp?id=" + createdEventBean.getId().toString());
-	         
-		       //Main.setRoot("EventDetails", createdEventBean);
 		   } catch (TitleException te) {
 			   %>
          <script type="text/javascript">

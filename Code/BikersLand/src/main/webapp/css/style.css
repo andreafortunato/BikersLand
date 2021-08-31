@@ -5,7 +5,111 @@
   --color-primary-dark: derive(-color-primary, -30%);
 }
 
-/*da mettere sopra i nuovi e se modifico quelli sotto da mettere sopra*/ 
+.table th {
+	padding: .75rem 0rem .75rem 0rem !important;
+	width: 205px;
+}
+
+.card-border {
+  border-style: solid !important; 
+  border-width: 5px !important;
+  border-color: var(--color-primary) !important;
+  border-radius: 10px !important;
+}
+
+[data-tab-content] {
+  display: none;
+}
+
+.active[data-tab-content] {
+  display: block;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  list-style-type: none;
+  margin: 0;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 0;
+  border-bottom: 1px solid black;
+  color: white;
+}
+
+.tab {
+  cursor: pointer;
+  padding: 10px;
+  border-style: solid;
+  border-color: var(--color-primary) var(--color-primary) black var(--color-primary);
+  border-radius: 10px 10px 0px 0px;
+}
+
+.tab.active {
+  background-color: #CCC;
+  color: black;
+}
+
+.tab:hover {
+  background-color: #AAA;
+}
+
+.tab-content {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Besley');
+
+* {
+    font-family: Besley;
+    font-size: 20px;
+}
+
+.side-links {
+  position: absolute;
+  top: 55px;
+  right: 15px;
+}
+
+.side-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: white;
+  width: 180px;
+  padding: 10px 0;
+  border-radius: 10px;
+}
+
+.side-link-youtube {
+  background-color: red;
+}
+
+.side-link-twitter {
+  background-color: #1DA1F2;
+}
+
+.side-link-github {
+  background-color: #6e5494;
+}
+
+.side-link-text {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.side-link-icon {
+  color: white;
+  font-size: 30px;
+}
 
 .custom-btn, button {
   color: #fff;

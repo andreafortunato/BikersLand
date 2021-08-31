@@ -165,7 +165,7 @@ public class EventDAO {
 		}
 	}
 	
-	public static Event getEventById(Integer eventId) throws SQLException {	
+	public static Event getEventById(Integer eventId) throws SQLException, EventNotFoundException {	
 		ResultSet rs = null;
 		Statement stmt = null;
 		
@@ -194,7 +194,7 @@ public class EventDAO {
 	        			rs.getString(DEPARTURE_CITY_COL), rs.getString(DESTINATION_CITY_COL), rs.getDate(DEPARTURE_DATE_COL),
 	        			rs.getDate(RETURN_DATE_COL), image, rs.getDate(CREATE_TIME_COL), EventTagDAO.getEventTags(rs.getInt(ID_COL)));
 			} else {
-				return null;
+				throw new EventNotFoundException();
 			}
 		} finally {
 			if (stmt != null)

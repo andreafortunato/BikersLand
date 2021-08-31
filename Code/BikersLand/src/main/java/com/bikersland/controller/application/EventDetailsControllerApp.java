@@ -7,6 +7,7 @@ import com.bikersland.db.EventDAO;
 import com.bikersland.db.ParticipationDAO;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.NoEventParticipantsException;
+import com.bikersland.exception.event.EventNotFoundException;
 import com.bikersland.model.Event;
 import com.bikersland.utility.ConstantStrings;
 import com.bikersland.Main;
@@ -58,13 +59,10 @@ public class EventDetailsControllerApp {
 		try {
 			Event event = EventDAO.getEventById(eventId);
 			
-			if(event == null)
-				return null;
-			
 			return new EventBean(event.getId(), event.getTitle(), event.getDescription(),
 					event.getOwnerUsername(), event.getDepartureCity(), event.getDestinationCity(),
 					event.getDepartureDate(), event.getReturnDate(), event.getImage(), event.getCreateTime(), event.getTags());
-		} catch (SQLException sqle) {
+		} catch (SQLException | EventNotFoundException sqle) {
 			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), sqle, "getEventById", ConstantStrings.EVENTDETAILSCONTROLLERAPP_JAVA);
 		}
 	}

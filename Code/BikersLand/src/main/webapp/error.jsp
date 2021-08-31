@@ -4,7 +4,7 @@
 <%@ page isErrorPage="true" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Error Page</title>

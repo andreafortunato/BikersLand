@@ -54,6 +54,7 @@ public class ConvertMethods {
 		return datePattern.format(date);
 	}
 	
+	/* OFFICIAL COMMENT BLOCK */
 	/* Limita il massimo numero di caratteri di un TextField al valore "maxLenght" */
 	/*
 	public static void addTextLimiter(Control control, int maxLength) throws IOException {

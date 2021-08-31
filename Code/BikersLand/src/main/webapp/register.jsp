@@ -17,7 +17,7 @@
 <%@ page import ="java.time.LocalDate"%>
 <%@ page import = "java.time.format.DateTimeFormatter" %>
 
-<html>
+<html lang="en">
  <head>
     <meta charset="UTF-8">  
         <title>Register User</title>

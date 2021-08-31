@@ -48,6 +48,8 @@ public class EventTagDAO {
 				tagList.add(rs.getString(language));
 			}
 			
+			tagList.sort((s1, s2) -> s1.compareTo(s2));
+			
 			return tagList;
 		} finally {
 			if (stmt != null)

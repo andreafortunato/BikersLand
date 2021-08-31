@@ -125,6 +125,7 @@ public class RegisterControllerView {
 		
 		lblImageName.setTooltip(previewProfileImageTooltip);
 		
+		/* OFFICAL COMMENT BLOCK */
 		/*
 		try {
 			ConvertMethods.addTextLimiter(txtName, 32);

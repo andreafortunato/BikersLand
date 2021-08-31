@@ -67,7 +67,7 @@ public class ProfileControllerView {
 		Image image = userBean.getImage();
 		Circle imgCircle = new Circle(50);
 		if(image == null) {
-			image = new Image(Main.class.getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
+			image = ProfileControllerApp.getDefaultUserImage();
 		} else {
 			double w = 0;
             double h = 0;

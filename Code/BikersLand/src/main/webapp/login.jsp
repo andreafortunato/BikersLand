@@ -4,22 +4,27 @@
 <%@ page import="com.bikersland.controller.application.LoginControllerApp" %>
 <%@ page import="com.bikersland.exception.InvalidLoginException" %>
 <%@ page import="com.bikersland.exception.InternalDBException" %>
+<%@ page import="com.bikersland.bean.UserBean" %>
 
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		
 		<%
 			if(request.getParameter("login") != null) {
+				UserBean userBean;
 				try {
-					LoginControllerApp.askLogin(request.getParameter("username"), request.getParameter("password"));
+					userBean = LoginControllerApp.askLoginWeb(request.getParameter("username"), request.getParameter("password"));
 					
-					response.sendRedirect("loginOk.jsp");
+					session.setAttribute("logged-user-bean", userBean);
+					
+					response.sendRedirect("index.jsp");
 				} catch (InvalidLoginException e) {
+					session.removeAttribute("logged-user-bean");
 		%>
 					<script type="text/javascript">
-					    alert("Login sbagliato");
+					    alert("Wrong Username/Email and/or Password!\nPlease try again...");
 					    document.getElementById("loginForm").reset();
 					</script>
 		<%
@@ -34,7 +39,6 @@
 		%>
 		
 		<title>BikersLand Homepage</title>
-		<!-- <link href="css/style.css" rel="stylesheet"> -->
 		<%@ include file="header.jsp"%> 
 	</head>
 	
@@ -42,7 +46,7 @@
 		
 		<p class="headLabel">Login</p>
 		<div class="mx-auto parent">
-		  <form action="index.jsp" id="loginForm" name="loginForm" method="POST">
+		  <form action="login.jsp" id="loginForm" name="loginForm" method="POST">
 			  <div class="input-group mb-3">
 				  <div class="input-group-prepend">
 				    <span class="input-group-text" id="basic-addon1">Username</span>
@@ -57,7 +61,7 @@
 	        <input type="password" class="form-control" placeholder="Password" id="password" name="password" aria-label="Password" aria-describedby="basic-addon1">
 	      </div>
 	       
-	      <input type="submit" class="custom-btn" name="login" value="login">
+	      <input type="submit" class="custom-btn" name="login" value="LOGIN">
 	     </form>
 	   </div>
 		

@@ -182,8 +182,6 @@ public class EventCardControllerView {
 		btnParticipants.setTooltip(participantsTooltip);
 		
 		
-
-		
 		if(loggedUserId == -1) {
 			imgStar.setVisible(false);
 			btnJoin.setVisible(false);

@@ -3,20 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>BikersLand</display-name>
-    <filter>
-			<filter-name>DenyFilter</filter-name>
-			<filter-class>com.bikersland.utility.DenyFilter</filter-class>
-		</filter>
-		<filter-mapping>
-			<filter-name>DenyFilter</filter-name>
-			<url-pattern>/header.jsp</url-pattern>
-		</filter-mapping>
-		<filter-mapping>
-      <filter-name>DenyFilter</filter-name>
-      <url-pattern>/loginOk.jsp</url-pattern>
-    </filter-mapping>
-    
+  <display-name>BikersLand</display-name>    
     <error-page>  
 		  <exception-type>java.lang.NullPointerException</exception-type>  
 		  <location>/error.jsp</location>  

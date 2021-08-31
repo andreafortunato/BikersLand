@@ -13,4 +13,5 @@ public final class ConstantStrings {
 	public static final String ALL_FEMALE = "all_female";
 	public static final String ERROR = "error";
 	public static final String TIMEDALERT_REGISTER_ERROR_TITLE = "timedalert_register_error_title";
+	public static final String PROFILECONTROLLERAPP_JAVA= "ProfileControllerApp.java";
 }
