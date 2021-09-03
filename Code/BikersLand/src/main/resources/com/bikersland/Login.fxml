@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -22,6 +24,15 @@
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
+            </Button>
+            <Button fx:id="btnLogin1" disable="true" layoutX="10.0" layoutY="311.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#login" text="%facebook_login">
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/facebook_icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </VBox>

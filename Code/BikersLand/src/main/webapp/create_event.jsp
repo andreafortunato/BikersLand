@@ -122,10 +122,6 @@
             %>
           </select>
         </div>
-        <div class="custom-file" style="margin-bottom: 20px">
-          <label class="custom-file-label" for="eventImage">Choose the Event Image...</label>
-				  <input type="file" accept="image/*" class="custom-file-input" id="eventImage">
-				</div>
 				<input type="submit" class="custom-btn" value="CREATE EVENT" name="createEvent" style="width:100%">
       </form>
    </div>

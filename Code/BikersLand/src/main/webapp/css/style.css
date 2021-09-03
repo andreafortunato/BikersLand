@@ -5,6 +5,26 @@
   --color-primary-dark: derive(-color-primary, -30%);
 }
 
+button:disabled,
+button:disabled:hover {
+	background-color: #696969;
+  color: #d4d4d4;
+  cursor: no-drop;
+}
+
+.img-btn {
+  position: relative;
+  text-align: center;
+}
+
+
+.imb-in-btn {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .table th {
 	padding: .75rem 0rem .75rem 0rem !important;
 	width: 205px;

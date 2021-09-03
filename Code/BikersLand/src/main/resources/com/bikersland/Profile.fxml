@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.bikersland.utility.CustomGridPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import com.bikersland.utility.CustomGridPane?>
 
 <AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bikersland.controller.graphics.ProfileControllerView">
    <children>
@@ -20,7 +20,7 @@
          <children>
             <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="750.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label text="%your_profile_2">
+                  <Label fx:id="lblProfileOf" text="%profile_of">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
@@ -34,12 +34,12 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">
                            <children>
-                              <Label fx:id="lblName" text="Nome">
+                              <Label fx:id="lblName" text="Name">
                                  <font>
                                     <Font size="22.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblSurname" text="Cognome">
+                              <Label fx:id="lblSurname" text="Surname">
                                  <font>
                                     <Font size="22.0" />
                                  </font>

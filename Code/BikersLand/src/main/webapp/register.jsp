@@ -37,10 +37,6 @@
 	          </div>
 	          <input type="text" class="form-control" placeholder="Username" id="username" name="username" aria-label="username" aria-describedby="basic-addon1" <% if(request.getParameter("username") != null) out.write("value=\"" + request.getParameter("username") + "\""); %>>
           </div>
-	        <div style="width: 600px" class="custom-file">
-            <label class="custom-file-label" for="userImage">Choose the User Image...</label>
-            <input type="file" accept="image/*" class="custom-file-input" id="userImage" name="userImage">
-          </div>
           <div class="input-group mb-3" style="width: 600px; margin-top: 15px;">
             <div class="input-group-prepend"  style="width: 200px">
               <span class="input-group-text" id="basic-addon1"  style="width: 200px">Email</span>
@@ -77,7 +73,7 @@
 		    	  if(!request.getParameter("password").equals(request.getParameter("confirmation-password"))) {
 		    		  %>
 		    		  <script type="text/javascript">
-                      alert("The two passwords you entered do not match.\n\nPlease try again...");
+                alert("<% out.write("The two passwords you entered do not match.\\n\\nPlease try again..."); %>");
               </script>
               <%
 		    	  }
@@ -89,7 +85,6 @@
 	    	      userBean.setUsername(request.getParameter("username"));
 	    	      userBean.setEmail(request.getParameter("email"));
 	    	      userBean.setPassword(request.getParameter("password"));
-	    	      //userBean.setImage(request.getParameter("password"));
 	    	      
 	    	      RegisterControllerApp.register(userBean);
 	    	      
@@ -124,7 +119,13 @@
                 alert("<% out.write(ue.getMessage()); %>");
             </script>
             <%
-    	    } catch (PasswordException pe) {
+    	    } catch (EmailException ee) {
+            %>
+            <script type="text/javascript">
+                alert("<% out.write(ee.getMessage()); %>");
+            </script>
+            <%
+          } catch (PasswordException pe) {
     	    	%>
             <script type="text/javascript">
                 alert("<% out.write(pe.getMessage()); %>");

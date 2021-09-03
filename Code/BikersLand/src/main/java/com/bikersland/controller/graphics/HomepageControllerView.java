@@ -150,7 +150,7 @@ public class HomepageControllerView {
         lvTags.setItems(tags);
         lvTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        ttt();
+        populateTagsListCell();
         
         Platform.runLater(() -> {
         	
@@ -202,7 +202,7 @@ public class HomepageControllerView {
         });
     }
     
-    private void ttt() {
+    private void populateTagsListCell() {
     	lvTags.setCellFactory(lv -> {
     		
     		TagsListCell cell = new TagsListCell();

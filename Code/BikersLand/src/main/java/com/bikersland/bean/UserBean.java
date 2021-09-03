@@ -122,7 +122,7 @@ public class UserBean {
 		if(strippedEmail.length() < 6 ||
 				strippedEmail.length() > 128 ||
 				!EmailValidator.getInstance().isValid(strippedEmail))
-			throw new EmailException();
+			throw new EmailException(Main.getBundle().getString("ex_invalid_email"));
 	}
 
 	public String getPassword() {

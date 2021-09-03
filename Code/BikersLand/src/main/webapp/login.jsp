@@ -61,8 +61,12 @@
 	        <input type="password" class="form-control" placeholder="Password" id="password" name="password" aria-label="Password" aria-describedby="basic-addon1">
 	      </div>
 	       
-	      <input type="submit" class="custom-btn" name="login" value="LOGIN">
+	      <input type="submit" class="custom-btn" name="login" value="LOGIN" style="width: 100%;">
 	     </form>
+       <button class="img-btn" style="margin-top: 12px; width: 100%;" disabled>
+		     <img class="img-in-btn" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Facebook_icon_2013.svg/768px-Facebook_icon_2013.svg.png" width="27" height="27" style="margin-bottom: 3px; margin-right: 10px;" alt="" />
+		     LOGIN WITH FACEBOOK
+		   </button>
 	   </div>
 		
 	</body>

@@ -112,4 +112,10 @@ public class CRUDQueries {
 		
 		return stmt.executeUpdate(query);
 	}
+	
+	public static int changeUserEmail(Statement stmt, Integer userId, String userEmail) throws SQLException {
+		String query = "UPDATE user SET email='" + userEmail + "' WHERE id=" + userId + ";";
+		
+		return stmt.executeUpdate(query);
+	}
 }

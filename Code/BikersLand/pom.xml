@@ -30,38 +30,44 @@
 	    <groupId>mysql</groupId>
 	    <artifactId>mysql-connector-java</artifactId>
 	    <version>8.0.25</version>
-	</dependency>
-    <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>11</version>
-    </dependency>
-    <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-fxml</artifactId>
-        <version>11</version>
-    </dependency>
-    <dependency>
-		<groupId>org.openjfx</groupId>
-		<artifactId>javafx-swing</artifactId>
-		<version>16</version>
-	</dependency>
-    <dependency>
-	    <groupId>org.controlsfx</groupId>
-	    <artifactId>controlsfx</artifactId>
-	    <version>11.0.2</version>
-	</dependency>
-	<dependency>
-	    <groupId>commons-validator</groupId>
-	    <artifactId>commons-validator</artifactId>
-	    <version>1.7</version>
-	</dependency>
-	<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<version>5.0.0</version>
-			<scope>provided</scope>
-	</dependency>
+		</dependency>
+	    <dependency>
+	        <groupId>org.openjfx</groupId>
+	        <artifactId>javafx-controls</artifactId>
+	        <version>11</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.openjfx</groupId>
+	        <artifactId>javafx-fxml</artifactId>
+	        <version>11</version>
+	    </dependency>
+	    <dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>16</version>
+		</dependency>
+	    <dependency>
+		    <groupId>org.controlsfx</groupId>
+		    <artifactId>controlsfx</artifactId>
+		    <version>11.0.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-validator</groupId>
+		    <artifactId>commons-validator</artifactId>
+		    <version>1.7</version>
+		</dependency>
+		<dependency>
+				<groupId>jakarta.servlet</groupId>
+				<artifactId>jakarta.servlet-api</artifactId>
+				<version>5.0.0</version>
+				<scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-server</artifactId>
+		    <version>3.141.59</version>
+		</dependency>
+	
   </dependencies>
 
   <build>

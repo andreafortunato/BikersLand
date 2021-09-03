@@ -11,6 +11,7 @@ import com.bikersland.db.ParticipationDAO;
 import com.bikersland.db.UserDAO;
 import com.bikersland.exception.ImageConversionException;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.exception.user.DuplicateEmailException;
 import com.bikersland.exception.user.UserNotFoundException;
 import com.bikersland.model.Event;
 import com.bikersland.model.User;
@@ -87,6 +88,17 @@ public class ProfileControllerApp {
 	
 	public static Image getDefaultUserImage() {
 		return new Image(Main.class.getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
+	}
+	
+	public static void changeUserEmail(Integer userId, String userEmail) throws InternalDBException, DuplicateEmailException {
+		try {
+			UserDAO.changeUserEmail(userId, userEmail);
+			
+			if(LoginSingleton.getLoginInstance().getUser().getId() == userId)
+				LoginSingleton.getLoginInstance().getUser().setEmail(userEmail);
+		} catch (SQLException | UserNotFoundException ex) {
+			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), ex, "changeUserEmail", ConstantStrings.PROFILECONTROLLERAPP_JAVA);
+		}
 	}
 
 }

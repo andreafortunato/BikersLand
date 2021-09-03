@@ -142,4 +142,36 @@ public class UserDAO {
 				stmt.close();
 		}
 	}
+	
+	public static void changeUserEmail(Integer userId, String userEmail) throws SQLException, UserNotFoundException, DuplicateEmailException {
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		int affected_rows;
+		
+		try {
+			stmt = DBConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			affected_rows = CRUDQueries.changeUserEmail(stmt, userId, userEmail);
+	        
+	        if(affected_rows != 1) {
+	        	throw new UserNotFoundException();
+	        }
+		} catch (SQLException sqle) {
+			int errorCode = sqle.getErrorCode();
+			if(errorCode == 1062) {
+				if(sqle.getMessage().contains("email_UNIQUE")) {
+					/* Email già presente */
+					throw new DuplicateEmailException(Main.getBundle().getString("ex_duplicate_email"));
+				}
+			}
+			
+			throw sqle;
+		} finally {
+			if(rs != null)
+				rs.close();
+			
+			if (stmt != null)
+				stmt.close();
+		}
+	}
 }

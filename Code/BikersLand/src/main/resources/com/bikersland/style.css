@@ -3,12 +3,27 @@
 	-color-primary-dark: derive(-color-primary, -30%);
 }
 
-/*.date-cell {
-	-fx-background-color: red;
+.menu-item .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
 }
-.date-picker .text {
-	-fx-fill: white;
-}*/
+
+.menu-item:focused {
+     -fx-background-color: darkgray;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: -color-primary;
+}
+
+.context-menu {
+    -fx-background-color: black;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+/*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
 
 .tab-pane:top .tab-header-area .tab-header-background {
 	-fx-opacity: 0;
@@ -188,7 +203,7 @@
 }
 
 .header {
-    -fx-background-color: #121212;
+  -fx-background-color: #121212;
 }
 
 .sub-header {
@@ -313,21 +328,29 @@
 	-fx-font-style: italic;
 }
 
+.inputDialog.dialog-pane:header .header-panel,
 .errorDialog.dialog-pane:header .header-panel {
     -fx-background-color: rgba(32, 32, 32,.2);
     -fx-background-color: linear-gradient(to right, rgba(32, 32, 32,0.5) 0%, rgba(32, 32, 32,1) 100%);
 }
 
+.inputDialog > .content.label,
 .errorDialog > .content.label {
     -fx-font-size: 14px;
     /*-fx-font-weight: bold;*/
 }
 
+.inputDialog > .content,
 .errorDialog > .content,
 .dialog-pane > .button-bar > .container  {
     -fx-background-color: #303030;
 }
 
+.inputDialog .label {
+    -fx-font-size: 15px;
+}
+
+.inputDialog:header .header-panel .label .text,
 .errorDialog:header .header-panel .label .text {
 	-fx-fill: -color-primary;
     -fx-font-size: 18px;

@@ -2,22 +2,32 @@ package com.bikersland.controller.graphics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 import com.bikersland.bean.EventBean;
 import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.ProfileControllerApp;
 import com.bikersland.exception.InternalDBException;
+import com.bikersland.exception.user.DuplicateEmailException;
+import com.bikersland.exception.user.EmailException;
 import com.bikersland.utility.ConstantStrings;
 import com.bikersland.utility.ConvertMethods;
 import com.bikersland.utility.CustomGridPane;
+import com.bikersland.utility.InstantTooltip;
 import com.bikersland.utility.TimedAlert;
 import com.bikersland.Main;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -27,6 +37,9 @@ public class ProfileControllerView {
 	
 	@FXML
     private ImageView imgProfileImage;
+	
+	@FXML
+    private Label lblProfileOf;
 
     @FXML
     private Label lblName;
@@ -47,6 +60,8 @@ public class ProfileControllerView {
     private CustomGridPane gpFavoriteEvents;
     
     private int viaggioBoxWidth = 420;
+    
+    private UserBean userBean;
 	
 	public void initialize() {
 		List<EventBean> joinedEventBeanList;
@@ -54,11 +69,37 @@ public class ProfileControllerView {
 	    List<EventBean> favoriteEventBeanList;
 	    List<Node> favoriteEventNodeList;
 	    
-	    UserBean userBean = ProfileControllerApp.getLoggedUser();
-		
+	    userBean = ProfileControllerApp.getLoggedUser();
+	    
+	    if(Main.getLocale() == Locale.ENGLISH) {
+	    	lblProfileOf.setText(userBean.getUsername() + Main.getBundle().getString("profile_of"));
+	    } else {
+	    	lblProfileOf.setText(Main.getBundle().getString("profile_of") + userBean.getUsername());
+	    }
+	    
 		lblName.setText(userBean.getName());
 		lblSurname.setText(userBean.getSurname());
 		lblEmail.setText(userBean.getEmail());
+		
+		InstantTooltip changeEmailTooltip = new InstantTooltip();
+		changeEmailTooltip.setText(Main.getBundle().getString("change_email_tooltip"));
+		lblEmail.setTooltip(changeEmailTooltip);
+		
+		ContextMenu contextMenu = new ContextMenu();
+		 
+        MenuItem item1 = new MenuItem();
+        item1.setText(Main.getBundle().getString("change_email"));
+        item1.setStyle(null);
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+                changeEmail();
+            }
+        });
+ 
+        contextMenu.getItems().add(item1);
+        lblEmail.setContextMenu(contextMenu);
 		
 		Platform.runLater(() -> 
 			vbViaggi.prefWidthProperty().bind(vbViaggi.getParent().getScene().getWindow().widthProperty())
@@ -138,4 +179,43 @@ public class ProfileControllerView {
 	public int getNumViaggi() {
     	return gpJoinedEvents.getColumnCount();
     }
+	
+	private void changeEmail() {
+		TextInputDialog changeEmailDialog = new TextInputDialog(userBean.getEmail());
+		changeEmailDialog.getDialogPane().getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+		changeEmailDialog.getDialogPane().getStyleClass().add("inputDialog");
+		changeEmailDialog.setTitle(Main.getBundle().getString("alert_change_email_title"));
+		changeEmailDialog.setHeaderText(Main.getBundle().getString("alert_change_email_header"));
+		changeEmailDialog.setContentText(Main.getBundle().getString("alert_change_email_content"));
+		changeEmailDialog.getDialogPane().setPrefWidth(400);
+
+		Optional<String> result = changeEmailDialog.showAndWait();
+		UserBean tmpUserBean = new UserBean();
+		if (result.isPresent()){
+		    try {
+		    	tmpUserBean.setEmail(result.get().strip());
+		    	
+				ProfileControllerApp.changeUserEmail(userBean.getId(), result.get().strip());
+				
+				userBean.setEmail(result.get().strip());
+				lblEmail.setText(userBean.getEmail());
+			} catch (DuplicateEmailException dee) {
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString("timedalert_change_email_error_title"),
+						Main.getBundle().getString("timedalert_change_email_error_header"),
+						dee.getMessage(), userBean.getEmail());
+			} catch (EmailException ee) {
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString("timedalert_change_email_error_title"),
+						Main.getBundle().getString("timedalert_change_email_error_header"),
+						Main.getBundle().getString("timedalert_change_email_error_content"),
+						null);
+			} catch (InternalDBException idbe) {
+				TimedAlert.show(AlertType.ERROR,
+						Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
+						Main.getBundle().getString(ConstantStrings.TIMEDALERT_SQL_EX_HEADER),
+						idbe.getMessage(), Main.getLogFile());
+			}
+		}
+	}
 }
