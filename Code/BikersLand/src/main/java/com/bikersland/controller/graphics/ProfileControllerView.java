@@ -19,8 +19,6 @@ import com.bikersland.utility.TimedAlert;
 import com.bikersland.Main;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
@@ -92,13 +90,7 @@ public class ProfileControllerView
         MenuItem item1 = new MenuItem();
         item1.setText(Main.getBundle().getString("change_email"));
         item1.setStyle(null);
-        item1.setOnAction(new EventHandler<ActionEvent>() {
- 
-            @Override
-            public void handle(ActionEvent event) {
-                changeEmail();
-            }
-        });
+        item1.setOnAction(event -> changeEmail());
  
         contextMenu.getItems().add(item1);
         lblEmail.setContextMenu(contextMenu);

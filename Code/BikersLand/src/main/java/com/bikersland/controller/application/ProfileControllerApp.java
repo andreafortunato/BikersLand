@@ -100,7 +100,7 @@ public class ProfileControllerApp {
 		try {
 			UserDAO.changeUserEmail(userId, userEmail);
 			
-			if(LoginSingleton.getLoginInstance().getUser().getId() == userId)
+			if(LoginSingleton.getLoginInstance().getUser().getId().equals(userId))
 				LoginSingleton.getLoginInstance().getUser().setEmail(userEmail);
 		} catch (SQLException | UserNotFoundException ex) {
 			throw new InternalDBException(Main.getBundle().getString(ConstantStrings.EX_INTERNAL_DB_ERROR), ex, "changeUserEmail", ConstantStrings.PROFILECONTROLLERAPP_JAVA);
