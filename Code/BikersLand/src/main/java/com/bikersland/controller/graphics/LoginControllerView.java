@@ -53,12 +53,6 @@ public class LoginControllerView
 					Main.getBundle().getString("timedalert_system_error_content"), Main.getLogFile());
 		}
 		*/
-		
-		/****************************************/
-		// TODO: Da rimuovere
-		txtUser.setText("galaxy");
-		txtPassword.setText("password");
-		/****************************************/
 	}
 	
 	@FXML
