@@ -34,7 +34,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
-public class RegisterControllerView {
+public class RegisterControllerView
+{
 
 	@FXML
     private TextField txtName;
@@ -115,7 +116,8 @@ public class RegisterControllerView {
 		}
 	};
 	
-	public void initialize() {
+	public void initialize() 
+	{
 		txtEmail1.textProperty().addListener(emailListener);
 		txtEmail2.textProperty().addListener(emailListener);
 		
@@ -146,7 +148,8 @@ public class RegisterControllerView {
 	}
 	
 	@FXML
-	private void register() {
+	private void register() 
+	{
 		if(!txtPassword1.getText().equals(txtPassword2.getText())) {
 			TimedAlert.show(AlertType.ERROR,
 					Main.getBundle().getString(ConstantStrings.TIMEDALERT_REGISTER_ERROR_TITLE),
@@ -218,7 +221,8 @@ public class RegisterControllerView {
 	}
 	
 	@FXML
-    private void uploadImage() {
+    private void uploadImage()
+	{
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Open Resource File");
     	fileChooser.getExtensionFilters().addAll(
@@ -258,7 +262,8 @@ public class RegisterControllerView {
     }
     
     @FXML
-    private void removeImage() {
+    private void removeImage()
+    {
     	this.imageFile = null;
     	hbImageSelected.setVisible(false);
     	btnImage.setVisible(true);

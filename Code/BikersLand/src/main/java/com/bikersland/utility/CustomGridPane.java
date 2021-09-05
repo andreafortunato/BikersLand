@@ -12,7 +12,8 @@ public class CustomGridPane extends GridPane {
 		super();
 	}
 	
-	public void populateGrid(List<Node> nodeList, int columns) {
+	public void populateGrid(List<Node> nodeList, int columns) 
+	{
 		this.getChildren().clear();
 		
     	int totalElements = nodeList.size();

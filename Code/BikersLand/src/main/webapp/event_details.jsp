@@ -88,7 +88,6 @@
         buffImg = SwingFXUtils.fromFXImage(eventImage, null);
         bts = new ByteArrayOutputStream();
         ImageIO.write(buffImg, "png", bts);
-        //imageB64 = "url('data:image/png;base64," + Base64.getEncoder().encodeToString(bts.toByteArray()) + "')";
         imageB64 = "linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('data:image/png;base64," + Base64.getEncoder().encodeToString(bts.toByteArray()) + "')";
         
         %>
@@ -189,11 +188,10 @@
                   } catch (InternalDBException idbe) {
                     %>
                       <script type="text/javascript">
-                          alert("C'è stato un errore");
+                         alert("Internal Error, you will be redirected to the homepage");
                       </script>
-                    <%
-                    
-                    response.sendRedirect("index.jsp");
+               <%
+                     response.sendRedirect("index.jsp");
                   }
                   out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"joinEvent\" style=\"width:100%\">");
                   out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + eventBean.getId().toString() + "\">");

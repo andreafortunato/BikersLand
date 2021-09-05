@@ -16,7 +16,8 @@ import com.bikersland.Main;
 
 import javafx.scene.image.Image;
 
-public class UserBean {
+public class UserBean
+{
 	private Integer id;
 	private String name;
 	private String surname;
@@ -26,15 +27,18 @@ public class UserBean {
 	private Image image;
 	private Date createTime;
 	
-	public UserBean() {
+	public UserBean() 
+	{
 		this(null, null, null, null, null, null, null, null);
 	}
 	
-	public UserBean(String name, String surname, String username, String email, String password, Image image) {
+	public UserBean(String name, String surname, String username, String email, String password, Image image)
+	{
 		this(null, name, surname, username, email, password, image, null);
 	}
 	
-	public UserBean(Integer id, String name, String surname, String username, String email, String password, Image image, Date createTime) {
+	public UserBean(Integer id, String name, String surname, String username, String email, String password, Image image, Date createTime) 
+	{
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -45,25 +49,30 @@ public class UserBean {
 		this.createTime = createTime;
 	}
 	
-	public Integer getId() {
+	public Integer getId() 
+	{
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Integer id)
+	{
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public void setName(String name) throws NameException {
+	public void setName(String name) throws NameException 
+	{
 		String strippedName = name.strip();
 		validateName(strippedName);
 		this.name = strippedName;
 	}
 	
-	private void validateName(String strippedName) throws NameException {		
+	private void validateName(String strippedName) throws NameException
+	{		
 		if(strippedName.length() < 2)
 			throw new NameException(Main.getBundle().getString("ex_user_name_short"));
 		
@@ -71,17 +80,20 @@ public class UserBean {
 			throw new NameException(Main.getBundle().getString("ex_user_name_long"));
 	}
 
-	public String getSurname() {
+	public String getSurname() 
+	{
 		return surname;
 	}
 
-	public void setSurname(String surname) throws SurnameException {
+	public void setSurname(String surname) throws SurnameException 
+	{
 		String strippedSurname = surname.strip();
 		validateSurname(strippedSurname);
 		this.surname = strippedSurname;
 	}
 	
-	private void validateSurname(String strippedSurname) throws SurnameException {
+	private void validateSurname(String strippedSurname) throws SurnameException
+	{
 		if(strippedSurname.length() < 2)
 			throw new SurnameException(Main.getBundle().getString("ex_user_surname_short"));
 		
@@ -90,17 +102,20 @@ public class UserBean {
 	}
 
 
-	public String getUsername() {
+	public String getUsername() 
+	{
 		return username;
 	}
 
-	public void setUsername(String username) throws UsernameException {
+	public void setUsername(String username) throws UsernameException
+	{
 		String strippedUsername = username.strip();
 		validateUsername(strippedUsername);
 		this.username = strippedUsername;
 	}
 	
-	private void validateUsername(String strippedUsername) throws UsernameException {
+	private void validateUsername(String strippedUsername) throws UsernameException 
+	{
 		if(strippedUsername.length() < 2)
 			throw new UsernameException(Main.getBundle().getString("ex_user_username_short"));
 		
@@ -108,33 +123,39 @@ public class UserBean {
 			throw new UsernameException(Main.getBundle().getString("ex_user_username_long"));
 	}
 
-	public String getEmail() {
+	public String getEmail() 
+	{
 		return email;
 	}
 
-	public void setEmail(String email) throws EmailException {
+	public void setEmail(String email) throws EmailException 
+	{
 		String strippedEmail = email.strip();
 		validateEmail(strippedEmail);
 		this.email = strippedEmail;
 	}
 	
-	private void validateEmail(String strippedEmail) throws EmailException {		
+	private void validateEmail(String strippedEmail) throws EmailException 
+	{		
 		if(strippedEmail.length() < 6 ||
 				strippedEmail.length() > 128 ||
 				!EmailValidator.getInstance().isValid(strippedEmail))
 			throw new EmailException(Main.getBundle().getString("ex_invalid_email"));
 	}
 
-	public String getPassword() {
+	public String getPassword() 
+	{
 		return password;
 	}
 
-	public void setPassword(String password) throws PasswordException {
+	public void setPassword(String password) throws PasswordException
+	{
 		validatePassword(password);
 		this.password = password;
 	}
 	
-	private void validatePassword(String password) throws PasswordException {
+	private void validatePassword(String password) throws PasswordException 
+	{
 		if(password.length() < 6)
 			throw new PasswordException(Main.getBundle().getString("ex_user_password_short"));
 		if(password.length() > 64)
@@ -147,33 +168,40 @@ public class UserBean {
 			throw new PasswordException(Main.getBundle().getString("ex_user_password_no_special_char"));
 	}
 
-	public Date getCreateTime() {
+	public Date getCreateTime() 
+	{
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(Date createTime) 
+	{
 		this.createTime = createTime;
 	}
 	
-	public Image getImage() {
+	public Image getImage()
+	{
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(Image image) 
+	{
 		this.image = image;
 	}
 	
-	public void setImage(File imageFile) throws ImageFileException {
+	public void setImage(File imageFile) throws ImageFileException
+	{
 		validateImageFile(imageFile);
 		setImage(new Image(imageFile.toURI().toString()));
 	}
 	
-	private void validateImageFile(File imageFile) throws ImageFileException {
+	private void validateImageFile(File imageFile) throws ImageFileException 
+	{
     	if(imageFile.length() > 4194304)
     		throw new ImageFileException(Main.getBundle().getString("ex_image_too_big"));
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String userString = "ID: " + id + "\nName: " + this.name + 
         		"\nSurname: " + this.surname + "\nUsername: " + this.username +
         		"\nEmail: " + this.email + "\nPassword: " + this.password +

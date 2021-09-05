@@ -13,7 +13,8 @@ public class MainControllerApp {
 	
 	private MainControllerApp() {}
 
-	public static List<String> getTags() throws InternalDBException {
+	public static List<String> getTags() throws InternalDBException 
+	{
 			try {
 				return TagDAO.getTags();
 			} catch (SQLException sqle) {
@@ -21,7 +22,8 @@ public class MainControllerApp {
 			}
 		}
 	
-	public static List<String> getCities() throws InternalDBException {
+	public static List<String> getCities() throws InternalDBException 
+	{
 		try {
 			return CityDAO.getCities();
 		} catch (SQLException sqle){

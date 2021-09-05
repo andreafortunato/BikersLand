@@ -18,7 +18,8 @@ public class RegisterControllerApp {
 	
 	private RegisterControllerApp() {}
 	
-	public static void register(UserBean userBean) throws DuplicateUsernameException, DuplicateEmailException, InternalDBException {
+	public static void register(UserBean userBean) throws DuplicateUsernameException, DuplicateEmailException, InternalDBException
+	{
 		User newUser = new User();
 		newUser.setName(userBean.getName());
 		newUser.setSurname(userBean.getSurname());

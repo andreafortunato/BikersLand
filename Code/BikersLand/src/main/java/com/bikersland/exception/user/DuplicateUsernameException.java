@@ -4,11 +4,13 @@ public class DuplicateUsernameException extends UsernameException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public DuplicateUsernameException() {
+	public DuplicateUsernameException() 
+	{
 		super();
 	}
 
-	public DuplicateUsernameException(String message) {
+	public DuplicateUsernameException(String message) 
+	{
 		super(message);
 	}
 

@@ -26,7 +26,8 @@ public class ProfileControllerApp {
 	
 	private ProfileControllerApp() {}
 
-	public static List<EventBean> getJoinedEventsByUser(Integer userId) throws InternalDBException {
+	public static List<EventBean> getJoinedEventsByUser(Integer userId) throws InternalDBException
+	{
 		List<Event> eventList = new ArrayList<>();
 		try {
 			eventList = ParticipationDAO.getJoinedEventsByUser(userId);
@@ -47,7 +48,8 @@ public class ProfileControllerApp {
 		
 	}
 
-	public static List<EventBean> getFavoriteEventsByUser(Integer userId) throws InternalDBException {
+	public static List<EventBean> getFavoriteEventsByUser(Integer userId) throws InternalDBException 
+	{
 		List<Event> eventList = new ArrayList<>();
 		try {
 			eventList = FavoriteEventDAO.getFavoriteEventsByUser(userId);
@@ -67,14 +69,16 @@ public class ProfileControllerApp {
 		return eventBeanList;
 	}
 
-	public static UserBean getLoggedUser() {
+	public static UserBean getLoggedUser()
+	{
 		User user = LoginSingleton.getLoginInstance().getUser();
 		
 		return new UserBean(user.getId(), user.getName(), user.getSurname(), user.getUsername(),
 				user.getEmail(), null, user.getImage(), user.getCreateTime());
 	}
 	
-	public static UserBean getUserByUsername(String username) throws InternalDBException {
+	public static UserBean getUserByUsername(String username) throws InternalDBException
+	{
 		User user;
 		try {
 			user = UserDAO.getUserByUsername(username);
@@ -86,11 +90,13 @@ public class ProfileControllerApp {
 				user.getEmail(), null, user.getImage(), user.getCreateTime());
 	}
 	
-	public static Image getDefaultUserImage() {
+	public static Image getDefaultUserImage()
+	{
 		return new Image(Main.class.getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
 	}
 	
-	public static void changeUserEmail(Integer userId, String userEmail) throws InternalDBException, DuplicateEmailException {
+	public static void changeUserEmail(Integer userId, String userEmail) throws InternalDBException, DuplicateEmailException
+	{
 		try {
 			UserDAO.changeUserEmail(userId, userEmail);
 			

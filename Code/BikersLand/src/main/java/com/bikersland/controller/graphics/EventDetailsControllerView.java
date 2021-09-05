@@ -21,7 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
-public class EventDetailsControllerView {
+public class EventDetailsControllerView 
+{
 	
 	@FXML
     private BorderPane pnlMain;
@@ -72,11 +73,13 @@ public class EventDetailsControllerView {
     private Integer loggedUserId;
     private String loggedUserUsername;
     
-    public EventDetailsControllerView(EventBean eventBean) {
+    public EventDetailsControllerView(EventBean eventBean) 
+    {
 		this.eventBean = eventBean;
 	}
 	
-	public void initialize() {
+	public void initialize() 
+	{
 		if (LoginSingleton.getLoginInstance().getUser() != null) {
 			loggedUserId = LoginSingleton.getLoginInstance().getUser().getId();
 			loggedUserUsername = LoginSingleton.getLoginInstance().getUser().getUsername();
@@ -144,7 +147,8 @@ public class EventDetailsControllerView {
 	}
 	
 	@FXML
-    private void joinEvent() {
+    private void joinEvent() 
+	{
 		try {
 			if(isJoined) {
 	    		EventDetailsControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
@@ -163,7 +167,8 @@ public class EventDetailsControllerView {
 		}
     }
 	
-	private void setIsJoined(boolean isJoined) {
+	private void setIsJoined(boolean isJoined)
+	{
 		this.isJoined = isJoined;
 		if(isJoined) {
 			btnJoin.setText(Main.getBundle().getString("remove_participation"));

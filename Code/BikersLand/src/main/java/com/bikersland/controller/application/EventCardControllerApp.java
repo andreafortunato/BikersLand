@@ -16,7 +16,8 @@ public class EventCardControllerApp {
 	
 	private EventCardControllerApp() {}
 
-	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException {
+	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException 
+	{
 		try {
 			return ParticipationDAO.getParticipantsByEventId(eventId);
 		} catch (SQLException sqle) {
@@ -24,11 +25,13 @@ public class EventCardControllerApp {
 		}
 	}
 	
-	public static Image getDefaultEventImage() {
+	public static Image getDefaultEventImage() 
+	{
 		return new Image(Main.class.getResourceAsStream("img/background.jpg"));
 	}
 	
-	public static Boolean isFavoriteEvent(Integer userId, Integer eventId) throws InternalDBException {
+	public static Boolean isFavoriteEvent(Integer userId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			return FavoriteEventDAO.isFavoriteEvent(userId, eventId);
 		} catch (SQLException sqle) {
@@ -36,7 +39,8 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static Boolean isJoinedEvent(Integer loggedUserId, Integer eventId) throws InternalDBException {
+	public static Boolean isJoinedEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			return ParticipationDAO.isJoinedEvent(loggedUserId, eventId);
 		} catch (SQLException sqle) {
@@ -44,7 +48,8 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static void removeFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException {
+	public static void removeFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			FavoriteEventDAO.removeFavoriteEvent(loggedUserId, eventId);
 		} catch (SQLException sqle) {
@@ -52,7 +57,8 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static void addFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException {
+	public static void addFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			FavoriteEventDAO.addFavoriteEvent(loggedUserId, eventId);
 		} catch (SQLException sqle) {
@@ -60,7 +66,8 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException {
+	public static void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			ParticipationDAO.addUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
@@ -68,7 +75,8 @@ public class EventCardControllerApp {
 		}
 	}
 	
-	public static void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException {
+	public static void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			ParticipationDAO.removeUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {

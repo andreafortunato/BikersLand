@@ -15,7 +15,8 @@ public class LoginControllerApp {
 	
 	private LoginControllerApp() {}
 
-	public static void askLogin(String usernameEmail, String password) throws InvalidLoginException, InternalDBException {
+	public static void askLogin(String usernameEmail, String password) throws InvalidLoginException, InternalDBException 
+	{
 		User loggedUser;
 		
 		try {
@@ -26,7 +27,8 @@ public class LoginControllerApp {
 		}
 	}
 	
-	public static UserBean askLoginWeb(String usernameEmail, String password) throws InvalidLoginException, InternalDBException {
+	public static UserBean askLoginWeb(String usernameEmail, String password) throws InvalidLoginException, InternalDBException 
+	{
 		User user;
 		try {
 			user = UserDAO.askLogin(usernameEmail, password);
@@ -37,7 +39,8 @@ public class LoginControllerApp {
 		}
 	}
 	
-	public static void loginJustRegisteredUser(User user) {
+	public static void loginJustRegisteredUser(User user) 
+	{
 		LoginSingleton.getLoginInstance().setUser(user);
 	}
 }

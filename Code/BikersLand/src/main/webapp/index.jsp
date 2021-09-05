@@ -70,10 +70,10 @@
 					       } catch(InternalDBException idbe) {
 				    %>
 				           <script type="text/javascript">
-				               alert("C'è stato un errore a caso");
-				           </script>
-				    <%
-				         response.sendRedirect("index.jsp");
+				              alert("Internal Error, you will be redirected to the homepage");
+		               </script>
+		            <%
+		                  response.sendRedirect("index.jsp");
 				       }
 				    %>
 				    
@@ -103,10 +103,10 @@
 	               }catch(InternalDBException idbe){
 	          %>
 	                 <script type="text/javascript">
-	                     alert("C'è stato un errore a caso");
+	                   alert("Internal Error, you will be redirected to the homepage");
 	                 </script>
-	          <%
-	               response.sendRedirect("index.jsp");
+	            <%
+	                   response.sendRedirect("index.jsp");
 	             }
 	          %>
 			    </select>
@@ -130,11 +130,10 @@
         } catch (InternalDBException idbe) {
         	%>
             <script type="text/javascript">
-                alert("C'è stato un errore");
+              alert("Internal Error, you will be redirected to the homepage");
             </script>
-          <%
-          
-          response.sendRedirect("index.jsp");
+     <%
+              response.sendRedirect("index.jsp");
         }
      
         Integer rows = (int)(searchedEventList.size() + 3 -1)/3;
@@ -210,11 +209,10 @@
                         } catch (InternalDBException idbe) {
                           %>
                             <script type="text/javascript">
-                                alert("C'è stato un errore");
+                              alert("Internal Error, you will be redirected to the homepage");
                             </script>
-                          <%
-                          
-                          response.sendRedirect("index.jsp");
+                     <%
+                              response.sendRedirect("index.jsp");
                         }
 	                      out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"joinEvent\" style=\"width:100%\">");
 	                      out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + event.getId().toString() + "\">");
@@ -234,11 +232,10 @@
 	                        } catch (InternalDBException idbe) {
 	                          %>
 	                            <script type="text/javascript">
-	                                alert("C'è stato un errore");
+	                              alert("Internal Error, you will be redirected to the homepage");
 	                            </script>
-	                          <%
-	                          
-	                          response.sendRedirect("index.jsp");
+	                     <%
+	                              response.sendRedirect("index.jsp");
 	                        }
 	                        out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"favoriteEvent\" style=\"width:100%\">");
 	                        out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + event.getId().toString() + "\">");

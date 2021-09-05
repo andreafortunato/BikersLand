@@ -16,15 +16,18 @@ public class User {
 	private Image image;
 	private Date createTime;
 	
-	public User() {
+	public User() 
+	{
 		this(null, null, null, null, null, null, null, null);
 	}
 	
-	public User(String name, String surname, String username, String email, String password, Image image) {
+	public User(String name, String surname, String username, String email, String password, Image image) 
+	{
 		this(null, name, surname, username, email, password, image, null);
 	}
 	
-	public User(Integer id, String name, String surname, String username, String email, String password, Image image, Date createTime) {
+	public User(Integer id, String name, String surname, String username, String email, String password, Image image, Date createTime) 
+	{
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -35,71 +38,88 @@ public class User {
 		this.createTime = createTime;
 	}
 	
-	public Integer getId() {
+	public Integer getId() 
+	{
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Integer id) 
+	{
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) 
+	{
 		this.name = name;
 	}
 
-	public String getSurname() {
+	public String getSurname()
+	{
 		return surname;
 	}
 
-	public void setSurname(String surname) {
+	public void setSurname(String surname)
+	{
 		this.surname = surname;
 	}
 
-	public String getUsername() {
+	public String getUsername() 
+	{
 		return username;
 	}
 
-	public void setUsername(String username) {
+	public void setUsername(String username)
+	{
 		this.username = username;
 	}
 	
-	public String getEmail() {
+	public String getEmail()
+	{
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email)
+	{
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public String getPassword() 
+	{
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password) 
+	{
 		this.password = password;
 	}
 
-	public Date getCreateTime() {
+	public Date getCreateTime()
+	{
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(Date createTime) 
+	{
 		this.createTime = createTime;
 	}
 	
-	public Image getImage() {
+	public Image getImage() 
+	{
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(Image image) 
+	{
 		this.image = image;
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String userString = "ID: " + id + "\nName: " + this.name + 
         		"\nSurname: " + this.surname + "\nUsername: " + this.username +
         		"\nEmail: " + this.email + "\nPassword: " + this.password +

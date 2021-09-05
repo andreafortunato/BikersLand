@@ -18,7 +18,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class HeaderControllerView {
+public class HeaderControllerView 
+{
 	
 	@FXML
     private ImageView btnLanguage;
@@ -47,7 +48,8 @@ public class HeaderControllerView {
     @FXML
     private ImageView imgLogo;
     
-    public void initialize() {
+    public void initialize() 
+    {
     	if(LoginSingleton.getLoginInstance().getUser() != null) {
     		hbNotLoggedIn.setVisible(false);
     		hbLoggedIn.setVisible(true);
@@ -70,38 +72,45 @@ public class HeaderControllerView {
     }
     
     @FXML
-    private void login() {
+    private void login() 
+    {
     	Main.setRoot("Login");
     }
     
     @FXML
-    private void register() {
+    private void register()
+    {
     	Main.setRoot("Register");
     }
     
     @FXML
-    private void goToHomepage() {
+    private void goToHomepage()
+    {
     	goHomepage();
     }
     
     @FXML
-    private void goToProfile() {
+    private void goToProfile()
+    {
     	Main.setRoot("Profile");
     }
     
     @FXML
-    private void logout() {
+    private void logout()
+    {
     	LoginSingleton.logout();
     	goHomepage();
     }
     
     @FXML
-    private void newEvent() {
+    private void newEvent() 
+    {
     	Main.setRoot("NewEvent");
     }
     
     @FXML
-    private void changeLanguage() {
+    private void changeLanguage() 
+    {
     	if(Main.getLocale() == Locale.ITALIAN) {
     		Main.setLocale(Locale.ENGLISH);
     		btnLanguage.setImage(new Image(Main.class.getResource("img/usa.png").toString()));
@@ -122,7 +131,8 @@ public class HeaderControllerView {
     	goHomepage();
     }
     
-    private void goHomepage() {
+    private void goHomepage() 
+    {
     	Main.setRoot("Homepage");
     }
 }

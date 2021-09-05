@@ -31,7 +31,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
-public class NewEventControllerView {
+public class NewEventControllerView
+{
 	
 	@FXML
     private CheckComboBox<String> comboTags;
@@ -71,7 +72,8 @@ public class NewEventControllerView {
     
     private static final int MAX_DESCRIPTION_CHARACTERS = 250;
     
-    public void initialize() {
+    public void initialize()
+    {
     	comboDepartureCity.getItems().addAll(Main.getCities());
     	comboDestinationCity.getItems().addAll(Main.getCities());
     	comboTags.getItems().addAll(Main.getTags());
@@ -92,7 +94,8 @@ public class NewEventControllerView {
     }
     
     @FXML
-    private void enablePickerReturnDate() {
+    private void enablePickerReturnDate()
+    {
     	LocalDate departureDate = pickerDepartureDate.getValue();
     	pickerReturnDate.setValue(departureDate);
     	
@@ -103,7 +106,8 @@ public class NewEventControllerView {
     }
 
     @FXML
-    private void uploadImage() {
+    private void uploadImage() 
+    {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Open Resource File");
     	fileChooser.getExtensionFilters().addAll(
@@ -136,7 +140,8 @@ public class NewEventControllerView {
     }
     
     @FXML
-    private void removeImage() {
+    private void removeImage() 
+    {
     	this.imageFile = null;
     	hbImageSelected.setVisible(false);
     	
@@ -146,7 +151,8 @@ public class NewEventControllerView {
     
     
     @FXML
-    private void createEvent() {    	
+    private void createEvent() 
+    {    	
     	String emptyField = "";
     	boolean isEmpty = false;
     	if(txtTitle.getText().strip().length() == 0) {

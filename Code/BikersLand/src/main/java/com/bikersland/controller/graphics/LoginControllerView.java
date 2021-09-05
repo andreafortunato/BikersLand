@@ -14,7 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class LoginControllerView {
+public class LoginControllerView 
+{
 	
 	@FXML
     private TextField txtUser;
@@ -34,7 +35,8 @@ public class LoginControllerView {
 		btnLogin.setDisable(false);
 	};
 	 
-	public void initialize() {
+	public void initialize() 
+	{
 		txtUser.textProperty().addListener(checkEnableBtnLogin);
 		txtPassword.textProperty().addListener(checkEnableBtnLogin);
 		
@@ -60,7 +62,8 @@ public class LoginControllerView {
 	}
 	
 	@FXML
-	private void login() {
+	private void login() 
+	{
 		try {
 			LoginControllerApp.askLogin(txtUser.getText().strip(), txtPassword.getText().strip());
 			

@@ -4,11 +4,13 @@ public class TitleException extends EventException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public TitleException() {
+	public TitleException() 
+	{
 		super();
 	}
 
-	public TitleException(String message) {
+	public TitleException(String message)
+	{
 		super(message);
 	}
 

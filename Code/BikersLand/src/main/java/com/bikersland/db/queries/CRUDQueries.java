@@ -24,7 +24,8 @@ public class CRUDQueries {
 	
 	private CRUDQueries() {}
 	
-	public static int createNewUserQuery(CallableStatement stmtCreateUser, User user) throws SQLException, ImageConversionException {		
+	public static int createNewUserQuery(CallableStatement stmtCreateUser, User user) throws SQLException, ImageConversionException 
+	{		
 		stmtCreateUser.setString(1, user.getName());
 		stmtCreateUser.setString(2, user.getSurname());
 		stmtCreateUser.setString(3, user.getUsername());
@@ -51,7 +52,8 @@ public class CRUDQueries {
 		return stmtCreateUser.executeUpdate();
 	}
 	
-	public static ResultSet createNewEventQuery(CallableStatement stmtCreateEvent, Event event) throws SQLException, ImageConversionException {		
+	public static ResultSet createNewEventQuery(CallableStatement stmtCreateEvent, Event event) throws SQLException, ImageConversionException 
+	{		
 		stmtCreateEvent.setString(1, event.getTitle());
 		stmtCreateEvent.setString(2, event.getDescription());
 		stmtCreateEvent.setString(3, event.getOwnerUsername());
@@ -80,7 +82,8 @@ public class CRUDQueries {
 		return stmtCreateEvent.executeQuery();
 	}
 	
-	public static int addEventTagsQuery(Statement stmtAddEventTags, Integer eventId, List<Integer> eventTagIdList) throws SQLException {
+	public static int addEventTagsQuery(Statement stmtAddEventTags, Integer eventId, List<Integer> eventTagIdList) throws SQLException 
+	{
 		StringBuilder queryBuilder = new StringBuilder("INSERT INTO event_tag VALUES ");
         for(Integer tagId: eventTagIdList)
         	queryBuilder.append("(" + eventId + ", '" + tagId + "'), ");
@@ -91,29 +94,34 @@ public class CRUDQueries {
 		return stmtAddEventTags.executeUpdate(query);
 	}
 	
-	public static int addUserParticipationQuery(Statement stmt, Integer userId, Integer eventId) throws SQLException {
+	public static int addUserParticipationQuery(Statement stmt, Integer userId, Integer eventId) throws SQLException
+	{
 		String query = "INSERT INTO participation VALUES(" + userId + ", " + eventId + ");";
 		return stmt.executeUpdate(query);
 	}
 	
-	public static int removeUserParticipationQuery(Statement stmt, Integer userId, Integer eventId) throws SQLException {
+	public static int removeUserParticipationQuery(Statement stmt, Integer userId, Integer eventId) throws SQLException
+	{
 		String query = "DELETE FROM participation WHERE user_id=" + userId + " AND event_id=" + eventId + ";";
 		return stmt.executeUpdate(query);
 	}
 	
-	public static int removeFavoriteEvent(Statement stmt, Integer userId, Integer eventId) throws SQLException {
+	public static int removeFavoriteEvent(Statement stmt, Integer userId, Integer eventId) throws SQLException
+	{
 		String query = "DELETE FROM favorite_event WHERE user_id=" + userId + " AND event_id=" + eventId + ";";
 		
 		return stmt.executeUpdate(query);
 	}
 	
-	public static int addFavoriteEvent(Statement stmt, Integer userId, Integer eventId) throws SQLException {
+	public static int addFavoriteEvent(Statement stmt, Integer userId, Integer eventId) throws SQLException
+	{
 		String query = "INSERT INTO favorite_event VALUES(" + userId + ", " + eventId + ");";
 		
 		return stmt.executeUpdate(query);
 	}
 	
-	public static int changeUserEmail(Statement stmt, Integer userId, String userEmail) throws SQLException {
+	public static int changeUserEmail(Statement stmt, Integer userId, String userEmail) throws SQLException 
+	{
 		String query = "UPDATE user SET email='" + userEmail + "' WHERE id=" + userId + ";";
 		
 		return stmt.executeUpdate(query);

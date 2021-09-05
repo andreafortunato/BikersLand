@@ -9,26 +9,31 @@ public class LoginSingleton {
 	
 	private LoginSingleton() {}
 	
-	public static LoginSingleton getLoginInstance() {
+	public static LoginSingleton getLoginInstance() 
+	{
 		if(LoginSingleton.loginInstance == null)
 			LoginSingleton.loginInstance = new LoginSingleton();
 		
 		return loginInstance;
 	}
 	
-	public Boolean isLogged() {
+	public Boolean isLogged()
+	{
 		return getUser() != null;
 	}
 	
-	public User getUser() {
+	public User getUser()
+	{
 		return getLoginInstance().user;
 	}
 	
-	public void setUser(User loggedUser) {
+	public void setUser(User loggedUser) 
+	{
 		getLoginInstance().user = loggedUser;
 	}
 	
-	public static void logout() {
+	public static void logout() 
+	{
 		getLoginInstance().user = null;
 	}
 }

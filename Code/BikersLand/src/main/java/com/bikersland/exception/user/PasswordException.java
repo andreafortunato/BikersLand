@@ -4,11 +4,13 @@ public class PasswordException extends UserException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public PasswordException() {
+	public PasswordException()
+	{
 		super();
 	}
 
-	public PasswordException(String message) {
+	public PasswordException(String message)
+	{
 		super(message);
 	}
 

@@ -4,11 +4,13 @@ public class NameException extends UserException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public NameException() {
+	public NameException() 
+	{
 		super();
 	}
 
-	public NameException(String message) {
+	public NameException(String message) 
+	{
 		super(message);
 	}
 	

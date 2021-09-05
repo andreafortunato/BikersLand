@@ -45,7 +45,6 @@
         <%
       } else {
       
-      // UserBean userBean = ProfileControllerApp.getUserByUsername("Ludovix" /* qualcosa tipo session.getParameter("user-username") */);
       UserBean userBean = (UserBean) session.getAttribute("logged-user-bean");
       
       if(userBean == null) {
@@ -127,11 +126,10 @@
 		        } catch (InternalDBException idbe) {
 		          %>
 		            <script type="text/javascript">
-		                alert("C'è stato un errore");
+		              alert("Internal Error, you will be redirected to the homepage");     
 		            </script>
-		          <%
-		          
-		          response.sendRedirect("profile.jsp");
+	            <%
+	                response.sendRedirect("index.jsp");
 		        }
 		     
 		        Integer rows = (int)(joinedEventBeanList.size() + 3 -1)/3;
@@ -202,11 +200,10 @@
                           } catch (InternalDBException idbe) {
                             %>
                               <script type="text/javascript">
-                                  alert("C'è stato un errore");
+                                alert("Internal Error, you will be redirected to the homepage");
                               </script>
-                            <%
-                            
-                            response.sendRedirect("index.jsp");
+                       <%
+                                response.sendRedirect("index.jsp");
                           }
 		                      out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"joinEvent\" style=\"width:100%\">");
 		                      out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + event.getId().toString() + "\">");
@@ -226,11 +223,10 @@
                           } catch (InternalDBException idbe) {
                             %>
                               <script type="text/javascript">
-                                  alert("C'è stato un errore");
+                                alert("Internal Error, you will be redirected to the homepage");
                               </script>
-                            <%
-                            
-                            response.sendRedirect("index.jsp");
+                       <%
+                                response.sendRedirect("index.jsp");
                           }
                           out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"favoriteEvent\" style=\"width:100%\">");
                           out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + event.getId().toString() + "\">");
@@ -257,11 +253,10 @@
             } catch (InternalDBException idbe) {
               %>
                 <script type="text/javascript">
-                    alert("C'è stato un errore");
+                  alert("Internal Error, you will be redirected to the homepage");
                 </script>
-              <%
-              
-              response.sendRedirect("profile.jsp");
+         <%
+                  response.sendRedirect("index.jsp");
             }
          
             rows = (int)(favoriteEventBeanList.size() + 3 -1)/3;
@@ -329,11 +324,10 @@
 	                        } catch (InternalDBException idbe) {
 	                          %>
 	                            <script type="text/javascript">
-	                                alert("C'è stato un errore");
+	                                alert("Internal Error, you will be redirected to the homepage");
 	                            </script>
-	                          <%
-	                          
-	                          response.sendRedirect("index.jsp");
+	                     <%
+	                           response.sendRedirect("index.jsp");
 	                        }
                           out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"joinEvent\" style=\"width:100%\">");
                           out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + event.getId().toString() + "\">");
@@ -353,11 +347,10 @@
                           } catch (InternalDBException idbe) {
                             %>
                               <script type="text/javascript">
-                                  alert("C'è stato un errore");
+                                 alert("Internal Error, you will be redirected to the homepage");
                               </script>
-                            <%
-                            
-                            response.sendRedirect("index.jsp");
+                       <%
+                                 response.sendRedirect("index.jsp");
                           }
                           out.write("<input type=\"submit\" class=\"custom-btn\" value=\"" + join_or_remove + "\" name=\"favoriteEvent\" style=\"width:100%\">");
                           out.write("<input type=\"hidden\" id=\"event-id\" name=\"event-id\" value=\"" + event.getId().toString() + "\">");

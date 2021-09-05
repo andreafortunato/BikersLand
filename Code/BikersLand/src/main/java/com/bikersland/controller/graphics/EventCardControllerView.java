@@ -32,7 +32,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class EventCardControllerView {
+public class EventCardControllerView 
+{
 	
 	@FXML
     private StackPane spMain;
@@ -88,16 +89,19 @@ public class EventCardControllerView {
     
     private Integer loggedUserId = null;
     
-    public EventCardControllerView(EventBean eventBean) {
+    public EventCardControllerView(EventBean eventBean) 
+    {
 		this.eventBean = eventBean;
 	}
     
-    public EventCardControllerView(EventBean eventBean, Boolean isFavorite) {
+    public EventCardControllerView(EventBean eventBean, Boolean isFavorite) 
+    {
 		this.eventBean = eventBean;
 		this.setIsFavorite(isFavorite);
 	}
     
-    public void initialize() {
+    public void initialize() 
+    {
     	if (LoginSingleton.getLoginInstance().getUser() != null) {
 			loggedUserId = LoginSingleton.getLoginInstance().getUser().getId();
 			
@@ -203,7 +207,8 @@ public class EventCardControllerView {
     }
 
     @FXML
-    void selectStar(){
+    void selectStar()
+    {
     	
     	try {
     		if(isFavorite) {
@@ -227,12 +232,14 @@ public class EventCardControllerView {
     }
     
     @FXML
-    private void goToEventDetails(){
+    private void goToEventDetails()
+    {
     	Main.setRoot("EventDetails", eventBean);
     }
     
     @FXML
-    private void joinEvent() {
+    private void joinEvent() 
+    {
     	try {
 			if(isJoined) 
 	    		EventCardControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
@@ -252,7 +259,8 @@ public class EventCardControllerView {
 		}
     }
 
-	public void setIsFavorite(boolean isFavorite) {
+	public void setIsFavorite(boolean isFavorite) 
+	{
 		this.isFavorite = isFavorite;
 		if(isFavorite) {
 			animation = new SpriteAnimation(
@@ -276,7 +284,8 @@ public class EventCardControllerView {
 		}
 	}
 	
-	private void setIsJoined(boolean isJoined) {
+	private void setIsJoined(boolean isJoined) 
+	{
 		this.isJoined = isJoined;
 		if(isJoined) {
 			btnJoin.setText(Main.getBundle().getString("remove_participation"));
@@ -286,7 +295,8 @@ public class EventCardControllerView {
 		}
 	}
 	
-	private void setParticipantsText() {
+	private void setParticipantsText() 
+	{
 		List<String> participants;
 		InstantTooltip participantsTooltip = null;
 		
@@ -316,7 +326,8 @@ public class EventCardControllerView {
 		btnParticipants.setTooltip(participantsTooltip);
 	}
 	
-	private void goHomepage() {
+	private void goHomepage() 
+	{
 		Main.setRoot("Homepage");
 	}
 }

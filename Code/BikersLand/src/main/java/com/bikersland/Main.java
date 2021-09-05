@@ -28,7 +28,8 @@ import javafx.stage.Window;
 /**
  * JavaFX App
  */
-public class Main extends Application {
+public class Main extends Application
+{
 	
 	private static final String TIMEDALERT_INTERNAL_ERROR = ConstantStrings.TIMEDALERT_INTERNAL_ERROR;
 	private static final String TIMEDALERT_SYSTEM_ERROR_HEADER = "timedalert_system_error_header";
@@ -45,7 +46,8 @@ public class Main extends Application {
     private static Scene scene;
     
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage)
+    {
     	/* File di log per gli errori. Percorso di esempio: C:\Users\NomeUtente\BikersLand.log */
     	FileHandler fh = null;
 		try {
@@ -92,7 +94,8 @@ public class Main extends Application {
         });
     }
     
-    private static void initScene() {
+    private static void initScene()
+    {
     	
     	try {
     		Main.scene = new Scene(loadFXML("Homepage"), 1253, 810);
@@ -109,7 +112,8 @@ public class Main extends Application {
 		}
     }
 
-    public static void setRoot(String fxml) {
+    public static void setRoot(String fxml) 
+    {
         try {
 			scene.setRoot(loadFXML(fxml));
 		} catch (IOException ioe) {
@@ -124,7 +128,8 @@ public class Main extends Application {
 		}
     }
     
-    public static void setRoot(String fxml, EventBean eventBean) {
+    public static void setRoot(String fxml, EventBean eventBean) 
+    {
         try {
 			scene.setRoot(loadFXML(fxml, eventBean));
 		} catch (IOException ioe) {
@@ -139,61 +144,74 @@ public class Main extends Application {
 		}
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    private static Parent loadFXML(String fxml) throws IOException
+    {
     	refreshBundle();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
         fxmlLoader.setClassLoader(Main.class.getClassLoader());
         return fxmlLoader.load();
     }
     
-    private static Parent loadFXML(String fxml, EventBean eventBean) throws IOException {
+    private static Parent loadFXML(String fxml, EventBean eventBean) throws IOException 
+    {
     	refreshBundle();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"), bundle);
         fxmlLoader.setController(new EventDetailsControllerView(eventBean));
         return fxmlLoader.load();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch();
     }
     
-    public static ResourceBundle getBundle() {
+    public static ResourceBundle getBundle() 
+    {
     	return bundle;
     }
     
-    public static void refreshBundle() {
+    public static void refreshBundle() 
+    {
     	Main.bundle = ResourceBundle.getBundle("com.bikersland.languages.locale", locale);
     }
     
-    public static List<String> getCities() {
+    public static List<String> getCities() 
+    {
 		return cities;
 	}
 
-	public static void setCities(List<String> cities) {
+	public static void setCities(List<String> cities) 
+	{
 		Main.cities = cities;
 	}
 
-	public static List<String> getTags() {
+	public static List<String> getTags() 
+	{
 		return tags;
 	}
 
-	public static void setTags(List<String> tags) {
+	public static void setTags(List<String> tags) 
+	{
 		Main.tags = tags;
 	}
 
-	public static Locale getLocale() {
+	public static Locale getLocale() 
+	{
 		return locale;
 	}
 
-	public static void setLocale(Locale locale) {
+	public static void setLocale(Locale locale) 
+	{
 		Main.locale = locale;
 	}
 	
-	public static String getLogFile() {
+	public static String getLogFile() 
+	{
 		return logFile;
 	}
 	
-	public static Window getCurrentWindow() {
+	public static Window getCurrentWindow() 
+	{
 		return scene.getWindow();
 	}
 	

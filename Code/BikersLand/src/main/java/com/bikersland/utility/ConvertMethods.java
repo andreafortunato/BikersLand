@@ -19,7 +19,8 @@ public class ConvertMethods {
 	
 	private ConvertMethods() {}
 	
-	public static List<Node> eventsToNodeList(List<EventBean> eventList) {
+	public static List<Node> eventsToNodeList(List<EventBean> eventList)
+	{
 		FXMLLoader fxmlLoader;
     	
     	List<Node> nodeList = FXCollections.observableArrayList();
@@ -44,7 +45,8 @@ public class ConvertMethods {
     	return nodeList;
 	}
 	
-	public static String dateToLocalFormat(Date date) {
+	public static String dateToLocalFormat(Date date)
+	{
 		SimpleDateFormat datePattern;
 		if(Main.getLocale() == Locale.ITALIAN)
 			datePattern = new SimpleDateFormat("dd-MM-yyyy");

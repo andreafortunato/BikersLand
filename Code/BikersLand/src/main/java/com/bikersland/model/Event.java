@@ -21,15 +21,18 @@ public class Event {
 	private Date createTime;
 	private List<String> tags = new ArrayList<>();
 	
-	public Event() {
+	public Event()
+	{
 		this(null, null, null, null, null, null, null, null, null, null, null);
 	}
 	
-	public Event(String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, List<String> tags) {
+	public Event(String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, List<String> tags)
+	{
 		this(null, title, description, ownerUsername, departureCity, destinationCity, departureDate, returnDate, image, null, tags);
 	}
 	
-	public Event(Integer id, String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, Date createTime, List<String> tags) {
+	public Event(Integer id, String title, String description, String ownerUsername, String departureCity, String destinationCity, Date departureDate, Date returnDate, Image image, Date createTime, List<String> tags) 
+	{
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -43,7 +46,8 @@ public class Event {
 		this.tags = tags;
 	}
 	
-	public String toString() {
+	public String toString() 
+	{
 		return String.format("ID: %s\n"
 				+ "Title: %s\n"
 				+ "Description: %s\n"
@@ -60,91 +64,113 @@ public class Event {
 				ConvertMethods.dateToLocalFormat(createTime));
 	}
 
-	public Integer getId() {
+	public Integer getId()
+	{
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Integer id) 
+	{
 		this.id = id;
 	}
 
-	public String getTitle() {
+	public String getTitle() 
+	{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
 
-	public String getDescription() {
+	public String getDescription() 
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public String getOwnerUsername() {
+	public String getOwnerUsername()
+	{
 		return ownerUsername;
 	}
 
-	public void setOwnerUsername(String ownerUsername) {
+	public void setOwnerUsername(String ownerUsername)
+	{
 		this.ownerUsername = ownerUsername;
 	}
 
-	public String getDepartureCity() {
+	public String getDepartureCity() 
+	{
 		return departureCity;
 	}
 
-	public void setDepartureCity(String departureCity) {
+	public void setDepartureCity(String departureCity)
+	{
 		this.departureCity = departureCity;
 	}
 
-	public String getDestinationCity() {
+	public String getDestinationCity()
+	{
 		return destinationCity;
 	}
 
-	public void setDestinationCity(String destinationCity) {
+	public void setDestinationCity(String destinationCity)
+	{
 		this.destinationCity = destinationCity;
 	}
 
-	public Date getDepartureDate() {
+	public Date getDepartureDate() 
+	{
 		return departureDate;
 	}
 
-	public void setDepartureDate(Date departureDate) {
+	public void setDepartureDate(Date departureDate)
+	{
 		this.departureDate = departureDate;
 	}
 
-	public Date getReturnDate() {
+	public Date getReturnDate() 
+	{
 		return returnDate;
 	}
 
-	public void setReturnDate(Date returnDate) {
+	public void setReturnDate(Date returnDate) 
+	{
 		this.returnDate = returnDate;
 	}
 	
-	public Image getImage() {
+	public Image getImage() 
+	{
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(Image image) 
+	{
 		this.image = image;
 	}
 	
-	public Date getCreateTime() {
+	public Date getCreateTime() 
+	{
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(Date createTime) 
+	{
 		this.createTime = createTime;
 	}
 
-	public List<String> getTags() {
+	public List<String> getTags()
+	{
 		return tags;
 	}
 
-	public void setTags(List<String> tags) {
+	public void setTags(List<String> tags) 
+	{
 		this.tags = tags;
 	}	
 }

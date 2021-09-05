@@ -4,11 +4,13 @@ public class DuplicateEmailException extends EmailException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public DuplicateEmailException() {
+	public DuplicateEmailException()
+	{
 		super();
 	}
 
-	public DuplicateEmailException(String message) {
+	public DuplicateEmailException(String message) 
+	{
 		super(message);
 	}
 

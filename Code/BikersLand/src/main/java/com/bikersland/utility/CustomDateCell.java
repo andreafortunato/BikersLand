@@ -9,12 +9,14 @@ public class CustomDateCell extends DateCell {
 	
 	private LocalDate firstDate;
 	
-	public CustomDateCell(LocalDate firstDate) {
+	public CustomDateCell(LocalDate firstDate) 
+	{
 		this.firstDate = firstDate;
 	}
 
 	@Override
-	public void updateItem(LocalDate date, boolean empty) {
+	public void updateItem(LocalDate date, boolean empty)
+	{
 		super.updateItem(date, empty);
 		
 		setDisable(empty || date.compareTo(firstDate) < 0 );

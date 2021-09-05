@@ -16,7 +16,8 @@ public class HomepageControllerApp {
 	
 	private HomepageControllerApp() {}	
 
-	public static List<EventBean> getEventByCities(String departureCity, String destinationCity) throws InternalDBException {
+	public static List<EventBean> getEventByCities(String departureCity, String destinationCity) throws InternalDBException 
+	{
 		List<Event> eventList = new ArrayList<>();
 		try {
 			eventList = EventDAO.getEventByCities(departureCity, destinationCity);
@@ -36,7 +37,8 @@ public class HomepageControllerApp {
 		return eventBeanList;
 	}
 
-	public static List<EventBean> getEventByCitiesAndTags(String departureCity, String destinationCity,List<String> tagList) throws InternalDBException {
+	public static List<EventBean> getEventByCitiesAndTags(String departureCity, String destinationCity,List<String> tagList) throws InternalDBException 
+	{
 		List<Event> eventList = new ArrayList<>();
 		
 		try {

@@ -50,9 +50,10 @@
                  }catch(InternalDBException idbe){
             %>
                    <script type="text/javascript">
-                       alert("C'è stato un errore a caso");
+                       alert("Internal Error, you will be redirected to the homepage");
                    </script>
             <%
+                  response.sendRedirect("index.jsp");
                }
             %>
           </select>
@@ -115,9 +116,10 @@
                  }catch(InternalDBException idbe){
             %>
                    <script type="text/javascript">
-                       alert("C'è stato un errore a caso");
+                   alert("Internal Error, you will be redirected to the homepage");
                    </script>
             <%
+                  response.sendRedirect("index.jsp");
                }
             %>
           </select>

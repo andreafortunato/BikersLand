@@ -15,14 +15,16 @@ public class TagDAO {
 	
 	private TagDAO() {}
 	
-	public static List<String> getTags() throws SQLException {
+	public static List<String> getTags() throws SQLException 
+	{
 		if(Main.getLocale() == Locale.ITALIAN)
 			return getTags("it");
 		else
 			return getTags("en");
 	}
 	
-	private static List<String> getTags(String language) throws SQLException {
+	private static List<String> getTags(String language) throws SQLException 
+	{
 		List<String> tagList = new ArrayList<>();
 		ResultSet rs = null;
 		Statement stmt = null;
@@ -44,7 +46,8 @@ public class TagDAO {
         
 	}
 	
-	public static List<Integer> tagNameToTagId(List<String> tagList) throws SQLException, TagNotFoundException {
+	public static List<Integer> tagNameToTagId(List<String> tagList) throws SQLException, TagNotFoundException 
+	{
 		List<Integer> tagIdList = new ArrayList<>();
 		
 		Statement stmt = null;

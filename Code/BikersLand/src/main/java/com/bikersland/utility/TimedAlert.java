@@ -19,11 +19,13 @@ import javafx.util.Duration;
 public class TimedAlert {
 	private TimedAlert() {}
 	
-	public static void show(AlertType alertType, String title, String header, String content, String contentRed) {
+	public static void show(AlertType alertType, String title, String header, String content, String contentRed)
+	{
 		show(3, alertType, title, header, content, contentRed);
 	}
 	
-	public static void show(Integer seconds, AlertType alertType, String title, String header, String content, String contentRed) {
+	public static void show(Integer seconds, AlertType alertType, String title, String header, String content, String contentRed) 
+	{
 		TextFlow flow = new TextFlow();
 
 		Text txt1=new Text(content);

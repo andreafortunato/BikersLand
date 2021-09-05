@@ -33,7 +33,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
-public class ProfileControllerView {
+public class ProfileControllerView 
+{
 	
 	@FXML
     private ImageView imgProfileImage;
@@ -63,7 +64,8 @@ public class ProfileControllerView {
     
     private UserBean userBean;
 	
-	public void initialize() {
+	public void initialize() 
+	{
 		List<EventBean> joinedEventBeanList;
 	    List<Node> joinedEventNodeList;
 	    List<EventBean> favoriteEventBeanList;
@@ -176,11 +178,13 @@ public class ProfileControllerView {
 		);
 	}
 	
-	public int getNumViaggi() {
+	public int getNumViaggi() 
+	{
     	return gpJoinedEvents.getColumnCount();
     }
 	
-	private void changeEmail() {
+	private void changeEmail()
+	{
 		TextInputDialog changeEmailDialog = new TextInputDialog(userBean.getEmail());
 		changeEmailDialog.getDialogPane().getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
 		changeEmailDialog.getDialogPane().getStyleClass().add("inputDialog");

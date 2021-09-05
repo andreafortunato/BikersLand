@@ -34,7 +34,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
-public class HomepageControllerView {
+public class HomepageControllerView 
+{
 	
 	@FXML
     private AnchorPane pnlHeader;
@@ -110,7 +111,8 @@ public class HomepageControllerView {
     private Integer gridPaneColumns = 2;
     
     
-    public void initialize() {
+    public void initialize() 
+    {
     	
     	imgBackground.setVisible(false);
     	pnlMain.setVisible(false);
@@ -202,7 +204,8 @@ public class HomepageControllerView {
         });
     }
     
-    private void populateTagsListCell() {
+    private void populateTagsListCell() 
+    {
     	lvTags.setCellFactory(lv -> {
     		
     		TagsListCell cell = new TagsListCell();
@@ -226,12 +229,14 @@ public class HomepageControllerView {
         });
     }
     
-    public int getNumViaggi() {
+    public int getNumViaggi() 
+    {
     	return gridViaggi.getColumnCount();
     }
     
     @FXML
-    private void enableDepartureCitta() {   	
+    private void enableDepartureCitta()
+    {   	
     	if(radioPartenzaCitta.isSelected()) {
 	    	sliderPartenzaDistanza.setDisable(true);
 	    	lblPartenzaDistanza.setDisable(true);
@@ -244,7 +249,8 @@ public class HomepageControllerView {
     }
     
     @FXML
-    private void enableDepartureDistance() {
+    private void enableDepartureDistance()
+    {
     	if(radioPartenzaDistanza.isSelected()) {
         	sliderPartenzaDistanza.setDisable(false);
         	lblPartenzaDistanza.setDisable(false);
@@ -256,7 +262,8 @@ public class HomepageControllerView {
     }
     
     @FXML
-    private void enableDestinationCitta() {
+    private void enableDestinationCitta() 
+    {
     	if(radioArrivoCitta.isSelected()) {
 	    	sliderArrivoDistanza.setDisable(true);
 	    	lblArrivoDistanza.setDisable(true);
@@ -269,7 +276,8 @@ public class HomepageControllerView {
     }
     
     @FXML
-    private void enableDestinationDistance() {
+    private void enableDestinationDistance()
+    {
     	if(radioArrivoDistanza.isSelected()) {
         	sliderArrivoDistanza.setDisable(false);
         	lblArrivoDistanza.setDisable(false);
@@ -280,7 +288,8 @@ public class HomepageControllerView {
     }
     
     @FXML
-    private void search(){
+    private void search()
+    {
     	List<EventBean> searchedEventList = new ArrayList<>();
     	
     	try {

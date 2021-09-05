@@ -19,7 +19,8 @@ public class EventDetailsControllerApp {
 	
 	private EventDetailsControllerApp() {}
 	
-	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException {
+	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException 
+	{
 		try {
 			return ParticipationDAO.getParticipantsByEventId(eventId);
 		} catch (SQLException sqle) {
@@ -27,11 +28,13 @@ public class EventDetailsControllerApp {
 		}
 	}
 
-	public static Image getDefaultEventImage() {
+	public static Image getDefaultEventImage()
+	{
 		return new Image(Main.class.getResourceAsStream("img/background.jpg"));
 	}
 
-	public static Boolean userJoinedEvent(Integer userId, Integer eventId) throws InternalDBException {
+	public static Boolean userJoinedEvent(Integer userId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			return ParticipationDAO.isJoinedEvent(userId, eventId);
 		} catch (SQLException sqle) {
@@ -39,7 +42,8 @@ public class EventDetailsControllerApp {
 		} 
 	}
 	
-	public static void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException {
+	public static void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			ParticipationDAO.addUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
@@ -47,7 +51,8 @@ public class EventDetailsControllerApp {
 		}
 	}
 	
-	public static void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException {
+	public static void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	{
 		try {
 			ParticipationDAO.removeUserParticipation(userId, eventId);
 		} catch (SQLException sqle) {
@@ -55,7 +60,8 @@ public class EventDetailsControllerApp {
 		}
 	}
 	
-	public static EventBean getEventById(Integer eventId) throws InternalDBException {
+	public static EventBean getEventById(Integer eventId) throws InternalDBException 
+	{
 		try {
 			Event event = EventDAO.getEventById(eventId);
 			

@@ -4,11 +4,13 @@ public class EventException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
-	public EventException() {
+	public EventException() 
+	{
 		super();
 	}
 
-	public EventException(String message) {
+	public EventException(String message) 
+	{
 		super(message);
 	}
 

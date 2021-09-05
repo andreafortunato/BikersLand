@@ -19,7 +19,8 @@ public class NewEventControllerApp {
 	
 	private NewEventControllerApp() {}
 	
-	public static EventBean createNewEvent(EventBean eventBean) throws InternalDBException {
+	public static EventBean createNewEvent(EventBean eventBean) throws InternalDBException 
+	{
 		Event event = new Event();
 		event.setTitle(eventBean.getTitle());
 		event.setDescription(eventBean.getDescription());
@@ -48,7 +49,8 @@ public class NewEventControllerApp {
 		} 
 	}
 	
-	private static void setEventTags(Event createdEvent) throws InternalDBException {
+	private static void setEventTags(Event createdEvent) throws InternalDBException 
+	{
 		try {
 			List<Integer> eventTagIdList;
 			eventTagIdList = TagDAO.tagNameToTagId(createdEvent.getTags());

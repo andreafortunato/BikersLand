@@ -12,7 +12,8 @@ public class HeaderControllerApp {
 	
 	private HeaderControllerApp() {}
 
-	public static List<String> getTags() throws InternalDBException {
+	public static List<String> getTags() throws InternalDBException
+	{
 		try {
 			return TagDAO.getTags();
 		}catch(SQLException sqle) {

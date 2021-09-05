@@ -4,11 +4,13 @@ public class TagNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
-	public TagNotFoundException() {
+	public TagNotFoundException()
+	{
 		super();
 	}
 
-	public TagNotFoundException(String message) {
+	public TagNotFoundException(String message)
+	{
 		super(message);
 	}
 

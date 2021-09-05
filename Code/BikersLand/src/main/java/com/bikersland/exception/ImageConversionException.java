@@ -4,15 +4,18 @@ public class ImageConversionException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
-	public ImageConversionException() {
+	public ImageConversionException() 
+	{
 		super();
 	}
 
-	public ImageConversionException(String message) {
+	public ImageConversionException(String message)
+	{
 		super(message);
 	}
 
-	public ImageConversionException(Throwable cause) {
+	public ImageConversionException(Throwable cause)
+	{
 		super(cause);
 	}
 
