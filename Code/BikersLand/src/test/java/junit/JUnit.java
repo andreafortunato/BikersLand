@@ -12,23 +12,20 @@ import org.junit.Test;
 
 import com.bikersland.Main;
 import com.bikersland.bean.EventBean;
-import com.bikersland.bean.UserBean;
 import com.bikersland.controller.application.EventDetailsControllerApp;
 import com.bikersland.controller.application.MainControllerApp;
-import com.bikersland.controller.application.RegisterControllerApp;
 import com.bikersland.db.UserDAO;
 import com.bikersland.exception.ImageConversionException;
 import com.bikersland.exception.InternalDBException;
 import com.bikersland.exception.InvalidLoginException;
-import com.bikersland.exception.user.DuplicateEmailException;
-import com.bikersland.exception.user.DuplicateUsernameException;
 import com.bikersland.exception.user.UserNotFoundException;
-import com.bikersland.exception.user.UsernameException;
 import com.bikersland.model.User;
 import com.bikersland.singleton.LoginSingleton;
 import com.bikersland.utility.ConvertMethods;
 
 public class JUnit {
+	
+	/* Test #1 Fortunato Andrea */
 	@Test
 	public void testEventIdFortunato() throws InternalDBException {
 		EventBean eventBean = EventDetailsControllerApp.getEventById(2);
@@ -36,6 +33,7 @@ public class JUnit {
 		assertEquals((int)2, (int)eventBean.getId());
 	}
 	
+	/* Test #2 Fortunato Andrea */
 	@Test
 	public void testDateFortunato() {
 		Main.setLocale(Locale.ITALIAN);
@@ -45,6 +43,7 @@ public class JUnit {
 		assertEquals("15-08-2021", testConvertedDate);
 	}
 	
+	/* Test #3 Fortunato Andrea */
 	@Test
 	public void testAdventureIsATagFortunato() throws InternalDBException {
 		List<String> testTagList = MainControllerApp.getTags();
@@ -52,6 +51,7 @@ public class JUnit {
 		assertThat(testTagList, hasItem("Adventure"));
 	}
 	
+	/* Test #1 De Santis Ludovico */
 	@Test
 	public void testNullLoggedUserDeSantis() {
 		User testLoggedUser = LoginSingleton.getLoginInstance().getUser();
@@ -59,6 +59,7 @@ public class JUnit {
 		assertNull(testLoggedUser);
 	}
 	
+	/* Test #2 De Santis Ludovico */
 	@Test
 	public void testExistingUserDeSantis() throws SQLException, ImageConversionException {
 		
@@ -72,9 +73,9 @@ public class JUnit {
 		}
 		
 		assertEquals(1, result);
-		
 	}
 	
+	/* Test #3 De Santis Ludovico */
 	@Test
 	public void testUserNotRegisteredDeSantis() throws SQLException {
 		

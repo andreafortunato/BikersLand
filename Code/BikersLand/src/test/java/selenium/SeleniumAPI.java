@@ -21,35 +21,40 @@ public class SeleniumAPI {
 		testDeSantis();
 	}
 	
+	/* Test dello studente Fortunato Andrea */
 	private static void testFortunato() {
 		String username = "galaxy";
 		String password = "password";
 		
 		WebDriver driver = new ChromeDriver();
 		driver.get("http://localhost:8080/BikersLand/index.jsp");
-		// driver.get("https://www.rapidtables.com/convert/temperature/celsius-to-fahrenheit.html");
 		
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/button[2]")).click();
 		driver.findElement(By.xpath("//*[@id=\"username\"]")).sendKeys(username);
 		driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys(password);
 		driver.findElement(By.xpath("//*[@id=\"loginForm\"]/input")).click();
-		driver.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/button")).click();
-		
-		WebElement emailElement = driver.findElement(By.xpath("/html/body/div[2]/table/tbody/tr[3]/th"));
-		
+		driver.findElement(By.xpath("//*[@id=\"btn_create_event\"]")).click();
+		driver.findElement(By.xpath("//*[@id=\"title\"]")).sendKeys("Api");
+		driver.findElement(By.xpath("//*[@id=\"description\"]")).sendKeys("Descrizione evento Api");
+		driver.findElement(By.xpath("/html/body/div[2]/form/input")).click();
+			
 		System.out.println("Running Selenium API test for Fortunato Andrea");
-		System.out.println(String.format("Email of user '%s': %s\n", username, emailElement.getText().strip()));
+		
+		System.out.println("\nAn alert should appear...");
+		System.out.println("Alert text: " + driver.switchTo().alert().getText().toString());
+		driver.switchTo().alert().accept();
+		System.out.println("Test finished succesfully\n\n");
 		
 		driver.close();
 	}
 	
+	/* Test dello studente De Santis Ludovico */	
 	private static void testDeSantis() {
 		String username = "ludovix";
 		String password = "password";
 		
 		WebDriver driver = new ChromeDriver();
 		driver.get("http://localhost:8080/BikersLand/index.jsp");
-		// driver.get("https://www.rapidtables.com/convert/temperature/celsius-to-fahrenheit.html");
 		
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/button[2]")).click();
 		driver.findElement(By.xpath("//*[@id=\"username\"]")).sendKeys(username);
