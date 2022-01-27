@@ -69,7 +69,8 @@ public class ProfileControllerView
 	    List<EventBean> favoriteEventBeanList;
 	    List<Node> favoriteEventNodeList;
 	    
-	    userBean = ProfileControllerApp.getLoggedUser();
+	    ProfileControllerApp profileControllerApp = new ProfileControllerApp();
+	    userBean = profileControllerApp.getLoggedUser();
 	    
 	    if(Main.getLocale() == Locale.ENGLISH) {
 	    	lblProfileOf.setText(userBean.getUsername() + Main.getBundle().getString("profile_of"));
@@ -102,7 +103,7 @@ public class ProfileControllerView
 		Image image = userBean.getImage();
 		Circle imgCircle = new Circle(50);
 		if(image == null) {
-			image = ProfileControllerApp.getDefaultUserImage();
+			image = profileControllerApp.getDefaultUserImage();
 		} else {
 			double w = 0;
             double h = 0;
@@ -133,8 +134,8 @@ public class ProfileControllerView
 		gridPaneColumns.add((((Double)Main.getCurrentWindow().getWidth()).intValue()-16-(getNumViaggi())*20)/420);
 		
 		try {
-			favoriteEventBeanList = ProfileControllerApp.getFavoriteEventsByUser(userBean.getId());
-			joinedEventBeanList = ProfileControllerApp.getJoinedEventsByUser(userBean.getId());
+			favoriteEventBeanList = profileControllerApp.getFavoriteEventsByUser(userBean.getId());
+			joinedEventBeanList = profileControllerApp.getJoinedEventsByUser(userBean.getId());
 			
 			joinedEventNodeList = ConvertMethods.eventsToNodeList(joinedEventBeanList);
 			gpJoinedEvents.populateGrid(joinedEventNodeList, gridPaneColumns.get(0));
@@ -191,7 +192,8 @@ public class ProfileControllerView
 		    try {
 		    	tmpUserBean.setEmail(result.get().strip());
 		    	
-				ProfileControllerApp.changeUserEmail(userBean.getId(), result.get().strip());
+		    	ProfileControllerApp profileControllerApp = new ProfileControllerApp();
+				profileControllerApp.changeUserEmail(userBean.getId(), result.get().strip());
 				
 				userBean.setEmail(result.get().strip());
 				lblEmail.setText(userBean.getEmail());

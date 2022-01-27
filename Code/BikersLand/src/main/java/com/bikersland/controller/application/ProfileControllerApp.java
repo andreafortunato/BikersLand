@@ -24,9 +24,7 @@ import com.bikersland.Main;
 
 public class ProfileControllerApp {
 	
-	private ProfileControllerApp() {}
-
-	public static List<EventBean> getJoinedEventsByUser(Integer userId) throws InternalDBException
+	public List<EventBean> getJoinedEventsByUser(Integer userId) throws InternalDBException
 	{
 		List<Event> eventList = new ArrayList<>();
 		try {
@@ -48,7 +46,7 @@ public class ProfileControllerApp {
 		
 	}
 
-	public static List<EventBean> getFavoriteEventsByUser(Integer userId) throws InternalDBException 
+	public List<EventBean> getFavoriteEventsByUser(Integer userId) throws InternalDBException 
 	{
 		List<Event> eventList = new ArrayList<>();
 		try {
@@ -69,7 +67,7 @@ public class ProfileControllerApp {
 		return eventBeanList;
 	}
 
-	public static UserBean getLoggedUser()
+	public UserBean getLoggedUser()
 	{
 		User user = LoginSingleton.getLoginInstance().getUser();
 		
@@ -77,7 +75,7 @@ public class ProfileControllerApp {
 				user.getEmail(), null, user.getImage(), user.getCreateTime());
 	}
 	
-	public static UserBean getUserByUsername(String username) throws InternalDBException
+	public UserBean getUserByUsername(String username) throws InternalDBException
 	{
 		User user;
 		try {
@@ -90,12 +88,12 @@ public class ProfileControllerApp {
 				user.getEmail(), null, user.getImage(), user.getCreateTime());
 	}
 	
-	public static Image getDefaultUserImage()
+	public Image getDefaultUserImage()
 	{
 		return new Image(Main.class.getResourceAsStream("img/profile_image.png"), 100, 100, true, true);
 	}
 	
-	public static void changeUserEmail(Integer userId, String userEmail) throws InternalDBException, DuplicateEmailException
+	public void changeUserEmail(Integer userId, String userEmail) throws InternalDBException, DuplicateEmailException
 	{
 		try {
 			UserDAO.changeUserEmail(userId, userEmail);

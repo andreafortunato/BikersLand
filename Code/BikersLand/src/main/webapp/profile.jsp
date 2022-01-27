@@ -57,28 +57,32 @@
     	  
         if(request.getParameter("joinEvent") != null) {
           if(request.getParameter("join_or_remove") != null) {
+        	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
             if(request.getParameter("join_or_remove").equals("join")) {
-              EventCardControllerApp.addUserParticipation(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+            	eventCardControllerApp.addUserParticipation(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
             } else if (request.getParameter("join_or_remove").equals("remove")) {
-              EventCardControllerApp.removeUserParticipation(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+            	eventCardControllerApp.removeUserParticipation(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
             }
           }
         }
         
         if(request.getParameter("favoriteEvent") != null) {
           if(request.getParameter("join_or_remove") != null) {
+        	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
             if(request.getParameter("join_or_remove").equals("join")) {
-              EventCardControllerApp.addFavoriteEvent(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+            	eventCardControllerApp.addFavoriteEvent(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
             } else if (request.getParameter("join_or_remove").equals("remove")) {
-              EventCardControllerApp.removeFavoriteEvent(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+            	eventCardControllerApp.removeFavoriteEvent(userBean.getId(), Integer.valueOf(request.getParameter("event-id")));
             }
           }
         }
     	  
         Image eventImage = userBean.getImage();
         
-        if(eventImage == null)
-          eventImage = ProfileControllerApp.getDefaultUserImage();
+        if(eventImage == null) {
+        	ProfileControllerApp profileControllerApp = new ProfileControllerApp();
+          eventImage = profileControllerApp.getDefaultUserImage();
+        }
            
         BufferedImage buffImg;
         ByteArrayOutputStream bts;
@@ -122,7 +126,8 @@
 		        List<EventBean> joinedEventBeanList = new ArrayList<>();
 		        
 		        try {
-		        	joinedEventBeanList = ProfileControllerApp.getJoinedEventsByUser(userBean.getId());
+		        	ProfileControllerApp profileControllerApp = new ProfileControllerApp();
+		        	joinedEventBeanList = profileControllerApp.getJoinedEventsByUser(userBean.getId());
 		        } catch (InternalDBException idbe) {
 		          %>
 		            <script type="text/javascript">
@@ -147,8 +152,10 @@
 		            
 		            event = joinedEventBeanList.remove(0);
 		            eventImage = event.getImage();
-		            if(eventImage == null)
-		            	eventImage = EventCardControllerApp.getDefaultEventImage();
+		            if(eventImage == null) {
+		            	EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+		            	eventImage = eventCardControllerApp.getDefaultEventImage();
+		            }
 		            
 		            out.write("<div class=\"card card-border\" style=\"margin: 10px;\">");
 		              
@@ -189,7 +196,8 @@
 		                    out.write("<tr>");
 		                      out.write("<td><form action=\"profile.jsp\" method=\"POST\">");
 		                      try {
-                                if(EventCardControllerApp.isJoinedEvent(userBean.getId(), event.getId())) {
+		                    	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+                                if(eventCardControllerApp.isJoinedEvent(userBean.getId(), event.getId())) {
                                   join_or_remove = "Remove participation";
                                   join_or_remove_hidden = "remove";
                                 } else {
@@ -212,7 +220,8 @@
 		                      
 		                      out.write("<td><form action=\"profile.jsp\" method=\"POST\">");
                           try {
-                             if(EventCardControllerApp.isFavoriteEvent(userBean.getId(), event.getId())) {
+                        	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+                             if(eventCardControllerApp.isFavoriteEvent(userBean.getId(), event.getId())) {
                                join_or_remove = "Remove from favorites";
                                join_or_remove_hidden = "remove";
                              } else {
@@ -249,7 +258,8 @@
             List<EventBean> favoriteEventBeanList = new ArrayList<>();
             
             try {
-            	favoriteEventBeanList = ProfileControllerApp.getFavoriteEventsByUser(userBean.getId());
+            	ProfileControllerApp profileControllerApp = new ProfileControllerApp();
+            	favoriteEventBeanList = profileControllerApp.getFavoriteEventsByUser(userBean.getId());
             } catch (InternalDBException idbe) {
               %>
                 <script type="text/javascript">
@@ -271,8 +281,10 @@
                 
                 event = favoriteEventBeanList.remove(0);
                 eventImage = event.getImage();
-                if(eventImage == null)
-                	eventImage = EventCardControllerApp.getDefaultEventImage();
+                if(eventImage == null) {
+                	EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+                	eventImage = eventCardControllerApp.getDefaultEventImage();
+                }
                 
                 out.write("<div class=\"card card-border\" style=\"margin: 10px;\">");
                   
@@ -313,7 +325,8 @@
                         out.write("<tr>");
                           out.write("<td><form action=\"profile.jsp\" method=\"POST\">");
                           try {
-	                              if(EventCardControllerApp.isJoinedEvent(userBean.getId(), event.getId())) {
+                        	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+	                              if(eventCardControllerApp.isJoinedEvent(userBean.getId(), event.getId())) {
 	                                join_or_remove = "Remove participation";
 	                                join_or_remove_hidden = "remove";
 	                              } else {
@@ -336,7 +349,8 @@
                           
                           out.write("<td><form action=\"profile.jsp\" method=\"POST\">");
                           try {
-                             if(EventCardControllerApp.isFavoriteEvent(userBean.getId(), event.getId())) {
+                        	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+                             if(eventCardControllerApp.isFavoriteEvent(userBean.getId(), event.getId())) {
                                join_or_remove = "Remove from favorites";
                                join_or_remove_hidden = "remove";
                              } else {

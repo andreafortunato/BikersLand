@@ -86,7 +86,8 @@
 	    	      userBean.setEmail(request.getParameter("email"));
 	    	      userBean.setPassword(request.getParameter("password"));
 	    	      
-	    	      RegisterControllerApp.register(userBean);
+	    	      RegisterControllerApp registerControllerApp = new RegisterControllerApp();
+	    	      registerControllerApp.register(userBean);
 	    	      
 	    	      response.sendRedirect("index.jsp");
     	    } catch (DuplicateUsernameException due) {

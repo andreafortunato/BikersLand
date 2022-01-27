@@ -65,8 +65,9 @@ public class Main extends Application
 		refreshBundle();
     	
     	try {
-			setTags(MainControllerApp.getTags());
-			setCities(MainControllerApp.getCities());
+    		MainControllerApp mainControllerApp = new MainControllerApp();
+			setTags(mainControllerApp.getTags());
+			setCities(mainControllerApp.getCities());
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
 					Main.bundle.getString(TIMEDALERT_INTERNAL_ERROR),

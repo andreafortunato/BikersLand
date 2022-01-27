@@ -28,7 +28,8 @@ public class JUnit {
 	/* Test #1 Fortunato Andrea */
 	@Test
 	public void testEventIdFortunato() throws InternalDBException {
-		EventBean eventBean = EventDetailsControllerApp.getEventById(2);
+		EventDetailsControllerApp eventDetailsControllerApp = new EventDetailsControllerApp();
+		EventBean eventBean = eventDetailsControllerApp.getEventById(2);
 		
 		assertEquals((int)2, (int)eventBean.getId());
 	}
@@ -46,7 +47,8 @@ public class JUnit {
 	/* Test #3 Fortunato Andrea */
 	@Test
 	public void testAdventureIsATagFortunato() throws InternalDBException {
-		List<String> testTagList = MainControllerApp.getTags();
+		MainControllerApp mainControllerApp = new MainControllerApp();
+		List<String> testTagList = mainControllerApp.getTags();
 		
 		assertThat(testTagList, hasItem("Adventure"));
 	}

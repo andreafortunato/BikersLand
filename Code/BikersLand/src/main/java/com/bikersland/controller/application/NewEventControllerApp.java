@@ -16,10 +16,8 @@ import com.bikersland.utility.ConstantStrings;
 import com.bikersland.Main;
 
 public class NewEventControllerApp {
-	
-	private NewEventControllerApp() {}
-	
-	public static EventBean createNewEvent(EventBean eventBean) throws InternalDBException 
+		
+	public EventBean createNewEvent(EventBean eventBean) throws InternalDBException 
 	{
 		Event event = new Event();
 		event.setTitle(eventBean.getTitle());
@@ -49,7 +47,7 @@ public class NewEventControllerApp {
 		} 
 	}
 	
-	private static void setEventTags(Event createdEvent) throws InternalDBException 
+	private void setEventTags(Event createdEvent) throws InternalDBException 
 	{
 		try {
 			List<Integer> eventTagIdList;

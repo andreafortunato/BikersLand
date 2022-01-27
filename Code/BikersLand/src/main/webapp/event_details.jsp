@@ -58,15 +58,17 @@
       
      if(request.getParameter("joinEvent") != null) {
          if(request.getParameter("join_or_remove") != null) {
+        	 EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
            if(request.getParameter("join_or_remove").equals("join")) {
-             EventCardControllerApp.addUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+        	   eventCardControllerApp.addUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
            } else if (request.getParameter("join_or_remove").equals("remove")) {
-             EventCardControllerApp.removeUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+        	   eventCardControllerApp.removeUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
            }
          }
        }
 	    
-	    EventBean eventBean = EventDetailsControllerApp.getEventById(Integer.valueOf(request.getParameter("event-id")));
+      EventDetailsControllerApp eventDetailsControllerApp = new EventDetailsControllerApp();
+	    EventBean eventBean = eventDetailsControllerApp.getEventById(Integer.valueOf(request.getParameter("event-id")));
 	    if(eventBean == null) {
 	    	%>
          <script type="text/javascript">
@@ -77,7 +79,7 @@
 	    	Image eventImage = eventBean.getImage();
 	    	
 	    	if(eventImage == null)
-	    		eventImage = EventDetailsControllerApp.getDefaultEventImage();
+	    		eventImage = eventDetailsControllerApp.getDefaultEventImage();
            
        	BufferedImage buffImg;
         ByteArrayOutputStream bts;
@@ -99,7 +101,7 @@
 	    	
 	    	List<String> participantsList;
 	    	try {
-	    		participantsList = EventDetailsControllerApp.getEventParticipants(eventBean.getId());
+	    		participantsList = eventDetailsControllerApp.getEventParticipants(eventBean.getId());
 	    	} catch (NoEventParticipantsException nepe) {
 	    		participantsList = new ArrayList<>();
 	    		participantsList.add("Nobody joined this event!");
@@ -177,7 +179,8 @@
               if(loggedUserBean != null) {            	  
             	  out.write("<td colspan=\"3\"><form action=\"event_details.jsp\" method=\"POST\">");
                   try {
-                     if(EventCardControllerApp.isJoinedEvent(loggedUserBean.getId(), eventBean.getId())) {
+                	   EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+                     if(eventCardControllerApp.isJoinedEvent(loggedUserBean.getId(), eventBean.getId())) {
                        join_or_remove = "Remove participation";
                        join_or_remove_hidden = "remove";
                      } else {

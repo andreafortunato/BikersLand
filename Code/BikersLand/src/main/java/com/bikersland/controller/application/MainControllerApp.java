@@ -11,9 +11,7 @@ import com.bikersland.Main;
 
 public class MainControllerApp {
 	
-	private MainControllerApp() {}
-
-	public static List<String> getTags() throws InternalDBException 
+	public List<String> getTags() throws InternalDBException 
 	{
 			try {
 				return TagDAO.getTags();
@@ -22,7 +20,7 @@ public class MainControllerApp {
 			}
 		}
 	
-	public static List<String> getCities() throws InternalDBException 
+	public List<String> getCities() throws InternalDBException 
 	{
 		try {
 			return CityDAO.getCities();

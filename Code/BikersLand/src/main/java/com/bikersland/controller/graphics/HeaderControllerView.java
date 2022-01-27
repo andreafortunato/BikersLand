@@ -120,7 +120,8 @@ public class HeaderControllerView
     	}
     	
     	try {
-			Main.setTags(HeaderControllerApp.getTags());
+    		HeaderControllerApp headerControllerApp = new HeaderControllerApp();
+			Main.setTags(headerControllerApp.getTags());
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
 					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),

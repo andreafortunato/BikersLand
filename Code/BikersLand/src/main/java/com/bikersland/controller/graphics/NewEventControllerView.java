@@ -194,7 +194,8 @@ public class NewEventControllerView
         	eventBean.setReturnDate(Date.valueOf(pickerReturnDate.getValue()));
         	eventBean.setTags(comboTags.getCheckModel().getCheckedItems());
         	
-        	EventBean createdEventBean = NewEventControllerApp.createNewEvent(eventBean);
+        	NewEventControllerApp newEventControllerApp = new NewEventControllerApp();
+        	EventBean createdEventBean = newEventControllerApp.createNewEvent(eventBean);
         	
     		TimedAlert.show(AlertType.INFORMATION,
     				Main.getBundle().getString("success"),

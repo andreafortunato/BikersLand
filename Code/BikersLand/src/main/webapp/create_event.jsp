@@ -44,7 +44,8 @@
             <% 
               List<String> cities = null;  
               try{
-                 cities = MainControllerApp.getCities(); 
+            	   MainControllerApp mainControllerApp = new MainControllerApp();
+                 cities = mainControllerApp.getCities(); 
                  for(String city:cities)
                    out.write("<option value=\"" + city + "\">" + city + "</option>");
                  }catch(InternalDBException idbe){
@@ -110,7 +111,8 @@
             <% 
               List<String> tags = null;  
               try{
-                 tags = MainControllerApp.getTags(); 
+            	   MainControllerApp mainControllerApp = new MainControllerApp();
+                 tags = mainControllerApp.getTags(); 
                  for(String tag:tags)
                    out.write("<option value=\"" + tag + "\">" + tag + "</option>");
                  }catch(InternalDBException idbe){
@@ -144,8 +146,8 @@
 	        	 eventBean.setTags(new ArrayList<>());
 	         else
 	        	 eventBean.setTags(Arrays.asList(request.getParameterValues("tags-list")));
-	         
-	         EventBean createdEventBean = NewEventControllerApp.createNewEvent(eventBean);
+	         NewEventControllerApp newEventControllerApp = new NewEventControllerApp();
+	         EventBean createdEventBean = newEventControllerApp.createNewEvent(eventBean);
 	         
 	         %>
 	           <form action="event_details.jsp" method="POST" id="form_details">

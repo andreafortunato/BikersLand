@@ -16,9 +16,7 @@ import com.bikersland.Main;
 
 public class RegisterControllerApp {
 	
-	private RegisterControllerApp() {}
-	
-	public static void register(UserBean userBean) throws DuplicateUsernameException, DuplicateEmailException, InternalDBException
+	public void register(UserBean userBean) throws DuplicateUsernameException, DuplicateEmailException, InternalDBException
 	{
 		User newUser = new User();
 		newUser.setName(userBean.getName());
@@ -36,7 +34,8 @@ public class RegisterControllerApp {
 		
 		try {
 			User loggedUser = UserDAO.getUserByUsername(newUser.getUsername());
-			LoginControllerApp.loginJustRegisteredUser(loggedUser);
+			LoginControllerApp loginControllerApp = new LoginControllerApp();
+			loginControllerApp.loginJustRegisteredUser(loggedUser);
 		} catch (SQLException | ImageConversionException | UserNotFoundException e) {
 			throw new AutomaticLoginException(Main.getBundle().getString("ex_failed_autologin"), e, "register", "RegisterControllerApp.java");
 		}

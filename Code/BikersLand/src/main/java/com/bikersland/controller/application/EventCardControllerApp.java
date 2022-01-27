@@ -14,9 +14,7 @@ import javafx.scene.image.Image;
 
 public class EventCardControllerApp {
 	
-	private EventCardControllerApp() {}
-
-	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException 
+	public List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException 
 	{
 		try {
 			return ParticipationDAO.getParticipantsByEventId(eventId);
@@ -25,12 +23,12 @@ public class EventCardControllerApp {
 		}
 	}
 	
-	public static Image getDefaultEventImage() 
+	public Image getDefaultEventImage() 
 	{
 		return new Image(Main.class.getResourceAsStream("img/background.jpg"));
 	}
 	
-	public static Boolean isFavoriteEvent(Integer userId, Integer eventId) throws InternalDBException 
+	public Boolean isFavoriteEvent(Integer userId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			return FavoriteEventDAO.isFavoriteEvent(userId, eventId);
@@ -39,7 +37,7 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static Boolean isJoinedEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
+	public Boolean isJoinedEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			return ParticipationDAO.isJoinedEvent(loggedUserId, eventId);
@@ -48,7 +46,7 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static void removeFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
+	public void removeFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			FavoriteEventDAO.removeFavoriteEvent(loggedUserId, eventId);
@@ -57,7 +55,7 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static void addFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
+	public void addFavoriteEvent(Integer loggedUserId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			FavoriteEventDAO.addFavoriteEvent(loggedUserId, eventId);
@@ -66,7 +64,7 @@ public class EventCardControllerApp {
 		}
 	}
 
-	public static void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	public void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			ParticipationDAO.addUserParticipation(userId, eventId);
@@ -75,7 +73,7 @@ public class EventCardControllerApp {
 		}
 	}
 	
-	public static void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	public void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			ParticipationDAO.removeUserParticipation(userId, eventId);

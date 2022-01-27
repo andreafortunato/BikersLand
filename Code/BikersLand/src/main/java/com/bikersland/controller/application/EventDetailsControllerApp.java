@@ -17,9 +17,7 @@ import javafx.scene.image.Image;
 
 public class EventDetailsControllerApp {
 	
-	private EventDetailsControllerApp() {}
-	
-	public static List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException 
+	public List<String> getEventParticipants(Integer eventId) throws InternalDBException, NoEventParticipantsException 
 	{
 		try {
 			return ParticipationDAO.getParticipantsByEventId(eventId);
@@ -28,12 +26,12 @@ public class EventDetailsControllerApp {
 		}
 	}
 
-	public static Image getDefaultEventImage()
+	public Image getDefaultEventImage()
 	{
 		return new Image(Main.class.getResourceAsStream("img/background.jpg"));
 	}
 
-	public static Boolean userJoinedEvent(Integer userId, Integer eventId) throws InternalDBException 
+	public Boolean userJoinedEvent(Integer userId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			return ParticipationDAO.isJoinedEvent(userId, eventId);
@@ -42,7 +40,7 @@ public class EventDetailsControllerApp {
 		} 
 	}
 	
-	public static void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	public void addUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			ParticipationDAO.addUserParticipation(userId, eventId);
@@ -51,7 +49,7 @@ public class EventDetailsControllerApp {
 		}
 	}
 	
-	public static void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
+	public void removeUserParticipation(Integer userId, Integer eventId) throws InternalDBException 
 	{
 		try {
 			ParticipationDAO.removeUserParticipation(userId, eventId);
@@ -60,7 +58,7 @@ public class EventDetailsControllerApp {
 		}
 	}
 	
-	public static EventBean getEventById(Integer eventId) throws InternalDBException 
+	public EventBean getEventById(Integer eventId) throws InternalDBException 
 	{
 		try {
 			Event event = EventDAO.getEventById(eventId);

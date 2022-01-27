@@ -101,7 +101,8 @@ public class EventDetailsControllerView
 		lblOwnerUsername.setText(eventBean.getOwnerUsername());
 		
 		try {
-			lvParticipants.setItems(FXCollections.observableArrayList(EventDetailsControllerApp.getEventParticipants(eventBean.getId())));
+			EventDetailsControllerApp eventDetailsControllerApp = new EventDetailsControllerApp();
+			lvParticipants.setItems(FXCollections.observableArrayList(eventDetailsControllerApp.getEventParticipants(eventBean.getId())));
 			lblParticipants.setText(String.valueOf(lvParticipants.getItems().size()));
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
@@ -116,8 +117,10 @@ public class EventDetailsControllerView
 		}
 		
 		Image image = eventBean.getImage();
-		if(image == null)
-			image = EventDetailsControllerApp.getDefaultEventImage();
+		if(image == null) {
+			EventDetailsControllerApp eventDetailsControllerApp = new EventDetailsControllerApp();
+			image = eventDetailsControllerApp.getDefaultEventImage();
+		}
 		
 		imgBackground.setImage(image);
 		
@@ -134,7 +137,8 @@ public class EventDetailsControllerView
     		btnJoin.setVisible(false);
     	} else {
 			try {
-				setIsJoined(EventDetailsControllerApp.userJoinedEvent(loggedUserId, eventBean.getId()));
+				EventDetailsControllerApp eventDetailsControllerApp = new EventDetailsControllerApp();
+				setIsJoined(eventDetailsControllerApp.userJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
 				TimedAlert.show(AlertType.ERROR,
 						Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
@@ -150,12 +154,13 @@ public class EventDetailsControllerView
     private void joinEvent() 
 	{
 		try {
+			EventDetailsControllerApp eventDetailsControllerApp = new EventDetailsControllerApp();
 			if(isJoined) {
-	    		EventDetailsControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
+	    		eventDetailsControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
 	    		lblParticipants.setText(String.valueOf(Integer.valueOf(lblParticipants.getText())-1));
 	    		setIsJoined(false);
 	    	} else {
-	    		EventDetailsControllerApp.addUserParticipation(loggedUserId, eventBean.getId());
+	    		eventDetailsControllerApp.addUserParticipation(loggedUserId, eventBean.getId());
 	    		lblParticipants.setText(String.valueOf(Integer.valueOf(lblParticipants.getText())+1));
 	    		setIsJoined(true);
 	    	}

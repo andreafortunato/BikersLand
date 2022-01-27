@@ -13,9 +13,7 @@ import com.bikersland.bean.UserBean;
 
 public class LoginControllerApp {
 	
-	private LoginControllerApp() {}
-
-	public static void askLogin(String usernameEmail, String password) throws InvalidLoginException, InternalDBException 
+	public void askLogin(String usernameEmail, String password) throws InvalidLoginException, InternalDBException 
 	{
 		User loggedUser;
 		
@@ -27,7 +25,7 @@ public class LoginControllerApp {
 		}
 	}
 	
-	public static UserBean askLoginWeb(String usernameEmail, String password) throws InvalidLoginException, InternalDBException 
+	public UserBean askLoginWeb(String usernameEmail, String password) throws InvalidLoginException, InternalDBException 
 	{
 		User user;
 		try {
@@ -39,7 +37,7 @@ public class LoginControllerApp {
 		}
 	}
 	
-	public static void loginJustRegisteredUser(User user) 
+	public void loginJustRegisteredUser(User user) 
 	{
 		LoginSingleton.getLoginInstance().setUser(user);
 	}

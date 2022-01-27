@@ -34,20 +34,22 @@
 	  
 	  if(request.getParameter("joinEvent") != null) {
       if(request.getParameter("join_or_remove") != null) {
+    	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
         if(request.getParameter("join_or_remove").equals("join")) {
-          EventCardControllerApp.addUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+          eventCardControllerApp.addUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
         } else if (request.getParameter("join_or_remove").equals("remove")) {
-          EventCardControllerApp.removeUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+          eventCardControllerApp.removeUserParticipation(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
         }
       }
     }
 	  
 	  if(request.getParameter("favoriteEvent") != null) {
       if(request.getParameter("join_or_remove") != null) {
+    	  EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
         if(request.getParameter("join_or_remove").equals("join")) {
-          EventCardControllerApp.addFavoriteEvent(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+          eventCardControllerApp.addFavoriteEvent(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
         } else if (request.getParameter("join_or_remove").equals("remove")) {
-          EventCardControllerApp.removeFavoriteEvent(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
+          eventCardControllerApp.removeFavoriteEvent(loggedUserBean.getId(), Integer.valueOf(request.getParameter("event-id")));
         }
       }
     }
@@ -64,7 +66,8 @@
 				    <% 
 				      List<String> cities = null;
 					    try {
-					    	 cities = MainControllerApp.getCities(); 
+					    	 MainControllerApp mainControllerApp = new MainControllerApp();
+					    	 cities = mainControllerApp.getCities(); 
 					       for(String city:cities)
 					         out.write("<option value=\"" + city + "\">" + city + "</option>");
 					       } catch(InternalDBException idbe) {
@@ -97,7 +100,8 @@
 			      <% 
 	            List<String> tags = null;  
 	            try{
-	               tags = MainControllerApp.getTags(); 
+	            	 MainControllerApp mainControllerApp = new MainControllerApp();
+	               tags = mainControllerApp.getTags(); 
 	               for(String tag:tags)
 	                 out.write("<option value=\"" + tag + "\">" + tag + "</option>");
 	               }catch(InternalDBException idbe){
@@ -119,13 +123,14 @@
         List<EventBean> searchedEventList = new ArrayList<>();
         
         try {
+        	HomepageControllerApp homepageControllerApp = new HomepageControllerApp();
           if(request.getParameter("search") == null)
-              searchedEventList = HomepageControllerApp.getEventByCitiesAndTags("All","All", new ArrayList<>());
+              searchedEventList = homepageControllerApp.getEventByCitiesAndTags("All","All", new ArrayList<>());
           else{
             if(request.getParameterValues("tags-list") == null)
-              searchedEventList = HomepageControllerApp.getEventByCitiesAndTags(request.getParameter("departure-city"),request.getParameter("destination-city"),new ArrayList<>());
+              searchedEventList = homepageControllerApp.getEventByCitiesAndTags(request.getParameter("departure-city"),request.getParameter("destination-city"),new ArrayList<>());
             else
-              searchedEventList = HomepageControllerApp.getEventByCitiesAndTags(request.getParameter("departure-city"),request.getParameter("destination-city"),Arrays.asList(request.getParameterValues("tags-list")));
+              searchedEventList = homepageControllerApp.getEventByCitiesAndTags(request.getParameter("departure-city"),request.getParameter("destination-city"),Arrays.asList(request.getParameterValues("tags-list")));
           }
         } catch (InternalDBException idbe) {
         	%>
@@ -155,8 +160,10 @@
         		
         		event = searchedEventList.remove(0);
         		eventImage = event.getImage();
-        		if(eventImage == null)
-        			eventImage = EventCardControllerApp.getDefaultEventImage();
+        		if(eventImage == null) {
+        			EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+        			eventImage = eventCardControllerApp.getDefaultEventImage();
+        		}
         		
         		out.write("<div class=\"card card-border\" style=\"margin: 10px;\">");
         			
@@ -198,7 +205,8 @@
 		                  out.write("<tr>");
 	                      out.write("<td><form action=\"index.jsp\" method=\"POST\">");
 	                      try {
-                           if(EventCardControllerApp.isJoinedEvent(loggedUserBean.getId(), event.getId())) {
+	                    	   EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+                           if(eventCardControllerApp.isJoinedEvent(loggedUserBean.getId(), event.getId())) {
                              join_or_remove = "Remove participation";
                              join_or_remove_hidden = "remove";
                            } else {
@@ -221,7 +229,8 @@
 	                      
 	                      out.write("<td><form action=\"index.jsp\" method=\"POST\">");
 	                        try {
-	                           if(EventCardControllerApp.isFavoriteEvent(loggedUserBean.getId(), event.getId())) {
+	                        	 EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+	                           if(eventCardControllerApp.isFavoriteEvent(loggedUserBean.getId(), event.getId())) {
 	                             join_or_remove = "Remove from favorites";
 	                             join_or_remove_hidden = "remove";
 	                           } else {

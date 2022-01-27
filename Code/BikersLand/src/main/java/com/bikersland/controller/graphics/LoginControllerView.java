@@ -59,7 +59,8 @@ public class LoginControllerView
 	private void login() 
 	{
 		try {
-			LoginControllerApp.askLogin(txtUser.getText().strip(), txtPassword.getText().strip());
+			LoginControllerApp loginControllerApp = new LoginControllerApp();
+			loginControllerApp.askLogin(txtUser.getText().strip(), txtPassword.getText().strip());
 			
 			Main.setRoot("Homepage");
 		} catch (InvalidLoginException e) {

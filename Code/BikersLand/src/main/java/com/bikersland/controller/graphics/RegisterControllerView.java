@@ -167,7 +167,8 @@ public class RegisterControllerView
 			userBean.setUsername(txtUsername.getText().strip());
 			userBean.setPassword(txtPassword1.getText().strip());
 			
-			RegisterControllerApp.register(userBean);
+			RegisterControllerApp registerControllerApp = new RegisterControllerApp();
+			registerControllerApp.register(userBean);
 			
 			Main.setRoot("Homepage");
 		} catch (DuplicateUsernameException due) {

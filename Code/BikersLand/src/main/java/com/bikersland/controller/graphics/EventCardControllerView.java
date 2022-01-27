@@ -118,8 +118,10 @@ public class EventCardControllerView
     	imgViaggio.setClip(imgRound);
     	
     	Image image = eventBean.getImage();
-    	if(image == null)
-    		image = EventCardControllerApp.getDefaultEventImage();
+    	if(image == null) {
+    		EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+    		image = eventCardControllerApp.getDefaultEventImage();
+    	}
     	
     	imgViaggio.setImage(image);
     	Double ratio = image.getWidth()/image.getHeight();
@@ -161,8 +163,8 @@ public class EventCardControllerView
 		InstantTooltip participantsTooltip = null;
 		
 		try {
-			
-			participants = EventCardControllerApp.getEventParticipants(eventBean.getId());
+			EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+			participants = eventCardControllerApp.getEventParticipants(eventBean.getId());
 			
 			btnParticipants.setText(String.valueOf(participants.size()));
 			StringBuilder participantList = new StringBuilder();
@@ -192,9 +194,10 @@ public class EventCardControllerView
 		}
 		else {
 			try {
-				setIsFavorite(EventCardControllerApp.isFavoriteEvent(loggedUserId, eventBean.getId()));
+				EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+				setIsFavorite(eventCardControllerApp.isFavoriteEvent(loggedUserId, eventBean.getId()));
 				
-				setIsJoined(EventCardControllerApp.isJoinedEvent(loggedUserId, eventBean.getId()));
+				setIsJoined(eventCardControllerApp.isJoinedEvent(loggedUserId, eventBean.getId()));
 			} catch (InternalDBException idbe) {
 				TimedAlert.show(AlertType.ERROR,
 						Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),
@@ -211,12 +214,13 @@ public class EventCardControllerView
     {
     	
     	try {
+    		EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
     		if(isFavorite) {
-        		EventCardControllerApp.removeFavoriteEvent(loggedUserId, eventBean.getId());
+        		eventCardControllerApp.removeFavoriteEvent(loggedUserId, eventBean.getId());
         		
         		setIsFavorite(false);
         	} else {  
-        		EventCardControllerApp.addFavoriteEvent(loggedUserId, eventBean.getId()); 
+        		eventCardControllerApp.addFavoriteEvent(loggedUserId, eventBean.getId()); 
                 
                 setIsFavorite(true);
         	}
@@ -241,12 +245,12 @@ public class EventCardControllerView
     private void joinEvent() 
     {
     	try {
+    		EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
 			if(isJoined) 
-	    		EventCardControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
+	    		eventCardControllerApp.removeUserParticipation(loggedUserId, eventBean.getId());
 	    		
 	    	else 
-	    		EventCardControllerApp.addUserParticipation(loggedUserId, eventBean.getId());
-	    		
+	    		eventCardControllerApp.addUserParticipation(loggedUserId, eventBean.getId());
 	    
 			
 			setParticipantsText();
@@ -301,8 +305,8 @@ public class EventCardControllerView
 		InstantTooltip participantsTooltip = null;
 		
 		try {
-			
-			participants = EventCardControllerApp.getEventParticipants(eventBean.getId());
+			EventCardControllerApp eventCardControllerApp = new EventCardControllerApp();
+			participants = eventCardControllerApp.getEventParticipants(eventBean.getId());
 			
 			btnParticipants.setText(String.valueOf(participants.size()));
 			StringBuilder participantList = new StringBuilder();

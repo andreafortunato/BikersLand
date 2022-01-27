@@ -170,7 +170,8 @@ public class HomepageControllerView
         	
         	
         	try {
-				this.eventListBean = HomepageControllerApp.getEventByCities(Main.getBundle().getString(ConstantStrings.ALL_FEMALE), Main.getBundle().getString(ConstantStrings.ALL_FEMALE));
+        		HomepageControllerApp homepageControllerApp = new HomepageControllerApp();
+				this.eventListBean = homepageControllerApp.getEventByCities(Main.getBundle().getString(ConstantStrings.ALL_FEMALE), Main.getBundle().getString(ConstantStrings.ALL_FEMALE));
 				
         	} catch (InternalDBException idbe) {
         		TimedAlert.show(AlertType.ERROR,
@@ -293,7 +294,8 @@ public class HomepageControllerView
     	List<EventBean> searchedEventList = new ArrayList<>();
     	
     	try {
-			searchedEventList = HomepageControllerApp.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
+    		HomepageControllerApp homepageControllerApp = new HomepageControllerApp();
+			searchedEventList = homepageControllerApp.getEventByCitiesAndTags(comboPartenzaCitta.getValue(), comboArrivoCitta.getValue(), lvTags.getSelectionModel().getSelectedItems());
 		} catch (InternalDBException idbe) {
 			TimedAlert.show(AlertType.ERROR,
 					Main.getBundle().getString(ConstantStrings.TIMEDALERT_INTERNAL_ERROR),

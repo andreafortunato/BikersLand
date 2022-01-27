@@ -10,9 +10,7 @@ import com.bikersland.Main;
 
 public class HeaderControllerApp {
 	
-	private HeaderControllerApp() {}
-
-	public static List<String> getTags() throws InternalDBException
+	public List<String> getTags() throws InternalDBException
 	{
 		try {
 			return TagDAO.getTags();

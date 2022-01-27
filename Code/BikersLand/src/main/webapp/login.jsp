@@ -15,7 +15,8 @@
 			if(request.getParameter("login") != null) {
 				UserBean userBean;
 				try {
-					userBean = LoginControllerApp.askLoginWeb(request.getParameter("username"), request.getParameter("password"));
+					LoginControllerApp loginControllerApp = new LoginControllerApp();
+					userBean = loginControllerApp.askLoginWeb(request.getParameter("username"), request.getParameter("password"));
 					
 					session.setAttribute("logged-user-bean", userBean);
 					
